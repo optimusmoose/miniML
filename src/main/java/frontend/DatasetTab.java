@@ -13,6 +13,8 @@ import javax.swing.UIManager;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import javax.swing.JFileChooser;
 import java.io.File;
@@ -28,6 +30,7 @@ import static org.apache.commons.io.FileUtils.readFileToString;
  * Created by dave on 3/3/17.
  */
 public class DatasetTab  extends JComponent {
+    String dataset = "";
 
     public DatasetTab() {
         this.setLayout(new GridLayout());
@@ -38,7 +41,7 @@ public class DatasetTab  extends JComponent {
     }
 
     public JPanel fs_panel(){
-        String dataset = null;
+        //String dataset = null;
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout());
         JTextPane txt = new JTextPane();
@@ -48,13 +51,15 @@ public class DatasetTab  extends JComponent {
         panel.add(tip);
         panel.add(fs);
         panel.add(jsp);
-        //if(fs.getModel().isPressed()) {
-            try {
-                dataset = fs_select();
-            } catch (IOException e) {
-                System.out.println("Hit an error opening file.");
+        fs.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ev) {
+                try {
+                    dataset = fs_select();
+                } catch (IOException e) {
+                    System.out.println("Hit an error opening file.");
+                }
             }
-        //}
+        } );
         txt.setText(dataset);
         return panel;
     }
@@ -70,6 +75,7 @@ public class DatasetTab  extends JComponent {
             //System.out.println("Selected file: " + selectedFile.getAbsolutePath());
             contents = readFileToString(selectedFile);
         }
+        dataset = contents;
         return(contents);
     }
 
