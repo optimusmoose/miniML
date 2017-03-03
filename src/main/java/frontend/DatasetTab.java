@@ -31,6 +31,7 @@ import static org.apache.commons.io.FileUtils.readFileToString;
  */
 public class DatasetTab  extends JComponent {
     private String dataset = "";
+    private JTextPane txt = new JTextPane();
 
     public DatasetTab() {
         this.setLayout(new GridLayout());
@@ -41,10 +42,9 @@ public class DatasetTab  extends JComponent {
     }
 
     public JPanel fs_panel(){
-        //String dataset = null;
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout());
-        JTextPane txt = new JTextPane();
+        //JTextPane txt = new JTextPane();
         JScrollPane jsp = new JScrollPane(txt);
         JButton fs = new JButton("Browse...");
         JLabel tip = new JLabel("Select a Dataset: ");
@@ -52,7 +52,6 @@ public class DatasetTab  extends JComponent {
         panel.add(tip);
         panel.add(fs);
         panel.add(jsp);
-        txt.setText(dataset);
         System.out.println(dataset);
         return panel;
     }
@@ -76,6 +75,7 @@ public class DatasetTab  extends JComponent {
         public void actionPerformed(ActionEvent ev) {
             try {
                 dataset = fs_select();
+                txt.setText(dataset);
                 //System.out.println(dataset);
             } catch (IOException e) {
                 System.out.println("Hit an error opening file.");
