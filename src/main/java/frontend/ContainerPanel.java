@@ -51,7 +51,8 @@ public class ContainerPanel extends JPanel {
                           "Select a dataset for analysis.");
         tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
 
-        JComponent panel2 = makeBasePanel("Preprocess");
+        //JComponent panel2 = makeBasePanel("Preprocess");
+        PreprocessTab panel2 = new PreprocessTab();
         tabbedPane.addTab("Preprocess", icon, panel2,
                           "Curate data to improve performance.");
         tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
