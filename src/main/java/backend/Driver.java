@@ -6,10 +6,20 @@ import java.io.IOException;
 import java.util.Random;
 import weka.core.Instances;
 import weka.core.Utils;
+import junit.framework.TestCase;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 
-// Driver to test weka stuff.
-public class Driver{
+/*
+Driver for testing backend functionality with Weka libraries.
+Should be able to demonstrate Instance, Evaluation, and function Weka operations
+
+@param  args     null
+@return void     null
+*/
+public class Driver extends TestCase{
     public static void main(String[] args) {
         WekaTaskManager mgr = new WekaTaskManager();
         LR_Task lr = new LR_Task(mgr);
@@ -17,7 +27,8 @@ public class Driver{
         TaskInvoker taskList = new TaskInvoker();
 
         //load some data
-        String path = "github/miniML/test_data/cpu.arff";
+        //String path = "github/miniML/test_data/cpu.arff";
+        String path = "test_data/cpu.arff";
         Instances data = null;
         try {
             data = read_data(path);
@@ -40,6 +51,13 @@ public class Driver{
         taskList.doTask();
     }
 
+    /*
+    Returns a Weka Instance of the data for testing.
+    This will not be used in the finished product, but may be adapted to that end.
+
+    @param  path     the local path to the data file (at this time, only .arff is supported)
+    @return data     a Weka Instance of the data
+    */
     public static Instances read_data(String path) throws IOException {
         System.out.println("Opening file: " + path);
         BufferedReader reader = new BufferedReader(new FileReader(path));
