@@ -1,5 +1,7 @@
 package backend;
 
+import weka.core.Instances;
+
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -7,13 +9,36 @@ public class WekaInvoker {
 }
 
 
-// Receiver class.
+/*
+Receiver class.
+This object accepts the instructions and parameters
+to call Weka algorithms.
+
+Ideally, this object will be able to cache a
+parameter/algorithm/result set for easy reporting to
+the main application.
+*/
 class WekaTaskManager{
-    public void manage_LR() {
+    private Instances data; //it holds the dataset, too.
+    //private String[] params;
+    public void manage_LR(String[] params) {
         System.out.println("Calling linear regression");
+        try {
+            new LR_Model(data, params);
+        } catch (Exception e) {
+            System.out.println("LR hit error: " + e);
+        }
     }
-    public void manage_NN() {
+    public void manage_NN(String[] params) {
         System.out.println("Calling neural network");
+        try {
+            new NN_Model(data, params);
+        } catch (Exception e) {
+            System.out.println("NN hit error: " + e);
+        }
+    }
+    public void setData(Instances d){
+        data = d;
     }
 }
 
