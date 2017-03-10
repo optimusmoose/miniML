@@ -1,14 +1,15 @@
 package state;
 
-
 class DatasetContext extends AbstractContext {
 
-    //TODO: move into config context, that is there purpose
-    private String fileName;
+    private ConfigContext fileName;
 
     DatasetContext() {
         //dataset has not been set by user at start, state will be error
         super(StateFactory.INSTANCE.error());
+        fileName = new ConfigContext();
+
+        this.childContexts.add(fileName);
     }
 
     public boolean fileNameValid()
