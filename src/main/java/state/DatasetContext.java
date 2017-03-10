@@ -1,7 +1,9 @@
 package state;
 
+
 class DatasetContext extends AbstractContext {
 
+    //TODO: move into config context, that is there purpose
     private String fileName;
 
     DatasetContext() {
@@ -20,6 +22,4 @@ class DatasetContext extends AbstractContext {
         //TODO: write lint utility for file
         return false;
     }
-
-
 }

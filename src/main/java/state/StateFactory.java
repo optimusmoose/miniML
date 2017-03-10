@@ -1,8 +1,15 @@
 package state;
 
-//A factory to consistently instantiate state objects
+/*
+ * A factory to consistently instantiate state objects
+ */
 public enum StateFactory {
     INSTANCE;
+
+    public ProcessState empty()
+    {
+        return new NullState();
+    }
 
     public ProcessState ready()
     {
