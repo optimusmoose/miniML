@@ -20,15 +20,10 @@ public abstract class Model {
     * and keep it around if it outperforms other solutions. We may also want an approach to
     * exporting the Model so that it can be reused on other data in the future.
     */
-}
-
-class LR_Model extends Model {
-    /*
-    * Generates a Weka LinearRegression function Model acting on our data instance with our parameters.
-    */
-    private String[] pars;
-    private Instances data;
-    public LR_Model(Instances d, String[] params) throws Exception {
+    protected String[] pars;
+    protected Instances data;
+    protected Evaluation eval;
+    public Model(Instances d, String[] params) throws Exception {
         /*
         * construct and run the Model. Keep as a functioning unit that can be modified as needed.
         *
@@ -41,17 +36,24 @@ class LR_Model extends Model {
         */
         data = d;
         pars = params;
+    }
+}
+
+class LR_Model extends Model {
+    /*
+    * Generates a Weka LinearRegression function Model acting on our data instance with our parameters.
+    */
+    public LR_Model(Instances d, String[] params) throws Exception {
+        super(d,params);
         run();
     }
 
     private void run() throws Exception {
         LinearRegression my_lr = new LinearRegression();
-        //set our parameters to the object if applicable
         if(pars != null) {
             my_lr.setOptions(pars);
         }
-        Evaluation eval = new Evaluation(data);
-        //invoke crossfold validation (Classifier obj, Instance, #folds, RNG)
+        eval = new Evaluation(data);
         eval.crossValidateModel(my_lr, data, 10, new Random(1));
         System.out.println(eval.toSummaryString("\nResults\n======\n", false));
     }
@@ -59,13 +61,10 @@ class LR_Model extends Model {
 
 class NN_Model extends Model {
     /*
-    * Generates a Weka LinearRegression function Model acting on our data instance with our parameters.
+    * Generates a Weka MultlayerPerceptron function Model acting on our data instance with our parameters.
     */
-    private String[] pars;
-    private Instances data;
     public NN_Model(Instances d, String[] params) throws Exception {
-        data = d;
-        pars = params;
+        super(d,params);
         run();
     }
 
@@ -75,10 +74,9 @@ class NN_Model extends Model {
         if(pars != null) {
             mlp.setOptions(pars);
         }
-        Evaluation eval = new Evaluation(data);
+        eval = new Evaluation(data);
         //invoke crossfold validation (Classifier obj, Instance, #folds, RNG)
         eval.crossValidateModel(mlp, data, 10, new Random(1));
         System.out.println(eval.toSummaryString("\nResults\n======\n", false));
     }
-
 }
