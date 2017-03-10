@@ -8,5 +8,5 @@ package state;
  */
 interface ContextInterface {
     ProcessState getState();
-    void updateState();
+    ProcessState updateState();
 }

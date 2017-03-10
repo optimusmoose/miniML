@@ -21,14 +21,13 @@ abstract class AbstractContext implements ContextInterface {
         return this.state;
     }
 
-    public void updateState(){
+    public ProcessState updateState(){
         //map operation to check all child contexts for error state
         if(this.childContexts.stream()
                 .map( context -> context.getState().isError() )
                 .collect( Collectors.toList() ).contains(true)
                 ) {
-            ErrorState.class.cast(this.state);
-            return;
+            return ErrorState.class.cast(this.state);
         }
 
         //likewise for warnings
@@ -36,17 +35,16 @@ abstract class AbstractContext implements ContextInterface {
                 .map( context -> context.getState().isWarning() )
                 .collect( Collectors.toList() ).contains(true)
                 ) {
-            WarningState.class.cast(this.state);
-            return;
+            return WarningState.class.cast(this.state);
         }
 
         //and readies
         if(this.childContexts.stream()
                 .map( context -> context.getState().isReady() )
-                .collect( Collectors.toList() ).contains(true)
+                .collect( Collectors.toList() ).contains(true)// TODO: BUG! this contains needs to be changed, need to check for all true not just one
                 ) {
-            ReadyState.class.cast(this.state);
-            return;
+            return ReadyState.class.cast(this.state);
         }
+        return this.state;
     }
 }
