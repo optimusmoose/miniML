@@ -1,6 +1,6 @@
 package state;
 
-/*
+/**
  * Null State for when state is not yet defined
  */
 public class NullState implements ProcessState {

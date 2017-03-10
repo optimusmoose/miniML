@@ -1,6 +1,6 @@
 package state;
 
-/*
+/**
  * A factory to consistently instantiate state objects
  */
 public enum StateFactory {

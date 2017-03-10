@@ -1,11 +1,14 @@
 package state;
 
+/**
+ * The Context of the algorithm models configuration
+ */
 public class PreprocessContext extends AbstractContext {
 
-    private ProcessState state;
-
+    /**
+     * no pre-processing functionality yet, state is ready
+     */
     PreprocessContext() {
-        //no pre-processing functionality yet, state is ready
         super(StateFactory.INSTANCE.ready());
     }
 }

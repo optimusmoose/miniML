@@ -26,9 +26,8 @@ public class MiniMLTest extends TestCase {
     @Test
     public void testMain()
     {
-        String[] args = new String[]{};
+//        String[] args = new String[]{};
 //        MiniML.main(args);
-//        assertEquals("Hello World!", outContent.toString());
     }
 
 }

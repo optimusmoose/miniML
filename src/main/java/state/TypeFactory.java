@@ -1,7 +1,7 @@
 package state;
 
-/*
- * a utility to return objects based on a string
+/**
+ * a utility to return type objects
  * enables abstract construction of config contexts
  * can be further extended for custom types such as ranges
  */
@@ -9,6 +9,12 @@ package state;
 enum TypeFactory {
     INSTANCE;
 
+    /**
+     * Return an Object equivalent of primitive types
+     * @param type String
+     * @param value String
+     * @return Object
+     */
     Object get(String type, String value) {
         switch (type) {
             //if the value is a string return it
@@ -36,8 +42,5 @@ enum TypeFactory {
             default:
                 return null;
         }
-
     }
-
-
 }

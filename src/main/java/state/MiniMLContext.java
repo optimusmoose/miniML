@@ -9,6 +9,9 @@ public class MiniMLContext extends AbstractContext {
     private PreprocessContext pc;
     private ModelContext mc;
 
+    /*
+        TODO: I would really like a DI solution, would make things more testable
+     */
     MiniMLContext() {
         //there is no config on launch, null object pattern
         super(StateFactory.INSTANCE.empty());
@@ -30,7 +33,7 @@ public class MiniMLContext extends AbstractContext {
     public void run() {
         if(this.state.isReady())
         {
-            //TODO: call run
+            //TODO: call run in Weka
             //might need a running state, complete state? Transition to running would occur here
         }
     }
