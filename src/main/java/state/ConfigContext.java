@@ -5,10 +5,13 @@ package state;
  */
 class ConfigContext extends AbstractContext {
 
-    Class type; //class of the object equivalent to a primative
-    Object value; //
+    Object value; //object form of a primative or other type such as range
 
     ConfigContext() {
         super(StateFactory.INSTANCE.empty());
+    }
+
+    void setContext(String type, String value) {
+        TypeFactory.INSTANCE.get(type, value);
     }
 }

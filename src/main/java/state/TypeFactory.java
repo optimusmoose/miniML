@@ -1,10 +1,11 @@
-package utils;
+package state;
 
 /*
  * a utility to return objects based on a string
  * enables abstract construction of config contexts
  * can be further extended for custom types such as ranges
  */
+//TODO: move to a utils package
 enum TypeFactory {
     INSTANCE;
 
