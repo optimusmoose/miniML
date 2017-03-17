@@ -39,8 +39,8 @@ abstract class AbstractCompositeContext implements ContextInterface {
      */
     public void updateState(){
         //map operation to check all child contexts for error state
-        if(this.childContexts.entrySet().stream()
-                .map( contextHash -> contextHash.getValue().getState().isError() )
+        if(this.childContexts.values().stream()
+                .map( context -> context.getState().isError() )
                 .collect( Collectors.toList() ).contains(true)
                 ) {
             this.state = StateFactory.INSTANCE.error();
@@ -49,8 +49,8 @@ abstract class AbstractCompositeContext implements ContextInterface {
         }
 
         //likewise for warnings
-        if(this.childContexts.entrySet().stream()
-                .map( contextHash -> contextHash.getValue().getState().isWarning() )
+        if(this.childContexts.values().stream()
+                .map( context -> context.getState().isWarning() )
                 .collect( Collectors.toList() ).contains(true)
                 ) {
             this.state = StateFactory.INSTANCE.warning();
@@ -59,8 +59,8 @@ abstract class AbstractCompositeContext implements ContextInterface {
         }
 
         //and readies, note that all children must be ready for a parent to be ready
-        if(! this.childContexts.entrySet().stream()
-                .map( contextHash -> contextHash.getValue().getState().isReady() )
+        if(! this.childContexts.values().stream()
+                .map( context -> context.getState().isReady() )
                 .collect( Collectors.toList() ).contains(false)
                 ) {
             this.state = StateFactory.INSTANCE.ready();
