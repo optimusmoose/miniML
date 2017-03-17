@@ -2,7 +2,7 @@ package workflow.context;
 
 import java.io.File;
 
-public class FileContext extends AbstractParameterContext{
+public class FileContext extends AbstractParameterContext {
 
     /**
      * Instantiate context with a null state
@@ -15,6 +15,17 @@ public class FileContext extends AbstractParameterContext{
 
     @Override
     boolean isValid() {
-        return new File((String) fileName.getValue()).isFile();
+        return this.fileExists() && this.fileIsValid();
+    }
+
+    private boolean fileExists() {
+        //TODO: this badly needs a test, possibly a try/catch
+        return new File((String) this.value).isFile();
+    }
+
+    private boolean fileIsValid()
+    {
+        //TODO: write/call lint utility for file
+        return true;
     }
 }

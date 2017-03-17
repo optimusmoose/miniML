@@ -11,7 +11,7 @@ import workflow.state.StateFactory;
  */
 abstract class AbstractParameterContext extends AbstractCompositeContext {
 
-    private Object value; //object form of a primative or other type such as range
+    protected Object value; //object form of a primative or other type such as range
 
     /**
      * Instantiate context with a null state
