@@ -14,9 +14,40 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 /**
- * TODO finish commenting these parts before design pattern gets compromised
+ * Delegates tasks to other objects. See abstract class javadoc for more information.
+ *
  */
-public class WekaInvoker {
+public class WekaInvoker extends TaskInvoker {
+    private Queue<WekaTask> taskQueue = new LinkedList<WekaTask>();
+
+    public WekaInvoker() {
+        //Maybe later.
+    }
+
+    /**
+     * Add a task to our queue
+     *
+     * @param task
+     */
+    void addTask(WekaTask task) {
+        taskQueue.add(task);
+    }
+
+    /**
+     *Do the next task in our queue
+     *TODO this should probably return something
+     */
+    void doTask() {
+        taskQueue.poll().execute();
+    }
+}
+
+
+/**
+ * Abstract class from which any backend command-invoking object should be defined (most notably, WekaInvoker).
+ * This may be how other (non-Weka) libraries can be added in the future.
+ */
+abstract class TaskInvoker {
 }
 
 /**
@@ -31,24 +62,39 @@ public class WekaInvoker {
  */
 class WekaTaskManager{
     protected Instances data; //it holds the dataset, too.
-    protected ArrayList<Evaluation> evals = new ArrayList<Evaluation>();
+    protected ArrayList<Model> models = new ArrayList<Model>();
     //private String[] params;
+
+    /**
+     * Manage a Weka LinearRegression Model.
+     *
+     * @param params
+     */
     public void manage_LR(String[] params) {
         System.out.println("Calling linear regression");
         try {
-            new LR_Model(data, params);
+            LR_Model lr = new LR_Model(data, params);
+            models.add(lr);
         } catch (Exception e) {
             System.out.println("LR hit error: " + e);
         }
     }
+
+    /**
+     * Manage a Weka NeuralNetwork Model.
+     *
+     * @param params
+     */
     public void manage_NN(String[] params) {
         System.out.println("Calling neural network");
         try {
-            new NN_Model(data, params);
+            NN_Model nn = new NN_Model(data, params);
+            models.add(nn);
         } catch (Exception e) {
             System.out.println("NN hit error: " + e);
         }
     }
+
     public void setData(Instances d){
         data = d;
     }
@@ -87,31 +133,6 @@ class WekaTaskManager{
         return obj;
     }
 
-}
-
-// Invoker.
-class TaskInvoker {
-    private Queue<WekaTask> taskQueue = new LinkedList<WekaTask>();
-
-    public TaskInvoker() {
-        //Maybe later.
-    }
-
-    /*
-    Add a task to our queue
-     */
-    void addTask(WekaTask task) {
-        taskQueue.add(task);
-        //task.execute(taskQueue.poll());
-    }
-
-    /*
-    Do the next task in our queue
-    TODO this should probably return something
-     */
-    void doTask() {
-        taskQueue.poll().execute();
-    }
 }
 
 

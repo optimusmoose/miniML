@@ -24,7 +24,7 @@ public class Driver extends TestCase{
         WekaTaskManager mgr = new WekaTaskManager();
         LR_Task lr = new LR_Task(mgr);
         NN_Task nn = new NN_Task(mgr);
-        TaskInvoker taskList = new TaskInvoker();
+        WekaInvoker taskList = new WekaInvoker();
 
         //load some data
         //String path = "github/miniML/test_data/cpu.arff";
