@@ -1,6 +1,7 @@
-package state;
+package utils;
 
 import junit.framework.TestCase;
+import utils.TypeFactory;
 
 public class TypeFactoryTest extends TestCase {
 
@@ -58,9 +59,6 @@ public class TypeFactoryTest extends TestCase {
         String value = "3.1415926535897932";
 
         Object result = TypeFactory.INSTANCE.get(type, value);
-        System.out.println(value);
-        System.out.println(result);
-
         assertTrue(result.equals(3.1415926535897932d));
     }
 

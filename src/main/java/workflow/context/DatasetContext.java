@@ -1,4 +1,6 @@
-package state;
+package workflow.context;
+
+import workflow.state.StateFactory;
 
 import java.io.File;
 
@@ -11,7 +13,7 @@ class DatasetContext extends AbstractContext {
 
 
     /**
-     * Instantiate with error state, as no dataset is selecton on construction
+     * Instantiate with error workflow, as no dataset is selecton on construction
      */
     DatasetContext() {
         super(StateFactory.INSTANCE.error());

@@ -1,7 +1,9 @@
-package state;
+package workflow.state;
+
+import workflow.state.ProcessState;
 
 /**
- * A factory to consistently instantiate state objects
+ * A factory to consistently instantiate workflow objects
  */
 public enum StateFactory {
     INSTANCE;

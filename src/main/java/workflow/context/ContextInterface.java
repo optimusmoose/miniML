@@ -1,10 +1,12 @@
-package state;
+package workflow.context;
+
+import workflow.state.ProcessState;
 
 /**
  * An interface to define the context of the workflow
  * Contexts consists of states and children contexts
  * States are updated based on that of child contexts
- * Contexts can perform actions dependent on state
+ * Contexts can perform actions dependent on workflow
  */
 interface ContextInterface {
     ProcessState getState();

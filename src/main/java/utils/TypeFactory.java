@@ -1,4 +1,4 @@
-package state;
+package utils;
 
 /**
  * a utility to return type objects
@@ -6,7 +6,7 @@ package state;
  * can be further extended for custom types such as ranges
  */
 //TODO: move to a utils package
-enum TypeFactory {
+public enum TypeFactory {
     INSTANCE;
 
     /**
@@ -15,7 +15,7 @@ enum TypeFactory {
      * @param value String
      * @return Object
      */
-    Object get(String type, String value) {
+    public Object get(String type, String value) {
         switch (type) {
             //if the value is a string return it
             case "str":

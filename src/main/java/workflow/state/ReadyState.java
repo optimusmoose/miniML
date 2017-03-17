@@ -1,9 +1,9 @@
-package state;
+package workflow.state;
 
-/**
- * Null State for when state is not yet defined
- */
-public class NullState implements ProcessState {
+import workflow.state.ProcessState;
+
+public class ReadyState implements ProcessState {
+
     public boolean isError() {
         return false;
     }
@@ -13,6 +13,6 @@ public class NullState implements ProcessState {
     }
 
     public boolean isReady() {
-        return false;
+        return true;
     }
 }

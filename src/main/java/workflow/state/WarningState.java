@@ -1,4 +1,6 @@
-package state;
+package workflow.state;
+
+import workflow.state.ProcessState;
 
 public class WarningState implements ProcessState {
 

@@ -1,6 +1,8 @@
-package state;
+package workflow.state;
 
-class ErrorState implements ProcessState {
+import workflow.state.ProcessState;
+
+public class ErrorState implements ProcessState {
 
     public boolean isError() {
         return true;

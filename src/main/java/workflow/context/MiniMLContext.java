@@ -1,4 +1,6 @@
-package state;
+package workflow.context;
+
+import workflow.state.StateFactory;
 
 /*
  * The context of the entire process
@@ -25,7 +27,7 @@ public class MiniMLContext extends AbstractContext {
         childContexts.add(pc);
         childContexts.add(mc);
 
-        //note that the state is updated to something other than the nullstate within instantiation
+        //note that the workflow is updated to something other than the nullstate within instantiation
         this.updateState();
     }
 
@@ -34,7 +36,7 @@ public class MiniMLContext extends AbstractContext {
         if(this.state.isReady())
         {
             //TODO: call run in Weka
-            //might need a running state, complete state? Transition to running would occur here
+            //might need a running workflow, complete workflow? Transition to running would occur here
         }
     }
 }

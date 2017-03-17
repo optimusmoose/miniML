@@ -1,4 +1,6 @@
-package state;
+package workflow.context;
+
+import workflow.state.StateFactory;
 
 /**
  * The Context of the algorithm models configuration
@@ -6,7 +8,7 @@ package state;
 public class PreprocessContext extends AbstractContext {
 
     /**
-     * no pre-processing functionality yet, state is ready
+     * no pre-processing functionality yet, workflow is ready
      */
     PreprocessContext() {
         super(StateFactory.INSTANCE.ready());

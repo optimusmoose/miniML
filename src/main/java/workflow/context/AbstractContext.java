@@ -1,4 +1,9 @@
-package state;
+package workflow.context;
+
+import workflow.state.ErrorState;
+import workflow.state.ProcessState;
+import workflow.state.ReadyState;
+import workflow.state.WarningState;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +40,7 @@ abstract class AbstractContext implements ContextInterface {
      * @return ProcessState
      */
     public ProcessState updateState(){
-        //map operation to check all child contexts for error state
+        //map operation to check all child contexts for error workflow
         if(this.childContexts.stream()
                 .map( context -> context.getState().isError() )
                 .collect( Collectors.toList() ).contains(true)
@@ -60,7 +65,7 @@ abstract class AbstractContext implements ContextInterface {
             return ReadyState.class.cast(this.state);
         }
 
-        //otherwise return the current state, i.e. if all children have a null state
+        //otherwise return the current workflow, i.e. if all children have a null workflow
         return this.state;
     }
 }

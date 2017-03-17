@@ -1,6 +1,6 @@
-package state;
+package workflow.context;
 
-import javax.swing.plaf.nimbus.State;
+import workflow.state.StateFactory;
 
 /**
  * The Context of the algorithm models configuration
@@ -8,7 +8,7 @@ import javax.swing.plaf.nimbus.State;
 class ModelContext extends AbstractContext {
 
     /**
-     * dataset has not been set by user at start, state will be error
+     * dataset has not been set by user at start, workflow will be error
      */
     ModelContext() {
         super(StateFactory.INSTANCE.error());
