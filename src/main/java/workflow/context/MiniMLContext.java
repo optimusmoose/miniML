@@ -14,7 +14,7 @@ public class MiniMLContext extends AbstractCompositeContext {
     /*
         TODO: I would really like a DI solution, would make things more testable
      */
-    MiniMLContext() {
+    public MiniMLContext() {
         //there is no config on launch, null object pattern
         super(StateFactory.INSTANCE.empty(), ContextFactory.INSTANCE.empty());
 

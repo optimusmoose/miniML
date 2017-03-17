@@ -1,9 +1,6 @@
 package workflow.context;
 
-import workflow.state.ErrorState;
-import workflow.state.ProcessState;
-import workflow.state.ReadyState;
-import workflow.state.WarningState;
+import workflow.state.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +43,7 @@ abstract class AbstractCompositeContext implements ContextInterface {
                 .map( context -> context.getState().isError() )
                 .collect( Collectors.toList() ).contains(true)
                 ) {
-            this.state =  ErrorState.class.cast(this.state);
+            this.state = StateFactory.INSTANCE.error();
             this.parent.updateState();
             return;
         }
@@ -56,7 +53,7 @@ abstract class AbstractCompositeContext implements ContextInterface {
                 .map( context -> context.getState().isWarning() )
                 .collect( Collectors.toList() ).contains(true)
                 ) {
-            this.state = WarningState.class.cast(this.state);
+            this.state = StateFactory.INSTANCE.warning();
             this.parent.updateState();
             return;
         }
@@ -66,7 +63,7 @@ abstract class AbstractCompositeContext implements ContextInterface {
                 .map( context -> context.getState().isReady() )
                 .collect( Collectors.toList() ).contains(false)
                 ) {
-            this.state = ReadyState.class.cast(this.state);
+            this.state = StateFactory.INSTANCE.ready();
             this.parent.updateState();
             return;
         }
