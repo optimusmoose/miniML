@@ -10,8 +10,8 @@ class ModelContext extends AbstractContext {
     /**
      * dataset has not been set by user at start, workflow will be error
      */
-    ModelContext() {
-        super(StateFactory.INSTANCE.error());
+    ModelContext(ContextInterface parentContext) {
+        super(StateFactory.INSTANCE.error(), parentContext);
     }
 
 }

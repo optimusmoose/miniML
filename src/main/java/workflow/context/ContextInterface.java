@@ -10,5 +10,5 @@ import workflow.state.ProcessState;
  */
 interface ContextInterface {
     ProcessState getState();
-    ProcessState updateState();
+    void updateState();
 }

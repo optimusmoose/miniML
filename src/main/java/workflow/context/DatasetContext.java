@@ -15,8 +15,8 @@ class DatasetContext extends AbstractContext {
     /**
      * Instantiate with error workflow, as no dataset is selecton on construction
      */
-    DatasetContext() {
-        super(StateFactory.INSTANCE.error());
+    DatasetContext(ContextInterface parentContext) {
+        super(StateFactory.INSTANCE.error(), parentContext);
         //TODO: finish implementing specific parameter context and then tie in
 //        fileName = new AbstractParameterContext();
 

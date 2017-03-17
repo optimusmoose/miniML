@@ -1,7 +1,5 @@
 package workflow.state;
 
-import workflow.state.ProcessState;
-
 /**
  * A factory to consistently instantiate workflow objects
  */

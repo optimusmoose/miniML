@@ -10,7 +10,7 @@ public class PreprocessContext extends AbstractContext {
     /**
      * no pre-processing functionality yet, workflow is ready
      */
-    PreprocessContext() {
-        super(StateFactory.INSTANCE.ready());
+    PreprocessContext(ContextInterface parentContext) {
+        super(StateFactory.INSTANCE.ready(), parentContext);
     }
 }

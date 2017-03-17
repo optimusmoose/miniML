@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
  */
 abstract class AbstractContext implements ContextInterface {
     protected ProcessState state;
+    protected ContextInterface parent;
     protected List<ContextInterface> childContexts;
 
 
@@ -21,8 +22,9 @@ abstract class AbstractContext implements ContextInterface {
      * Instantiate a Context with a State
      * @param state ProcessState
      */
-    AbstractContext(ProcessState state) {
+    AbstractContext(ProcessState state, ContextInterface parentContext) {
         this.state = state;
+        this.parent = parentContext;
         childContexts = new ArrayList<ContextInterface>();
     }
 
@@ -34,18 +36,19 @@ abstract class AbstractContext implements ContextInterface {
         return this.state;
     }
 
-
     /**
      * Update the State of the contextual object based on the states of its children
-     * @return ProcessState
+     * TODO: these can maybe all be map.reductions w Boolean::logicalOr/logicalAnd vs map.collect.contains
      */
-    public ProcessState updateState(){
+    public void updateState(){
         //map operation to check all child contexts for error workflow
         if(this.childContexts.stream()
                 .map( context -> context.getState().isError() )
                 .collect( Collectors.toList() ).contains(true)
                 ) {
-            return ErrorState.class.cast(this.state);
+            this.state =  ErrorState.class.cast(this.state);
+            this.parent.updateState();
+            return;
         }
 
         //likewise for warnings
@@ -53,7 +56,9 @@ abstract class AbstractContext implements ContextInterface {
                 .map( context -> context.getState().isWarning() )
                 .collect( Collectors.toList() ).contains(true)
                 ) {
-            return WarningState.class.cast(this.state);
+            this.state = WarningState.class.cast(this.state);
+            this.parent.updateState();
+            return;
         }
 
         //and readies, note that all children must be ready for a parent to be ready
@@ -61,10 +66,9 @@ abstract class AbstractContext implements ContextInterface {
                 .map( context -> context.getState().isReady() )
                 .collect( Collectors.toList() ).contains(false)
                 ) {
-            return ReadyState.class.cast(this.state);
+            this.state = ReadyState.class.cast(this.state);
+            this.parent.updateState();
+            return;
         }
-
-        //otherwise return the current workflow, i.e. if all children have a null workflow
-        return this.state;
     }
 }

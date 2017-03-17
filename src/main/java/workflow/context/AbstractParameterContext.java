@@ -17,8 +17,8 @@ abstract class AbstractParameterContext extends AbstractContext {
     /**
      * Instantiate context with a null workflow
      */
-    AbstractParameterContext() {
-        super(StateFactory.INSTANCE.empty());
+    AbstractParameterContext(ContextInterface parentContext) {
+        super(StateFactory.INSTANCE.empty(), parentContext);
     }
 
 
@@ -34,13 +34,12 @@ abstract class AbstractParameterContext extends AbstractContext {
      * update the State of the Context based on the self defined isValid method
      * @return ProcessState
      */
-    public ProcessState updateState()
+    public void updateState()
     {
         if(this.isValid())
         {
             ReadyState.class.cast(this.state);
         }
-        return this.state;
     }
 
     /**
@@ -51,7 +50,6 @@ abstract class AbstractParameterContext extends AbstractContext {
     void setContext(String type, String value) {
         this.value = TypeFactory.INSTANCE.get(type, value);
     }
-
 
     /**
      * getter fot the value object

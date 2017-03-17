@@ -16,12 +16,12 @@ public class MiniMLContext extends AbstractContext {
      */
     MiniMLContext() {
         //there is no config on launch, null object pattern
-        super(StateFactory.INSTANCE.empty());
+        super(StateFactory.INSTANCE.empty(), ContextFactory.INSTANCE.empty());
 
         //instantiate context for each panel
-        dc = new DatasetContext();
-        pc = new PreprocessContext();
-        mc = new ModelContext();
+        dc = new DatasetContext(this);
+        pc = new PreprocessContext(this);
+        mc = new ModelContext(this);
 
         childContexts.add(dc);
         childContexts.add(pc);
