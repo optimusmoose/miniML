@@ -7,14 +7,14 @@ import workflow.state.StateFactory;
 /**
  * An abstract context for configuration objects
  * Will hold details about specific contextual objects
- * Validates and updates its own workflow
+ * Validates and updates its own state
  */
 abstract class AbstractParameterContext extends AbstractCompositeContext {
 
     private Object value; //object form of a primative or other type such as range
 
     /**
-     * Instantiate context with a null workflow
+     * Instantiate context with a null state
      */
     AbstractParameterContext(ContextInterface parentContext) {
         super(StateFactory.INSTANCE.empty(), parentContext);
@@ -23,7 +23,7 @@ abstract class AbstractParameterContext extends AbstractCompositeContext {
     /**
      * an abstract function to be defined in concrete Context's
      * checks if the values meet the criteria of the specific context
-     * to be used for updating workflow
+     * to be used for updating state
      * @return boolean
      */
     abstract boolean isValid();

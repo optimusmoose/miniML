@@ -1,7 +1,7 @@
 package workflow.state;
 
 /**
- * A factory to consistently instantiate workflow objects
+ * A factory to consistently instantiate state objects
  */
 public enum StateFactory {
     INSTANCE;

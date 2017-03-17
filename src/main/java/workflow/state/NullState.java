@@ -3,7 +3,7 @@ package workflow.state;
 import workflow.state.ProcessState;
 
 /**
- * Null State for when workflow is not yet defined
+ * Null State for when state is not yet defined
  */
 public class NullState implements ProcessState {
     public boolean isError() {

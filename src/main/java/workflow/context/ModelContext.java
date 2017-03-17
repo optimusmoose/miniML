@@ -8,7 +8,7 @@ import workflow.state.StateFactory;
 class ModelContext extends AbstractCompositeContext {
 
     /**
-     * dataset has not been set by user at start, workflow will be error
+     * dataset has not been set by user at start, state will be error
      */
     ModelContext(ContextInterface parentContext) {
         super(StateFactory.INSTANCE.error(), parentContext);

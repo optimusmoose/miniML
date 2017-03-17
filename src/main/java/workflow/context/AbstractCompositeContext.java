@@ -41,7 +41,7 @@ abstract class AbstractCompositeContext implements ContextInterface {
      * TODO: these can maybe all be map.reductions w Boolean::logicalOr/logicalAnd vs map.collect.contains
      */
     public void updateState(){
-        //map operation to check all child contexts for error workflow
+        //map operation to check all child contexts for error state
         if(this.childContexts.stream()
                 .map( context -> context.getState().isError() )
                 .collect( Collectors.toList() ).contains(true)

@@ -8,7 +8,7 @@ import workflow.state.StateFactory;
 public class PreprocessContext extends AbstractCompositeContext {
 
     /**
-     * no pre-processing functionality yet, workflow is ready
+     * no pre-processing functionality yet, state is ready
      */
     PreprocessContext(ContextInterface parentContext) {
         super(StateFactory.INSTANCE.ready(), parentContext);

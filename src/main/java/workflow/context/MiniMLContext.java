@@ -27,7 +27,7 @@ public class MiniMLContext extends AbstractCompositeContext {
         this.addChildContext(pc);
         this.addChildContext(mc);
 
-        //note that the workflow is updated to something other than the nullstate within instantiation
+        //note that the state is updated to something other than the nullstate within instantiation
         this.updateState();
     }
 
@@ -36,7 +36,7 @@ public class MiniMLContext extends AbstractCompositeContext {
         if(this.state.isReady())
         {
             //TODO: call run in Weka
-            //might need a running workflow, complete workflow? Transition to running would occur here
+            //might need a running state, complete state? Transition to running would occur here
         }
     }
 }
