@@ -77,7 +77,7 @@ abstract class AbstractCompositeContext implements ContextInterface {
         //TODO: implement
     }
 
-    public void getChildContext(String id) {
-        //TODO: implement
+    public ContextInterface getChildContextByKey(String key) {
+        return this.childContexts.get(key);
     }
 }
