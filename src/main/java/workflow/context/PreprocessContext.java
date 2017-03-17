@@ -7,6 +7,8 @@ import workflow.state.StateFactory;
  */
 public class PreprocessContext extends AbstractCompositeContext {
 
+    public static final String KEY = "PREPROCESS_CONFIG";
+
     /**
      * no pre-processing functionality yet, state is ready
      */

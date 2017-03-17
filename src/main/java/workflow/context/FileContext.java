@@ -4,6 +4,8 @@ import java.io.File;
 
 public class FileContext extends AbstractParameterContext {
 
+    public final static String INPUT_FILE_KEY = "INPUT_FILE_0";
+
     /**
      * Instantiate context with a null state
      *

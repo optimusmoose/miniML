@@ -23,9 +23,9 @@ public class MiniMLContext extends AbstractCompositeContext {
         pc = new PreprocessContext(this);
         mc = new ModelContext(this);
 
-        this.addChildContext("DatasetConfig", dc);
-        this.addChildContext("PreprocessConfig", pc);
-        this.addChildContext("ModelConfig", mc);
+        this.addChildContext(DatasetContext.KEY, dc);
+        this.addChildContext(PreprocessContext.KEY, pc);
+        this.addChildContext(ModelContext.KEY, mc);
 
         //note that the state is updated to something other than the nullstate within instantiation
         this.updateState();

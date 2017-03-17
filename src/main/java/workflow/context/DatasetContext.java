@@ -7,6 +7,8 @@ import workflow.state.StateFactory;
  */
 class DatasetContext extends AbstractCompositeContext {
 
+    public static final String KEY = "DATASET_CONFIG";
+
     private AbstractParameterContext fileName;
 
     /**
@@ -14,7 +16,7 @@ class DatasetContext extends AbstractCompositeContext {
      */
     DatasetContext(ContextInterface parentContext) {
         super(StateFactory.INSTANCE.error(), parentContext);
-        this.addChildContext("InputFile", new FileContext(parentContext));
+        this.addChildContext(FileContext.INPUT_FILE_KEY, new FileContext(parentContext));
     }
 
 }
