@@ -3,6 +3,7 @@ package workflow.context;
 import workflow.state.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,8 +13,7 @@ import java.util.stream.Collectors;
 abstract class AbstractCompositeContext implements ContextInterface {
     protected ProcessState state;
     protected ContextInterface parent;
-    protected List<ContextInterface> childContexts;
-
+    protected HashMap<String, ContextInterface> childContexts;
 
     /**
      * Instantiate a Context with a State
@@ -22,7 +22,7 @@ abstract class AbstractCompositeContext implements ContextInterface {
     AbstractCompositeContext(ProcessState state, ContextInterface parentContext) {
         this.state = state;
         this.parent = parentContext;
-        this.childContexts = new ArrayList<ContextInterface>();
+        this.childContexts = new HashMap<String, ContextInterface>();//TODO: should be a dictionary? will require streams work
     }
 
     /**
@@ -39,8 +39,8 @@ abstract class AbstractCompositeContext implements ContextInterface {
      */
     public void updateState(){
         //map operation to check all child contexts for error state
-        if(this.childContexts.stream()
-                .map( context -> context.getState().isError() )
+        if(this.childContexts.entrySet().stream()
+                .map( contextHash -> contextHash.getValue().getState().isError() )
                 .collect( Collectors.toList() ).contains(true)
                 ) {
             this.state = StateFactory.INSTANCE.error();
@@ -49,8 +49,8 @@ abstract class AbstractCompositeContext implements ContextInterface {
         }
 
         //likewise for warnings
-        if(this.childContexts.stream()
-                .map( context -> context.getState().isWarning() )
+        if(this.childContexts.entrySet().stream()
+                .map( contextHash -> contextHash.getValue().getState().isWarning() )
                 .collect( Collectors.toList() ).contains(true)
                 ) {
             this.state = StateFactory.INSTANCE.warning();
@@ -59,8 +59,8 @@ abstract class AbstractCompositeContext implements ContextInterface {
         }
 
         //and readies, note that all children must be ready for a parent to be ready
-        if(! this.childContexts.stream()
-                .map( context -> context.getState().isReady() )
+        if(! this.childContexts.entrySet().stream()
+                .map( contextHash -> contextHash.getValue().getState().isReady() )
                 .collect( Collectors.toList() ).contains(false)
                 ) {
             this.state = StateFactory.INSTANCE.ready();
@@ -69,8 +69,8 @@ abstract class AbstractCompositeContext implements ContextInterface {
         }
     }
 
-    public void addChildContext(ContextInterface childContext) {
-        this.childContexts.add(childContext);
+    public void addChildContext(String key, ContextInterface childContext) {
+        this.childContexts.put(key, childContext);
     }
 
     public void removeChildContext(ContextInterface childContext) {
