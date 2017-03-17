@@ -5,7 +5,6 @@ package utils;
  * enables abstract construction of config contexts
  * can be further extended for custom types such as ranges
  */
-//TODO: move to a utils package
 public enum TypeFactory {
     INSTANCE;
 

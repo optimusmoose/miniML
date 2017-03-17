@@ -56,11 +56,10 @@ abstract class AbstractContext implements ContextInterface {
             return WarningState.class.cast(this.state);
         }
 
-        //and readies
-        if(this.childContexts.stream()
+        //and readies, note that all children must be ready for a parent to be ready
+        if(! this.childContexts.stream()
                 .map( context -> context.getState().isReady() )
-                // TODO: BUG! this contains needs to be changed, need to check for all true not just one
-                .collect( Collectors.toList() ).contains(true)
+                .collect( Collectors.toList() ).contains(false)
                 ) {
             return ReadyState.class.cast(this.state);
         }
