@@ -5,7 +5,7 @@ import workflow.state.StateFactory;
 /**
  * The Context of the algorithm models configuration
  */
-public class PreprocessContext extends AbstractContext {
+public class PreprocessContext extends AbstractCompositeContext {
 
     /**
      * no pre-processing functionality yet, workflow is ready

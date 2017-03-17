@@ -5,7 +5,7 @@ import workflow.state.StateFactory;
 /**
  * The Context of the algorithm models configuration
  */
-class ModelContext extends AbstractContext {
+class ModelContext extends AbstractCompositeContext {
 
     /**
      * dataset has not been set by user at start, workflow will be error

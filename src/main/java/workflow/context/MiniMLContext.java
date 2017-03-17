@@ -5,7 +5,7 @@ import workflow.state.StateFactory;
 /*
  * The context of the entire process
  */
-public class MiniMLContext extends AbstractContext {
+public class MiniMLContext extends AbstractCompositeContext {
 
     private DatasetContext dc;
     private PreprocessContext pc;
@@ -23,9 +23,9 @@ public class MiniMLContext extends AbstractContext {
         pc = new PreprocessContext(this);
         mc = new ModelContext(this);
 
-        childContexts.add(dc);
-        childContexts.add(pc);
-        childContexts.add(mc);
+        this.addChildContext(dc);
+        this.addChildContext(pc);
+        this.addChildContext(mc);
 
         //note that the workflow is updated to something other than the nullstate within instantiation
         this.updateState();

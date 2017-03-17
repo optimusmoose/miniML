@@ -1,7 +1,6 @@
 package workflow.context;
 
 import utils.TypeFactory;
-import workflow.state.ProcessState;
 import workflow.state.ReadyState;
 import workflow.state.StateFactory;
 
@@ -10,7 +9,7 @@ import workflow.state.StateFactory;
  * Will hold details about specific contextual objects
  * Validates and updates its own workflow
  */
-abstract class AbstractParameterContext extends AbstractContext {
+abstract class AbstractParameterContext extends AbstractCompositeContext {
 
     private Object value; //object form of a primative or other type such as range
 
@@ -20,7 +19,6 @@ abstract class AbstractParameterContext extends AbstractContext {
     AbstractParameterContext(ContextInterface parentContext) {
         super(StateFactory.INSTANCE.empty(), parentContext);
     }
-
 
     /**
      * an abstract function to be defined in concrete Context's
@@ -43,11 +41,11 @@ abstract class AbstractParameterContext extends AbstractContext {
     }
 
     /**
-     * Set the details of the Context
+     * Set the details of the Parameter
      * @param type String
      * @param value String
      */
-    void setContext(String type, String value) {
+    void setParameter(String type, String value) {
         this.value = TypeFactory.INSTANCE.get(type, value);
     }
 

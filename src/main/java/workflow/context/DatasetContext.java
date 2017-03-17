@@ -7,7 +7,7 @@ import java.io.File;
 /**
  * The Context of the dataset configuration
  */
-class DatasetContext extends AbstractContext {
+class DatasetContext extends AbstractCompositeContext {
 
     private AbstractParameterContext fileName;
 
@@ -20,7 +20,7 @@ class DatasetContext extends AbstractContext {
         //TODO: finish implementing specific parameter context and then tie in
 //        fileName = new AbstractParameterContext();
 
-//        this.childContexts.add(fileName);
+//        this.addChildContext(fileName);
     }
 
     //TODO: extend abstract parameter context to fileparametercontext, move these there for isValid

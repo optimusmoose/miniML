@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 /**
  * Abstract context defines shared functionality amongst all context, nesting context
  */
-abstract class AbstractContext implements ContextInterface {
+abstract class AbstractCompositeContext implements ContextInterface {
     protected ProcessState state;
     protected ContextInterface parent;
     protected List<ContextInterface> childContexts;
@@ -22,10 +22,10 @@ abstract class AbstractContext implements ContextInterface {
      * Instantiate a Context with a State
      * @param state ProcessState
      */
-    AbstractContext(ProcessState state, ContextInterface parentContext) {
+    AbstractCompositeContext(ProcessState state, ContextInterface parentContext) {
         this.state = state;
         this.parent = parentContext;
-        childContexts = new ArrayList<ContextInterface>();
+        this.childContexts = new ArrayList<ContextInterface>();
     }
 
     /**
@@ -70,5 +70,17 @@ abstract class AbstractContext implements ContextInterface {
             this.parent.updateState();
             return;
         }
+    }
+
+    public void addChildContext(ContextInterface childContext) {
+        this.childContexts.add(childContext);
+    }
+
+    public void removeChildContext(ContextInterface childContext) {
+        //TODO: implement
+    }
+
+    public void getChildContext(String id) {
+        //TODO: implement
     }
 }
