@@ -63,8 +63,8 @@ public class ContainerPanel extends JPanel {
                           "Configure MiniML's model usage.");
         tabbedPane.setMnemonicAt(2, KeyEvent.VK_3);
 
-        JComponent panel4 = makeBasePanel(
-                "Analyze");
+        //JComponent panel4 = makeBasePanel("Analyze");
+        AnalyzeTab panel4 = new AnalyzeTab();
         //panel4.setPreferredSize(new Dimension(410, 500));
         tabbedPane.addTab("Analyze", icon, panel4,
                               "Begin analysis and view results.");

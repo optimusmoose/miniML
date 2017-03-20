@@ -21,11 +21,19 @@ public class MessageConsole {
         messageBox.setEditable(false);
     }
 
+    public void redirectOut() {
+        redirectOut(null, null);
+    }
+
     public void redirectOut(Color textColor, PrintStream printStream) {
 
     }
 
     public void redirectError() {
+        redirectError(null, null);
+    }
+
+    public void redirectError(Color textColor, PrintStream printStream) {
 
     }
 
