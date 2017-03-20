@@ -42,7 +42,7 @@ public class ContainerPanel extends JPanel {
     {
         //Label myLabel = new Label("Hello World!");
         JTabbedPane tabbedPane = new JTabbedPane();
-        tabbedPane.setTabPlacement(2);
+        tabbedPane.setTabPlacement(SwingConstants.LEFT);
         ImageIcon icon = new ImageIcon("images/middle.gif");
 
         //JComponent panel1 = makeBasePanel("Dataset");
