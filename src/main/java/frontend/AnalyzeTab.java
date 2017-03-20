@@ -50,8 +50,6 @@ public class AnalyzeTab extends JComponent {
         console.redirectOut();
         console.redirectError(Color.RED, null);
 
-        panel.setBorder(BorderFactory.createLineBorder(Color.black));
-
         return panel;
     }
 
@@ -63,8 +61,6 @@ public class AnalyzeTab extends JComponent {
 
         panel.add(bestGraph);
         panel.add(graphInfoAndSave);
-
-        panel.setBorder(BorderFactory.createLineBorder(Color.black));
 
         return panel;
     }
