@@ -8,16 +8,13 @@ import java.awt.*;
 /**
  * Created by mattpatera on 3/19/17.
  */
-public class AnalyzeTab extends JComponent {
+public class AnalyzeTab extends JLabel{
 
     public AnalyzeTab() {
-        this.setLayout(new GridLayout());
-        JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BorderLayout());
-        mainPanel.add(consolePanel(), BorderLayout.PAGE_START);
-        mainPanel.add(modelPanel(), BorderLayout.CENTER);
-        mainPanel.add(timeRemainingPanel(), BorderLayout.PAGE_END);
-        this.add(mainPanel);
+        this.setLayout(new BorderLayout());
+        this.add(consolePanel(), BorderLayout.PAGE_START);
+        this.add(modelPanel(), BorderLayout.CENTER);
+        this.add(timeRemainingPanel(), BorderLayout.PAGE_END);
     }
 
     /**
