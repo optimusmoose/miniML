@@ -3,6 +3,8 @@ package backend;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.Random;
+
+import weka.classifiers.AbstractClassifier;
 import weka.core.Instances;
 import weka.core.Utils;
 import weka.core.SelectedTag;
@@ -26,8 +28,11 @@ public abstract class Model implements Serializable {
     protected String[] pars;
     protected Instances data;
     protected Evaluation eval;
+    protected AbstractClassifier classifier;
     /**
     * construct and run the Model. Keep as a functioning unit that can be modified as needed.
+     *
+     * TODO finish abstracting classifier handling; implement parameter search and generation
     *
     * @param   d         A Weka Instance of data. The Model assumes that the data will have a class assigned
     *                    before it gets here.
@@ -60,16 +65,16 @@ class LR_Model extends Model {
     */
     public LR_Model(Instances d, String[] params) throws Exception {
         super(d,params);
+        classifier = new LinearRegression();
         run();
     }
 
     protected void run() throws Exception {
-        LinearRegression my_lr = new LinearRegression();
         if(pars != null) {
-            my_lr.setOptions(pars);
+            classifier.setOptions(pars);
         }
         eval = new Evaluation(data);
-        eval.crossValidateModel(my_lr, data, 10, new Random(1));
+        eval.crossValidateModel(classifier, data, 10, new Random(1));
         System.out.println(eval.toSummaryString("\nResults\n======\n", false));
     }
 }
@@ -80,6 +85,7 @@ class NN_Model extends Model {
     */
     public NN_Model(Instances d, String[] params) throws Exception {
         super(d,params);
+        classifier = new MultilayerPerceptron();
         run();
     }
 
@@ -88,14 +94,13 @@ class NN_Model extends Model {
      * @throws Exception
      */
     protected void run() throws Exception {
-        MultilayerPerceptron mlp = new MultilayerPerceptron();
         //set our parameters to the object if applicable
         if(pars != null) {
-            mlp.setOptions(pars);
+            classifier.setOptions(pars);
         }
         eval = new Evaluation(data);
         //invoke crossfold validation (Classifier obj, Instance, #folds, RNG)
-        eval.crossValidateModel(mlp, data, 10, new Random(1));
+        eval.crossValidateModel(classifier, data, 10, new Random(1));
         System.out.println(eval.toSummaryString("\nResults\n======\n", false));
     }
 }

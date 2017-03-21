@@ -45,7 +45,7 @@ public class WekaInvoker extends TaskInvoker {
 
 /**
  * Abstract class from which any backend command-invoking object should be defined (most notably, WekaInvoker).
- * This may be how other (non-Weka) libraries can be added in the future.
+ * This may be how other (non-Weka) data-processing libraries can be added in the future.
  */
 abstract class TaskInvoker {
 }
@@ -131,6 +131,11 @@ class WekaTaskManager{
         Object obj = ois.readObject(); //TODO recast as some concrete Model!
         ois.close();
         return obj;
+    }
+
+    public void describe(int i){
+        //this.models[i].listOptions();
+
     }
 
 }

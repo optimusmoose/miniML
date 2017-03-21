@@ -10,16 +10,39 @@ import junit.framework.TestCase;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 
-
-/*
+/**
 Driver for testing backend functionality with Weka libraries.
 Should be able to demonstrate Instance, Evaluation, and function Weka operations
 
-@param  args     null
 @return void     null
 */
-public class Driver extends TestCase{
+public class backendTest extends TestCase{
+
+    private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+    private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
+
+    @Before
+    public void setUpStreams() {
+        System.setOut(new PrintStream(outContent));
+        System.setErr(new PrintStream(errContent));
+    }
+
+    @After
+    public void tearDownStreams() {
+        System.setOut(null);
+        System.setErr(null);
+    }
+
+    @Test
+    public void testMain()
+    {
+        String[] args = new String[]{};
+        main(args);
+    }
+
     public static void main(String[] args) {
         WekaTaskManager mgr = new WekaTaskManager();
         LR_Task lr = new LR_Task(mgr);
@@ -49,9 +72,10 @@ public class Driver extends TestCase{
         taskList.addTask(nn); // run NN
         taskList.doTask();
         taskList.doTask();
+        //mgr.
     }
 
-    /*
+    /**
     Returns a Weka Instance of the data for testing.
     This will not be used in the finished product, but may be adapted to that end.
 
@@ -63,7 +87,7 @@ public class Driver extends TestCase{
         BufferedReader reader = new BufferedReader(new FileReader(path));
         //create a weka data Instance
         Instances data = new Instances(reader);
-        reader.close(); //done with this.
+        reader.close();
         return (data);
     }
 }
