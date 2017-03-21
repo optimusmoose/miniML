@@ -8,9 +8,9 @@ import java.awt.*;
 /**
  * Created by mattpatera on 3/19/17.
  */
-public class AnalyzeTab extends JLabel{
+class AnalyzeTab extends JLabel{
 
-    public AnalyzeTab() {
+    AnalyzeTab() {
         this.setLayout(new BorderLayout());
         this.add(consolePanel(), BorderLayout.PAGE_START);
         this.add(modelPanel(), BorderLayout.CENTER);
@@ -22,7 +22,7 @@ public class AnalyzeTab extends JLabel{
      * API and what they return.
      * @return consolePanel
      */
-    JPanel consolePanel() {
+    private JPanel consolePanel() {
         JPanel panel = new JPanel(new BorderLayout());
 
         JLabel title = new JLabel("Console Output");
@@ -50,7 +50,7 @@ public class AnalyzeTab extends JLabel{
         return panel;
     }
 
-    JPanel modelPanel() {
+    private JPanel modelPanel() {
         JPanel panel = new JPanel(new GridLayout(1, 2));
 
         JLabel bestGraph = new JLabel("Some Graph Here", SwingConstants.CENTER);
@@ -62,7 +62,7 @@ public class AnalyzeTab extends JLabel{
         return panel;
     }
 
-    JPanel timeRemainingPanel() {
+    private JPanel timeRemainingPanel() {
         JPanel panel = new JPanel(new GridLayout(1, 2));
 
         JLabel title = new JLabel("Time Remaining", SwingConstants.CENTER);

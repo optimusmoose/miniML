@@ -70,8 +70,8 @@ public class ContainerPanel extends JPanel {
                               "Begin analysis and view results.");
         tabbedPane.setMnemonicAt(3, KeyEvent.VK_4);
 
-        JComponent panel5 = makeBasePanel(
-                "Advanced Settings");
+        //JComponent panel5 = makeBasePanel("Advanced Settings");
+        AdvancedTab panel5 = new AdvancedTab();
         tabbedPane.addTab("Advanced Settings", icon, panel5,
                 "Change system settings.");
         tabbedPane.setMnemonicAt(4, KeyEvent.VK_5);
