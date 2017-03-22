@@ -2,10 +2,12 @@ package backend;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.util.Enumeration;
 import java.util.Random;
 
 import weka.classifiers.AbstractClassifier;
 import weka.core.Instances;
+import weka.core.Option;
 import weka.core.Utils;
 import weka.core.SelectedTag;
 import weka.classifiers.functions.LinearRegression;
@@ -58,6 +60,19 @@ public abstract class Model implements Serializable {
      */
     abstract void run() throws Exception;
 
+    /**
+     * get information from the classifier about what options (parameters) it accepts
+     * TODO this should be used in future iterations if possible; weka conventions do
+     * TODO not make this economical at the moment, but it should be kept in mind!
+     */
+    public void get_info(){
+        Enumeration<Option> info = classifier.listOptions();
+        while(info.hasMoreElements()){
+            Option elt = info.nextElement();
+            System.out.println(elt.synopsis());
+            System.out.println(elt.description());
+        }
+    }
 }
 
 class LR_Model extends Model {
@@ -67,6 +82,7 @@ class LR_Model extends Model {
     public LR_Model(Instances d, String[] params) throws Exception {
         super(d,params);
         classifier = new LinearRegression();
+        //get_info();
         run();
     }
 
