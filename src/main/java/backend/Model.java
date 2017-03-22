@@ -45,6 +45,7 @@ public abstract class Model implements Serializable {
         data = d;
         pars = params;
         eval = null;
+        classifier = null;
     }
 
     /**
@@ -69,6 +70,10 @@ class LR_Model extends Model {
         run();
     }
 
+    /**
+     * Run the linear regression model
+     * @throws Exception
+     */
     protected void run() throws Exception {
         if(pars != null) {
             classifier.setOptions(pars);
@@ -94,7 +99,6 @@ class NN_Model extends Model {
      * @throws Exception
      */
     protected void run() throws Exception {
-        //set our parameters to the object if applicable
         if(pars != null) {
             classifier.setOptions(pars);
         }
