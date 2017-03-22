@@ -1,4 +1,5 @@
 import frontend.MiniMLFrame;
+import workflow.context.MiniMLContext;
 
 public class MiniML {
 
@@ -6,6 +7,7 @@ public class MiniML {
         System.out.println("Hello World!\n");
 
         try {
+            MiniMLContext context = new MiniMLContext();
             MiniMLFrame mainFrame = new MiniMLFrame();
         } catch(Exception e) {
             e.printStackTrace();
