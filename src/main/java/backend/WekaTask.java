@@ -9,7 +9,13 @@ public interface WekaTask {
      * Execute the Task. Should tell the Model to perform its calculations and
      * return its analysis of the data as an interactive object.
      */
-    public abstract void execute ( );
+    void execute ( );
+
+    /**
+     * Set the parameters for this particular task.
+     * @param pars a String[] of parameters for this task to use.
+     */
+    void setParams(String[] pars);
 }
 
 /**
@@ -32,6 +38,13 @@ class LR_Task implements WekaTask {
     public void execute() {
         manager.manage_LR(params);
     }
+
+    /**
+     * See abstract method.
+     */
+    public void setParams(String[] pars){
+        params = pars;
+    }
 }
 
 /**
@@ -52,5 +65,12 @@ class NN_Task implements WekaTask {
      */
     public void execute() {
         manager.manage_NN(params);
+    }
+
+    /**
+     * See abstract method.
+     */
+    public void setParams(String[] pars){
+        params = pars;
     }
 }

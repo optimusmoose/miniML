@@ -1,12 +1,9 @@
 package backend;
 
-import weka.classifiers.Evaluation;
 import weka.core.Instances;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
-
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -21,7 +18,6 @@ public class WekaInvoker extends TaskInvoker {
     private Queue<WekaTask> taskQueue = new LinkedList<WekaTask>();
 
     public WekaInvoker() {
-        //Maybe later.
     }
 
     /**
@@ -61,9 +57,8 @@ abstract class TaskInvoker {
  the main application.
  */
 class WekaTaskManager{
-    protected Instances data; //it holds the dataset, too.
+    protected Instances data;
     protected ArrayList<Model> models = new ArrayList<Model>();
-    //private String[] params;
 
     /**
      * Manage a Weka LinearRegression Model.
@@ -132,12 +127,6 @@ class WekaTaskManager{
         ois.close();
         return obj;
     }
-
-    public void describe(int i){
-        //this.models[i].listOptions();
-
-    }
-
 }
 
 

@@ -3,9 +3,7 @@ package backend;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Random;
 import weka.core.Instances;
-import weka.core.Utils;
 import junit.framework.TestCase;
 import org.junit.After;
 import org.junit.Before;
@@ -14,11 +12,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 /**
-Driver for testing backend functionality with Weka libraries.
-Should be able to demonstrate Instance, Evaluation, and function Weka operations
-
-@return void     null
-*/
+ *
+ * Driver for testing backend functionality with Weka libraries.
+ * Should be able to demonstrate Instance, Evaluation, and function Weka operations
+ *
+ * @return void     null
+ */
 public class backendTest extends TestCase{
 
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
@@ -43,14 +42,20 @@ public class backendTest extends TestCase{
         main(args);
     }
 
+    /**
+     * Run a test case of the backend.
+     * Instantiates the command pattern, loads data into instance, and runs some tests.
+     *
+     * @param args
+     */
     public static void main(String[] args) {
+        //build command pattern objects
         WekaTaskManager mgr = new WekaTaskManager();
         LR_Task lr = new LR_Task(mgr);
         NN_Task nn = new NN_Task(mgr);
         WekaInvoker taskList = new WekaInvoker();
 
         //load some data
-        //String path = "github/miniML/test_data/cpu.arff";
         String path = "test_data/cpu.arff";
         Instances data = null;
         try {
@@ -72,16 +77,15 @@ public class backendTest extends TestCase{
         taskList.addTask(nn); // run NN
         taskList.doTask();
         taskList.doTask();
-        //mgr.
     }
 
     /**
-    Returns a Weka Instance of the data for testing.
-    This will not be used in the finished product, but may be adapted to that end.
-
-    @param  path     the local path to the data file (at this time, only .arff is supported)
-    @return data     a Weka Instance of the data
-    */
+     * Returns a Weka Instance of the data for testing.
+     * This will not be used in the finished product, but may be adapted to that end.
+     *
+     * @param  path     the local path to the data file (at this time, only .arff is supported)
+     * @return data     a Weka Instance of the data
+     */
     public static Instances read_data(String path) throws IOException {
         System.out.println("Opening file: " + path);
         BufferedReader reader = new BufferedReader(new FileReader(path));
