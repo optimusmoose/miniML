@@ -15,19 +15,15 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
 
-public class PreprocessTab extends JComponent{
+class PreprocessTab extends JPanel{
 
-    public PreprocessTab(){
-        this.setLayout(new GridLayout());
-        JPanel panel = new JPanel(false);
-        panel.setLayout(new GridLayout(6,0));
-        JPanel bp = base_panel();
-        panel.add(bp);
-        this.add(panel);
+    PreprocessTab(){
+        this.setLayout(new GridLayout(6,0));
+        this.add(base_panel());
     }
 
 
-    public JPanel base_panel(){
+    private JPanel base_panel(){
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout());
         String val = new String();
