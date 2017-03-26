@@ -20,6 +20,8 @@ class PreprocessTab extends JPanel{
     PreprocessTab(){
         this.setLayout(new BorderLayout());
         this.add(fileAndFilter(), BorderLayout.PAGE_START);
+
+        this.add(statusPanel(), BorderLayout.PAGE_END);
     }
 
     private JPanel fileAndFilter() {
@@ -43,10 +45,31 @@ class PreprocessTab extends JPanel{
         buttonPanel.add(editButton);
         buttonPanel.add(saveButton);
 
+        JLabel label = new JLabel("Filter");
+        JButton chooseButton = new JButton("Choose");
+        JTextArea text = new JTextArea();
+        JButton applyButton = new JButton("Apply");
+
+        filePanel.add(label, BorderLayout.PAGE_START);
+        filePanel.add(chooseButton, BorderLayout.LINE_START);
+        filePanel.add(text, BorderLayout.CENTER);
+        filePanel.add(applyButton, BorderLayout.LINE_END);
+
         panel.add(buttonPanel);
         panel.add(filePanel);
 
         return panel;
     }
 
+    private JPanel statusPanel() {
+        JPanel panel = new JPanel(new BorderLayout());
+
+        JLabel statusLabel = new JLabel("Status");
+        JTextArea text = new JTextArea();
+
+        panel.add(statusLabel, BorderLayout.PAGE_START);
+        panel.add(text, BorderLayout.CENTER);
+
+        return panel;
+    }
 }
