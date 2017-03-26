@@ -18,17 +18,34 @@ import java.awt.event.KeyEvent;
 class PreprocessTab extends JPanel{
 
     PreprocessTab(){
-        this.setLayout(new GridLayout(6,0));
-        this.add(base_panel());
+        this.setLayout(new BorderLayout());
+        this.add(fileAndFilter(), BorderLayout.PAGE_START);
     }
 
+    private JPanel fileAndFilter() {
+        JPanel panel = new JPanel(new GridLayout(2, 0));
+        JPanel buttonPanel = new JPanel(new GridLayout(0, 7));
+        JPanel filePanel = new JPanel(new BorderLayout());
 
-    private JPanel base_panel(){
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout());
-        String val = new String();
-        JLabel tip = new JLabel("Preprocessing Stuff");
-        panel.add(tip);
+        JButton openFileButton = new JButton("Open File...");
+        JButton openURLButton = new JButton("Open URL...");
+        JButton openDBButton = new JButton("Open DP...");
+        JButton generateButton = new JButton("Generate...");
+        JButton undoButton = new JButton("Undo");
+        JButton editButton = new JButton("Edit");
+        JButton saveButton = new JButton("Save");
+
+        buttonPanel.add(openFileButton);
+        buttonPanel.add(openURLButton);
+        buttonPanel.add(openDBButton);
+        buttonPanel.add(generateButton);
+        buttonPanel.add(undoButton);
+        buttonPanel.add(editButton);
+        buttonPanel.add(saveButton);
+
+        panel.add(buttonPanel);
+        panel.add(filePanel);
+
         return panel;
     }
 
