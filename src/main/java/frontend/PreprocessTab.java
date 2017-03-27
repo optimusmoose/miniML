@@ -37,6 +37,11 @@ class PreprocessTab extends JPanel{
         JButton editButton = new JButton("Edit");
         JButton saveButton = new JButton("Save");
 
+        JLabel label = new JLabel("Filter");
+        JButton chooseButton = new JButton("Choose");
+        JTextArea text = new JTextArea();
+        JButton applyButton = new JButton("Apply");
+
         buttonPanel.add(openFileButton);
         buttonPanel.add(openURLButton);
         buttonPanel.add(openDBButton);
@@ -44,11 +49,6 @@ class PreprocessTab extends JPanel{
         buttonPanel.add(undoButton);
         buttonPanel.add(editButton);
         buttonPanel.add(saveButton);
-
-        JLabel label = new JLabel("Filter");
-        JButton chooseButton = new JButton("Choose");
-        JTextArea text = new JTextArea();
-        JButton applyButton = new JButton("Apply");
 
         filePanel.add(label, BorderLayout.PAGE_START);
         filePanel.add(chooseButton, BorderLayout.LINE_START);
