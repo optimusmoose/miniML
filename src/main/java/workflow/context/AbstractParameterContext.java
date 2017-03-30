@@ -39,6 +39,8 @@ public abstract class AbstractParameterContext extends AbstractCompositeContext 
             ReadyState.class.cast(this.state);
         }
         System.out.println("THE STATE OF A PARAMETER HAS UPDATED");
+        this.parent.updateState();
+        return;
     }
 
     /**
