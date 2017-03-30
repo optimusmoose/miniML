@@ -9,7 +9,7 @@ import workflow.state.StateFactory;
  * Will hold details about specific contextual objects
  * Validates and updates its own state
  */
-abstract class AbstractParameterContext extends AbstractCompositeContext {
+public abstract class AbstractParameterContext extends AbstractCompositeContext {
 
     protected Object value; //object form of a primative or other type such as range
 
@@ -38,6 +38,7 @@ abstract class AbstractParameterContext extends AbstractCompositeContext {
         {
             ReadyState.class.cast(this.state);
         }
+        System.out.println("THE STATE OF A PARAMETER HAS UPDATED");
     }
 
     /**
@@ -55,5 +56,12 @@ abstract class AbstractParameterContext extends AbstractCompositeContext {
      */
     Object getValue() {
         return this.value;
+    }
+
+    /**
+     * @param value
+     */
+    public void setValue(String value, String type) {
+        this.value = TypeFactory.INSTANCE.get(type, value);
     }
 }

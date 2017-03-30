@@ -28,14 +28,24 @@ import utils.Logging.MiniMLLogger;
 
 import static org.apache.commons.io.FileUtils.readFileToString;
 
+import workflow.context.*;
+
+
 /**
  * Created by dave on 3/3/17.
  */
 public class DatasetTab  extends JComponent {
+
+    private DatasetContext context;
+    private FileContext fsContext;
     private String dataset = "";
     private JTextPane txt = new JTextPane();
 
     public DatasetTab() {
+
+        context = new DatasetContext(new MiniMLContext()); //TODO: MiniML Context needs to be pulled out to 'primary' panel
+
+
         this.setLayout(new GridLayout());
         JPanel panel = new JPanel(false);
         panel.setLayout(new GridLayout(6, 0));
@@ -44,6 +54,9 @@ public class DatasetTab  extends JComponent {
     }
 
     public JPanel fs_panel(){
+        //context for the file selector
+        fsContext = new FileContext(this.context);
+
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout());
         //JTextPane txt = new JTextPane();
@@ -56,6 +69,11 @@ public class DatasetTab  extends JComponent {
         panel.add(jsp);
         MiniMLLogger.INSTANCE.info((dataset));
         return panel;
+    }
+
+    //TODO: move this to wrapper magic class that does not exist yet
+    public FileContext getFsContext(){
+        return this.fsContext;
     }
 
     public String fs_select() throws IOException{
@@ -74,11 +92,18 @@ public class DatasetTab  extends JComponent {
     }
 
     private class fslistener implements ActionListener {
+        private JButton source;
+        private DatasetTab parent;
+        private AbstractParameterContext context;
         public void actionPerformed(ActionEvent ev) {
             try {
+                source = (JButton) ev.getSource();
+                parent = (DatasetTab) source.getParent().getParent().getParent();//TODO: TO MANY NESTED JCOMPS
                 dataset = fs_select();
                 txt.setText(dataset);
-                //System.out.println(dataset);
+                context = parent.getFsContext();
+                context.setValue(dataset, "str");
+                context.updateState();
             } catch (IOException e) {
                 MiniMLLogger.INSTANCE.error(("Hit an error opening file."));
             }

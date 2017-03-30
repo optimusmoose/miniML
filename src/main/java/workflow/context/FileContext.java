@@ -11,7 +11,7 @@ public class FileContext extends AbstractParameterContext {
      *
      * @param parentContext ContextInterface
      */
-    FileContext(ContextInterface parentContext) {
+    public FileContext(ContextInterface parentContext) {
         super(parentContext);
     }
 

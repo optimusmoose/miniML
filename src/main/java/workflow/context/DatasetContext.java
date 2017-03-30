@@ -5,7 +5,7 @@ import workflow.state.StateFactory;
 /**
  * The Context of the dataset configuration
  */
-class DatasetContext extends AbstractCompositeContext {
+public class DatasetContext extends AbstractCompositeContext {
 
     public static final String KEY = "DATASET_CONFIG";
 
@@ -14,7 +14,7 @@ class DatasetContext extends AbstractCompositeContext {
     /**
      * Instantiate with error state, as no dataset is selecton on construction
      */
-    DatasetContext(ContextInterface parentContext) {
+    public DatasetContext(ContextInterface parentContext) {
         super(StateFactory.INSTANCE.error(), parentContext);
         this.addChildContext(FileContext.INPUT_FILE_KEY, new FileContext(parentContext));
     }
