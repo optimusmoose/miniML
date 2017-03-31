@@ -165,3 +165,13 @@ class WrappedParamString extends WrappedParam {
         this.value = value;
     }
 }
+
+/**
+ * Some parameters are ONLY a flag, no value at all.
+ */
+class WrappedParamEmpty extends WrappedParam {
+
+    public WrappedParamEmpty(String type, String name, String flag) {
+        super(type, name, flag);
+    }
+}
