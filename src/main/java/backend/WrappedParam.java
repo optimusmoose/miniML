@@ -9,7 +9,6 @@ package backend;
 abstract class WrappedParam {
     String name;
     String type;
-<<<<<<< c56581d8d0c066db10d60ceb7594e48722be5b30
     String flag;
 
     public WrappedParam(String type, String name, String flag){
@@ -29,8 +28,6 @@ abstract class WrappedParam {
     public void setFlag(String flag) {
         this.flag = flag;
     }
-=======
->>>>>>> stubs made and gradually getting populated. more shortly.
 
     /**
      * Every parameter has a type.
@@ -65,14 +62,11 @@ abstract class WrappedParam {
 class WrappedParamFinal extends WrappedParam{
     String value;
 
-<<<<<<< c56581d8d0c066db10d60ceb7594e48722be5b30
     public WrappedParamFinal(String type, String name, String flag, String value){
         super(type,name,flag);
         this.value = value;
     }
 
-=======
->>>>>>> stubs made and gradually getting populated. more shortly.
     public String getValue() {
         return value;
     }
@@ -86,15 +80,12 @@ class WrappedParamFloat extends WrappedParam {
     float minValue;
     float maxValue;
 
-<<<<<<< c56581d8d0c066db10d60ceb7594e48722be5b30
     public WrappedParamFloat(String type, String name, String flag, float minValue, float maxValue){
         super(type,name,flag);
         this.minValue = minValue;
         this.maxValue = maxValue;
     }
 
-=======
->>>>>>> stubs made and gradually getting populated. more shortly.
     public float getMinValue() {
         return minValue;
     }
@@ -114,7 +105,6 @@ class WrappedParamFloat extends WrappedParam {
 
 class WrappedParamInt extends WrappedParam {
     int minValue;
-<<<<<<< c56581d8d0c066db10d60ceb7594e48722be5b30
     int maxValue;
 
     public WrappedParamInt(String type, String name, String flag, int minValue, int maxValue) {
@@ -123,8 +113,6 @@ class WrappedParamInt extends WrappedParam {
         this.maxValue = maxValue;
 
     }
-=======
->>>>>>> stubs made and gradually getting populated. more shortly.
 
     public int getMinValue() {
         return minValue;
@@ -142,23 +130,16 @@ class WrappedParamInt extends WrappedParam {
         this.maxValue = maxValue;
     }
 
-<<<<<<< c56581d8d0c066db10d60ceb7594e48722be5b30
-=======
-    int maxValue;
->>>>>>> stubs made and gradually getting populated. more shortly.
 }
 
 class WrappedParamBoolean extends WrappedParam {
     boolean value;
 
-<<<<<<< c56581d8d0c066db10d60ceb7594e48722be5b30
     public WrappedParamBoolean(String type, String name, String flag, boolean value) {
         super(type, name, flag);
         this.value = value;
     }
 
-=======
->>>>>>> stubs made and gradually getting populated. more shortly.
     public boolean getValue() {
         return value;
     }
@@ -167,7 +148,6 @@ class WrappedParamBoolean extends WrappedParam {
         this.value = value;
     }
 }
-<<<<<<< c56581d8d0c066db10d60ceb7594e48722be5b30
 
 class WrappedParamString extends WrappedParam {
     String value;
@@ -195,5 +175,3 @@ class WrappedParamEmpty extends WrappedParam {
         super(type, name, flag);
     }
 }
-=======
->>>>>>> stubs made and gradually getting populated. more shortly.
