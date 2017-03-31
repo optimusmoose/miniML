@@ -24,6 +24,8 @@ import java.nio.charset.Charset;
 import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import org.apache.commons.io.FileUtils;
 
+import utils.Logging.MiniMLLogger;
+
 import static org.apache.commons.io.FileUtils.readFileToString;
 
 /**
@@ -52,7 +54,7 @@ public class DatasetTab  extends JComponent {
         panel.add(tip);
         panel.add(fs);
         panel.add(jsp);
-        System.out.println(dataset);
+        MiniMLLogger.INSTANCE.info((dataset));
         return panel;
     }
 
@@ -78,7 +80,7 @@ public class DatasetTab  extends JComponent {
                 txt.setText(dataset);
                 //System.out.println(dataset);
             } catch (IOException e) {
-                System.out.println("Hit an error opening file.");
+                MiniMLLogger.INSTANCE.error(("Hit an error opening file."));
             }
         }
     }

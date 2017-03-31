@@ -1,7 +1,7 @@
 package frontend;
 
-import javax.swing.*;
-import java.awt.*;
+import utils.Logging.MiniMLLogger;
+
 import javax.swing.JTabbedPane;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -21,7 +21,7 @@ public class ContainerPanel extends JPanel {
         super(new GridLayout());
         //TODO: configuration import
         setPreferredSize(new Dimension(1200, 600));
-        System.out.println("is it here?");
+        MiniMLLogger.INSTANCE.info("is it here?");
         //this.setSize(this.getParent().getSize());
 
         this.addComponents();

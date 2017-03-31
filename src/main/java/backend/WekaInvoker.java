@@ -1,5 +1,6 @@
 package backend;
 
+import utils.Logging.MiniMLLogger;
 import weka.core.Instances;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -66,12 +67,12 @@ class WekaTaskManager{
      * @param params
      */
     public void manage_LR(String[] params) {
-        System.out.println("Calling linear regression");
+        MiniMLLogger.INSTANCE.info("Calling linear regression");
         try {
             LR_Model lr = new LR_Model(data, params);
             models.add(lr);
         } catch (Exception e) {
-            System.out.println("LR hit error: " + e);
+            MiniMLLogger.INSTANCE.error("LR hit error: " + e);
         }
     }
 
@@ -81,12 +82,12 @@ class WekaTaskManager{
      * @param params
      */
     public void manage_NN(String[] params) {
-        System.out.println("Calling neural network");
+        MiniMLLogger.INSTANCE.info("Calling neural network");
         try {
             NN_Model nn = new NN_Model(data, params);
             models.add(nn);
         } catch (Exception e) {
-            System.out.println("NN hit error: " + e);
+            MiniMLLogger.INSTANCE.error("NN hit error: " + e);
         }
     }
 
