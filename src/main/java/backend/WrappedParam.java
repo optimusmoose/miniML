@@ -9,6 +9,25 @@ package backend;
 abstract class WrappedParam {
     String name;
     String type;
+    String flag;
+
+    public WrappedParam(String type, String name, String flag){
+        this.type = type;
+        this.name = name;
+        this.flag = flag;
+    }
+
+    /**
+     * Every parameter has a flag.
+     * @return
+     */
+    public String getFlag() {
+        return flag;
+    }
+
+    public void setFlag(String flag) {
+        this.flag = flag;
+    }
 
     /**
      * Every parameter has a type.
@@ -43,6 +62,11 @@ abstract class WrappedParam {
 class WrappedParamFinal extends WrappedParam{
     String value;
 
+    public WrappedParamFinal(String type, String name, String flag, String value){
+        super(type,name,flag);
+        this.value = value;
+    }
+
     public String getValue() {
         return value;
     }
@@ -55,6 +79,12 @@ class WrappedParamFinal extends WrappedParam{
 class WrappedParamFloat extends WrappedParam {
     float minValue;
     float maxValue;
+
+    public WrappedParamFloat(String type, String name, String flag, float minValue, float maxValue){
+        super(type,name,flag);
+        this.minValue = minValue;
+        this.maxValue = maxValue;
+    }
 
     public float getMinValue() {
         return minValue;
@@ -75,6 +105,14 @@ class WrappedParamFloat extends WrappedParam {
 
 class WrappedParamInt extends WrappedParam {
     int minValue;
+    int maxValue;
+
+    public WrappedParamInt(String type, String name, String flag, int minValue, int maxValue) {
+        super(type, name, flag);
+        this.minValue = minValue;
+        this.maxValue = maxValue;
+
+    }
 
     public int getMinValue() {
         return minValue;
@@ -92,17 +130,38 @@ class WrappedParamInt extends WrappedParam {
         this.maxValue = maxValue;
     }
 
-    int maxValue;
 }
 
 class WrappedParamBoolean extends WrappedParam {
     boolean value;
+
+    public WrappedParamBoolean(String type, String name, String flag, boolean value) {
+        super(type, name, flag);
+        this.value = value;
+    }
 
     public boolean getValue() {
         return value;
     }
 
     public void setValue(boolean value) {
+        this.value = value;
+    }
+}
+
+class WrappedParamString extends WrappedParam {
+    String value;
+
+    public WrappedParamString(String type, String name, String flag, String value) {
+        super(type, name, flag);
+        this.value = value;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
         this.value = value;
     }
 }

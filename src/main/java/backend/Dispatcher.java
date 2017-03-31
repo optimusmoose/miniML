@@ -8,7 +8,7 @@ import java.util.Timer;
  */
 public class Dispatcher {
     int minutes; //number of minutes for the run
-    Search_Alg search_type;
+    SearchAlg search_type;
     WekaTaskManager mgr;
     WekaInvoker taskList;
     //TODO tasks are hardcoded for now; fix it in future iterations so user can specify which to make
