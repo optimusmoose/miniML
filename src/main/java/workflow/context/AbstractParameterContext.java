@@ -1,5 +1,6 @@
 package workflow.context;
 
+import utils.Logging.MiniMLLogger;
 import utils.TypeFactory;
 import workflow.state.ReadyState;
 import workflow.state.StateFactory;
@@ -38,7 +39,7 @@ public abstract class AbstractParameterContext extends AbstractCompositeContext 
         {
             ReadyState.class.cast(this.state);
         }
-        System.out.println("THE STATE OF A PARAMETER HAS UPDATED");
+        MiniMLLogger.INSTANCE.debug("THE STATE OF A PARAMETER HAS UPDATED");
         this.parent.updateState();
         return;
     }

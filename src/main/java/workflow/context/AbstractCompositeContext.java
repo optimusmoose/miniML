@@ -1,5 +1,6 @@
 package workflow.context;
 
+import utils.Logging.MiniMLLogger;
 import workflow.state.*;
 
 import java.util.ArrayList;
@@ -38,7 +39,7 @@ abstract class AbstractCompositeContext implements ContextInterface {
      * TODO: these can maybe all be map.reductions w Boolean::logicalOr/logicalAnd vs map.collect.contains
      */
     public void updateState(){
-        System.out.println("COMPOSITE STATE UPDATE!");
+        MiniMLLogger.INSTANCE.debug("COMPOSITE STATE UPDATE");
         //map operation to check all child contexts for error state
         if(this.childContexts.values().stream()
                 .map( context -> context.getState().isError() )
