@@ -3,15 +3,13 @@ package workflow.context;
 import utils.Logging.MiniMLLogger;
 import workflow.state.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.stream.Collectors;
 
 /**
  * Abstract context defines shared functionality amongst all context, nesting context
  */
-abstract class AbstractCompositeContext implements ContextInterface {
+public abstract class AbstractCompositeContext implements ContextInterface {
     protected ProcessState state;
     protected ContextInterface parent;
     protected HashMap<String, ContextInterface> childContexts;
@@ -23,7 +21,7 @@ abstract class AbstractCompositeContext implements ContextInterface {
     AbstractCompositeContext(ProcessState state, ContextInterface parentContext) {
         this.state = state;
         this.parent = parentContext;
-        this.childContexts = new HashMap<String, ContextInterface>();//TODO: should be a dictionary? will require streams work
+        this.childContexts = new HashMap<String, ContextInterface>();
     }
 
     /**
