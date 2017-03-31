@@ -1,5 +1,7 @@
 package frontend;
 
+import utils.Messaging.Messenger;
+
 import javax.swing.*;
 import java.awt.*;
 import javax.swing.JTabbedPane;
@@ -21,7 +23,7 @@ public class ContainerPanel extends JPanel {
         super(new GridLayout());
         //TODO: configuration import
         setPreferredSize(new Dimension(1200, 600));
-        System.out.println("is it here?");
+        Messenger.INSTANCE.getLogger().info("is it here?");
         //this.setSize(this.getParent().getSize());
 
         this.addComponents();
