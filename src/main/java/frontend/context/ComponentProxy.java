@@ -10,27 +10,30 @@ public class ComponentProxy implements InvocationHandler {
 
     private Object obj;
 
-    private ComponentProxy(Object obj) {
-        this.obj = obj;
-    }
-
     public static Object newInstance(Object obj) {
         return java.lang.reflect.Proxy.newProxyInstance(
                 obj.getClass().getClassLoader(),
                 obj.getClass().getInterfaces(),
-                new ComponentProxy(obj));
+                new ComponentProxy(obj)
+        );
+    }
+
+    private ComponentProxy(Object obj) {
+        this.obj = obj;
     }
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         Object result;
         try {
+            MiniMLLogger.INSTANCE.debug("before method " + method.getName());
             result = method.invoke(obj, args);
         } catch (InvocationTargetException e) {
             throw e.getTargetException();
         } catch (Exception e) {
-            throw new RuntimeException("unexpected invocation exception: " +
-                    e.getMessage());
+            String message = "unexpected invocation exception: " + e.getMessage();
+            MiniMLLogger.INSTANCE.error(message);
+            throw new RuntimeException(message);
         } finally {
             MiniMLLogger.INSTANCE.debug("after method " + method.getName());
         }
