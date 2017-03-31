@@ -5,11 +5,11 @@ import java.util.ArrayList;
 /**
  * Explore the parameter space of an algorithm.
  */
-public interface Search_Alg {
+public interface SearchAlg {
     ArrayList<WrappedParam> getNextParamSet(ParameterIFace parameterSet);
 }
 
-class randomSearch implements Search_Alg {
+class randomSearch implements SearchAlg {
     Dispatcher dsp;
 
     /**
