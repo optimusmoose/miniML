@@ -1,16 +1,12 @@
 package utils.Messaging;
 
-import config.MessageingConfig;
 import org.apache.log4j.Logger;
-
-import java.util.Queue;
-import java.util.concurrent.LinkedBlockingQueue;
 
 public enum Messenger {
     INSTANCE;
+    public static final String APPNAME = "miniML";
 
-    private Queue<String> messages = new LinkedBlockingQueue<String>();
-    private final Logger logger = Logger.getLogger(MessageingConfig.APPNAME);
+    private final Logger logger = Logger.getLogger(APPNAME);
 
     public Logger getLogger()
     {
