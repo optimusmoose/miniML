@@ -56,7 +56,7 @@ public class backendTest extends TestCase{
         WekaInvoker taskList = new WekaInvoker();
 
         //load some data
-        String path = "test_data/cpu.arff";
+        String path = "src/test/resources/data/cpu.arff";
         Instances data = null;
         try {
             data = read_data(path);
