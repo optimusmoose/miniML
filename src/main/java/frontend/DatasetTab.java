@@ -1,15 +1,28 @@
 package frontend;
 
 import javax.swing.*;
+import java.awt.*;
+import javax.swing.JTabbedPane;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JFrame;
 import javax.swing.JComponent;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import javax.swing.JFileChooser;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
+
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
+import org.apache.commons.io.FileUtils;
 
 import utils.Logging.MiniMLLogger;
 

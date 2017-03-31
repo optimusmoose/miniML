@@ -72,7 +72,7 @@ class WekaTaskManager{
             LR_Model lr = new LR_Model(data, params);
             models.add(lr);
         } catch (Exception e) {
-            MiniMLLogger.INSTANCE.error(("LR hit error: " + e));
+            MiniMLLogger.INSTANCE.error("LR hit error: " + e);
         }
     }
 
@@ -87,7 +87,7 @@ class WekaTaskManager{
             NN_Model nn = new NN_Model(data, params);
             models.add(nn);
         } catch (Exception e) {
-            MiniMLLogger.INSTANCE.error(("NN hit error: " + e));
+            MiniMLLogger.INSTANCE.error("NN hit error: " + e);
         }
     }
 
