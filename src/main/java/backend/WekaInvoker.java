@@ -1,6 +1,6 @@
 package backend;
 
-import utils.Messaging.Messenger;
+import utils.Logging.MiniMLLogger;
 import weka.core.Instances;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -67,12 +67,12 @@ class WekaTaskManager{
      * @param params
      */
     public void manage_LR(String[] params) {
-        Messenger.INSTANCE.getLogger().info("Calling linear regression");
+        MiniMLLogger.INSTANCE.info("Calling linear regression");
         try {
             LR_Model lr = new LR_Model(data, params);
             models.add(lr);
         } catch (Exception e) {
-            Messenger.INSTANCE.getLogger().error(("LR hit error: " + e));
+            MiniMLLogger.INSTANCE.error(("LR hit error: " + e));
         }
     }
 
@@ -82,12 +82,12 @@ class WekaTaskManager{
      * @param params
      */
     public void manage_NN(String[] params) {
-        Messenger.INSTANCE.getLogger().info("Calling neural network");
+        MiniMLLogger.INSTANCE.info("Calling neural network");
         try {
             NN_Model nn = new NN_Model(data, params);
             models.add(nn);
         } catch (Exception e) {
-            Messenger.INSTANCE.getLogger().error(("NN hit error: " + e));
+            MiniMLLogger.INSTANCE.error(("NN hit error: " + e));
         }
     }
 

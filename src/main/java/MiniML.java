@@ -1,11 +1,11 @@
 import frontend.MiniMLFrame;
-import utils.Messaging.Messenger;
+import utils.Logging.MiniMLLogger;
 import workflow.context.MiniMLContext;
 
 public class MiniML {
 
     public static void main(String[] args) {
-        Messenger.INSTANCE.getLogger().info("Hello World");
+        MiniMLLogger.INSTANCE.info("Hello World");
 
         try {
             MiniMLContext context = new MiniMLContext();

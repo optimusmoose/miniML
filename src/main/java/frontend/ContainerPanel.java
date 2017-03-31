@@ -1,18 +1,12 @@
 package frontend;
 
-import utils.Messaging.Messenger;
+import utils.Logging.MiniMLLogger;
 
-import javax.swing.*;
-import java.awt.*;
 import javax.swing.JTabbedPane;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JFrame;
 import javax.swing.JComponent;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
@@ -23,7 +17,7 @@ public class ContainerPanel extends JPanel {
         super(new GridLayout());
         //TODO: configuration import
         setPreferredSize(new Dimension(1200, 600));
-        Messenger.INSTANCE.getLogger().info("is it here?");
+        MiniMLLogger.INSTANCE.info("is it here?");
         //this.setSize(this.getParent().getSize());
 
         this.addComponents();

@@ -1,29 +1,17 @@
 package frontend;
 
 import javax.swing.*;
-import java.awt.*;
-import javax.swing.JTabbedPane;
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JFrame;
 import javax.swing.JComponent;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 import javax.swing.JFileChooser;
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.Charset;
 
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
-import org.apache.commons.io.FileUtils;
-import utils.Messaging.Messenger;
+import utils.Logging.MiniMLLogger;
 
 import static org.apache.commons.io.FileUtils.readFileToString;
 
@@ -53,7 +41,7 @@ public class DatasetTab  extends JComponent {
         panel.add(tip);
         panel.add(fs);
         panel.add(jsp);
-        Messenger.INSTANCE.getLogger().info((dataset));
+        MiniMLLogger.INSTANCE.info((dataset));
         return panel;
     }
 
@@ -79,7 +67,7 @@ public class DatasetTab  extends JComponent {
                 txt.setText(dataset);
                 //System.out.println(dataset);
             } catch (IOException e) {
-                Messenger.INSTANCE.getLogger().error(("Hit an error opening file."));
+                MiniMLLogger.INSTANCE.error(("Hit an error opening file."));
             }
         }
     }
