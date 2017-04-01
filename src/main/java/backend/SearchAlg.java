@@ -31,7 +31,6 @@ class randomSearch implements SearchAlg {
         ArrayList<WrappedParam> inParams = parameterSet.getParameters();
         //iterate through parameter set and generate some values for our weka call
         for(WrappedParam p : inParams){
-            // TODO great, now do it for the rest of the types this may encounter...
             if(p.getType() == "int"){
                 WrappedParamInt q = (WrappedParamInt) p;
                 int val = random.nextInt(q.getMaxValue()+1 - q.getMinValue()) + q.getMinValue();
