@@ -42,7 +42,7 @@ public class ContainerPanel extends JPanel {
     {
         //Label myLabel = new Label("Hello World!");
         JTabbedPane tabbedPane = new JTabbedPane();
-        tabbedPane.setTabPlacement(2);
+        tabbedPane.setTabPlacement(SwingConstants.LEFT);
         ImageIcon icon = new ImageIcon("images/middle.gif");
 
         //JComponent panel1 = makeBasePanel("Dataset");
@@ -63,15 +63,15 @@ public class ContainerPanel extends JPanel {
                           "Configure MiniML's model usage.");
         tabbedPane.setMnemonicAt(2, KeyEvent.VK_3);
 
-        JComponent panel4 = makeBasePanel(
-                "Analyze");
+        //JComponent panel4 = makeBasePanel("Analyze");
+        AnalyzeTab panel4 = new AnalyzeTab();
         //panel4.setPreferredSize(new Dimension(410, 500));
         tabbedPane.addTab("Analyze", icon, panel4,
                               "Begin analysis and view results.");
         tabbedPane.setMnemonicAt(3, KeyEvent.VK_4);
 
-        JComponent panel5 = makeBasePanel(
-                "Advanced Settings");
+        //JComponent panel5 = makeBasePanel("Advanced Settings");
+        AdvancedTab panel5 = new AdvancedTab();
         tabbedPane.addTab("Advanced Settings", icon, panel5,
                 "Change system settings.");
         tabbedPane.setMnemonicAt(4, KeyEvent.VK_5);
