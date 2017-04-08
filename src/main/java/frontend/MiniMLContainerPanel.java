@@ -6,12 +6,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
-public class ContainerPanel extends JPanel {
+public class MiniMLContainerPanel extends JPanel {
 
     private static final int APP_WIDTH = 1200;
     private static final int APP_HEIGHT = 600;
 
-    public ContainerPanel() {
+    public MiniMLContainerPanel() {
         super(new GridLayout());
 
         setPreferredSize(new Dimension(APP_WIDTH, APP_HEIGHT));

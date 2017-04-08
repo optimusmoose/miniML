@@ -1,6 +1,6 @@
 package frontend.context;
 
-import frontend.ContainerPanel;
+import frontend.MiniMLContainerPanel;
 import junit.framework.TestCase;
 import workflow.context.MiniMLContext;
 
@@ -12,7 +12,7 @@ public class ComponentProxyText extends TestCase {
         JFrame frame;
         frame = (JFrame) ComponentProxy.newInstance(new ContextComponent(
             new MiniMLContext(),
-            new ContainerPanel()
+            new MiniMLContainerPanel()
         ));
 
         assertTrue(frame.getClass() == JFrame.class);

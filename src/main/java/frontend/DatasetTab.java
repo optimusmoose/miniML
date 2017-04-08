@@ -16,11 +16,12 @@ import workflow.context.*;
 public class DatasetTab extends JComponent {
 
     private DatasetContext context;
-    private FileContext fsContext;
-    private String dataset = "";
+    private FileContext fileSelectContext;
+    private String dataset;
     private JTextPane txt = new JTextPane();
 
     public DatasetTab() {
+        super();
 
         context = new DatasetContext(new MiniMLContext()); //TODO: MiniML Context needs to be pulled out to 'primary' panel
 
@@ -32,9 +33,9 @@ public class DatasetTab extends JComponent {
 
     }
 
-    public JPanel fileSelectPanel(){
+    private JPanel fileSelectPanel(){
         //context for the file selector
-        fsContext = new FileContext(this.context);
+        fileSelectContext = new FileContext(this.context);
 
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout());
@@ -55,13 +56,10 @@ public class DatasetTab extends JComponent {
                 try {
                     source = (JButton) e.getSource();
                     parent = (DatasetTab) source.getParent().getParent().getParent();//TODO: TO MANY NESTED JCOMPS
-                    dataset = fs_select();
+                    context = parent.getFileSelectContext();
 
-                    txt.setText(dataset);
-
-                    context = parent.getFsContext();
-                    context.setValue(dataset, "str");
-                    context.updateState();
+                    selectFile();
+                    handleFileSelectContext(context);
                 } catch (IOException exception) {
                     MiniMLLogger.INSTANCE.exception(exception);
                 }
@@ -71,28 +69,36 @@ public class DatasetTab extends JComponent {
         panel.add(tip);
         panel.add(fileSelect);
         panel.add(scrollPane);
-        MiniMLLogger.INSTANCE.info((dataset));
         return panel;
     }
 
     //TODO: move this to wrapper magic class that does not exist yet
-    public FileContext getFsContext(){
-        return this.fsContext;
+    public FileContext getFileSelectContext(){
+        return this.fileSelectContext;
     }
 
-    public String fs_select() throws IOException{
-        String contents = null;
+    public void handleFileSelectContext(AbstractParameterContext context) {
+        context.setValue(this.dataset, "str");
+        context.updateState();
+    }
+
+    public void selectFile() throws IOException {
+        String contents;
         JFileChooser fileChooser = new JFileChooser();
-        File selectedFile = null;
+        File selectedFile;
         fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
         int result = fileChooser.showOpenDialog(this.getParent());
         if (result == JFileChooser.APPROVE_OPTION) {
             selectedFile = fileChooser.getSelectedFile();
             MiniMLLogger.INSTANCE.info("Selected file: " + selectedFile.getAbsolutePath());
-            contents = readFileToString(selectedFile);//TODO: deprecated fileread, why!
+            contents = readFileToString(selectedFile);//TODO: deprecated fileread, why! this will explode on a huge file!
+            this.dataset = contents;
+            txt.setText(contents);
         }
-        dataset = contents;
-        return(contents);
+    }
+
+    public void previewData() {
+
     }
 
 }

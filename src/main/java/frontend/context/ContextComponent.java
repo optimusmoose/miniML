@@ -9,8 +9,13 @@ public class ContextComponent extends JComponent {
     private AbstractCompositeContext context;
     private JComponent component;
 
+    public ContextComponent() {
+        super();
+    }
+
     public ContextComponent(AbstractCompositeContext context, JComponent component) {
         super();
+
         this.context = context;
         this.component = component;
     }
