@@ -53,20 +53,14 @@ public class DatasetTab extends JComponent {
          * listeners should be anonymous inner classes, this prevents nasty hacks
          */
         fileSelect.addActionListener(new ActionListener() {
-            private JButton source;
-            private DatasetTab parent;
-            private AbstractParameterContext context;
+            private AbstractCompositeContext context;
 
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-
-                    source = (JButton) e.getSource();
-                    parent = (DatasetTab) source.getParent().getParent().getParent();//TODO: TO MANY NESTED JCOMPS
-                    context = parent.getFileSelectContext();
-
+                    context = WorkflowManager.INSTANCE.getContextByKey(Keys.DatasetFile);
                     selectFile();
-                    handleFileSelectContext(context);
+                    handleFileSelectContext((AbstractParameterContext) context);
                 } catch (IOException exception) {
                     MiniMLLogger.INSTANCE.exception(exception);
                 }

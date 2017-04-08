@@ -39,7 +39,7 @@ public abstract class AbstractParameterContext extends AbstractCompositeContext 
         {
             ReadyState.class.cast(this.state);
         }
-        MiniMLLogger.INSTANCE.debug("THE STATE OF A PARAMETER HAS UPDATED " + this.state);
+        this.log();
         this.parent.updateState();
     }
 
