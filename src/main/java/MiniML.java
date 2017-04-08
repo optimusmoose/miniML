@@ -7,7 +7,7 @@ public class MiniML {
     public static final String APPNAME = "MiniML";
 
     public static void main(String[] args) {
-        MiniMLLogger.INSTANCE.info("Starting MiniML");
+        MiniMLLogger.INSTANCE.info("Starting " + APPNAME);
 
         try {
             MiniMLContext context = new MiniMLContext();
@@ -15,7 +15,8 @@ public class MiniML {
         } catch(Exception e) {
             MiniMLLogger.INSTANCE.exception(e);
         }
-        MiniMLLogger.INSTANCE.info("Exiting MiniML");
+
+        MiniMLLogger.INSTANCE.info(APPNAME + " is Ready");
     }
 
 }
