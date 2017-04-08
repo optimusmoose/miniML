@@ -23,7 +23,6 @@ public class FileContext extends AbstractParameterContext {
     }
 
     private boolean fileExists() {
-        //TODO: this badly needs a test, possibly a try/catch
         try {
             return new File((String) this.value).isFile();
         } catch(Exception e) {

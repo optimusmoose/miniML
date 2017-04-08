@@ -15,7 +15,6 @@ public class DatasetContext extends AbstractCompositeContext {
      */
     public DatasetContext(ContextInterface parentContext, String key) {
         super(StateFactory.INSTANCE.error(), parentContext, key);
-//        this.addChildContext(FileContext.INPUT_FILE_KEY, new FileContext(parentContext, ));
     }
 
 }

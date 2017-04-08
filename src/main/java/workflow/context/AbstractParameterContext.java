@@ -37,7 +37,7 @@ public abstract class AbstractParameterContext extends AbstractCompositeContext 
     {
         if(this.isValid())
         {
-            ReadyState.class.cast(this.state);
+            this.state = StateFactory.INSTANCE.ready();
         }
         this.log();
         this.parent.updateState();

@@ -17,8 +17,7 @@ public class Keys {
      this class, by declaring this private constructor.
      */
     Keys(){
-        //this prevents even the native class from
-        //calling this ctor as well :
+        //this prevents even the native class from calling this ctor as well :
         throw new AssertionError();
     }
 }

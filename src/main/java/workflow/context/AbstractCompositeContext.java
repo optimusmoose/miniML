@@ -24,6 +24,7 @@ public abstract class AbstractCompositeContext implements ContextInterface {
         this.parent = parentContext;
         this.key = key;
         this.childContexts = new HashMap<String, ContextInterface>();
+        this.log();
     }
 
     /**
@@ -92,5 +93,9 @@ public abstract class AbstractCompositeContext implements ContextInterface {
 
     protected void log() {
         MiniMLLogger.INSTANCE.debug("Update:    key: " + this.key + " state: " + this.state);
+    }
+
+    protected void log(String str) {
+        MiniMLLogger.INSTANCE.debug("Update:    key: " + this.key + " state: " + this.state + " | " + str);
     }
 }

@@ -7,10 +7,9 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
-import utils.Logging.MiniMLLogger;
-
 import static org.apache.commons.io.FileUtils.readFileToString;
 
+import utils.Logging.MiniMLLogger;
 import workflow.Keys;
 import workflow.WorkflowManager;
 import workflow.context.*;
@@ -93,7 +92,7 @@ public class DatasetTab extends JComponent {
             selectedFile = fileChooser.getSelectedFile();
             MiniMLLogger.INSTANCE.info("Selected file: " + selectedFile.getAbsolutePath());
             contents = readFileToString(selectedFile);//TODO: deprecated fileread, why! this will explode on a huge file!
-            this.dataset = contents;
+            this.dataset = selectedFile.getAbsolutePath();
             txt.setText(contents);
         }
     }
