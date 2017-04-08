@@ -1,15 +1,12 @@
-package utils;
+package frontend;
 
 import javax.swing.*;
-import javax.swing.event.DocumentListener;
 import javax.swing.text.Document;
 import java.awt.*;
 import java.io.PrintStream;
-import java.lang.annotation.Documented;
 
-/**
- * Created by mattpatera on 3/20/17.
- */
+
+//TODO: what does this class do?
 public class MessageConsole {
 
     private JTextArea messageBox;
@@ -26,7 +23,7 @@ public class MessageConsole {
     }
 
     public void redirectOut(Color textColor, PrintStream printStream) {
-
+        //TODO: ???
     }
 
     public void redirectError() {
@@ -34,7 +31,7 @@ public class MessageConsole {
     }
 
     public void redirectError(Color textColor, PrintStream printStream) {
-
+        //TODO: ???
     }
 
 }
