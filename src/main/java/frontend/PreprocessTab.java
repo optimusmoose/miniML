@@ -15,12 +15,13 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
 
-class PreprocessTab extends JPanel{
+class PreprocessTab extends JComponent{
 
     PreprocessTab(){
+        super();
+
         this.setLayout(new BorderLayout());
         this.add(fileAndFilter(), BorderLayout.PAGE_START);
-
         this.add(statusPanel(), BorderLayout.PAGE_END);
     }
 

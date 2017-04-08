@@ -3,9 +3,11 @@ package frontend;
 import javax.swing.*;
 import java.awt.*;
 
-class AnalyzeTab extends JLabel{
+class AnalyzeTab extends JComponent{
 
     AnalyzeTab() {
+        super();
+
         this.setLayout(new BorderLayout());
         this.add(consolePanel(), BorderLayout.PAGE_START);
         this.add(modelPanel(), BorderLayout.CENTER);

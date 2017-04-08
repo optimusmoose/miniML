@@ -3,15 +3,13 @@ package frontend;
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * Created by mattpatera on 3/19/17.
- */
-class AdvancedTab extends JLabel {
+class AdvancedTab extends JComponent {
 
     AdvancedTab() {
+        super();
+
         this.setLayout(new GridLayout(2,0));
         this.add(runtimePanel());
-        // this.add(new JSeparator());
         this.add(hardwarePanel());
     }
 
