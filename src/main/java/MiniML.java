@@ -4,15 +4,18 @@ import workflow.context.MiniMLContext;
 
 public class MiniML {
 
+    public static final String APPNAME = "MiniML";
+
     public static void main(String[] args) {
-        MiniMLLogger.INSTANCE.info("Hello World");
+        MiniMLLogger.INSTANCE.info("Starting MiniML");
 
         try {
             MiniMLContext context = new MiniMLContext();
-            MiniMLFrame mainFrame = new MiniMLFrame();
+            MiniMLFrame mainFrame = new MiniMLFrame(APPNAME);
         } catch(Exception e) {
-            e.printStackTrace();
+            MiniMLLogger.INSTANCE.exception(e);
         }
+        MiniMLLogger.INSTANCE.info("Exiting MiniML");
     }
 
 }
