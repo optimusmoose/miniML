@@ -13,8 +13,8 @@ public class FileContext extends AbstractParameterContext {
      *
      * @param parentContext ContextInterface
      */
-    public FileContext(ContextInterface parentContext) {
-        super(parentContext);
+    public FileContext(ContextInterface parentContext, String key) {
+        super(parentContext, key);
     }
 
     @Override

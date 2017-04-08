@@ -1,6 +1,6 @@
 import frontend.MiniMLFrame;
 import utils.Logging.MiniMLLogger;
-import workflow.context.MiniMLContext;
+import workflow.Keys;
 
 public class MiniML {
 
@@ -10,7 +10,6 @@ public class MiniML {
         MiniMLLogger.INSTANCE.info("Starting " + APPNAME);
 
         try {
-            MiniMLContext context = new MiniMLContext();
             MiniMLFrame mainFrame = new MiniMLFrame(APPNAME);
         } catch(Exception e) {
             MiniMLLogger.INSTANCE.exception(e);

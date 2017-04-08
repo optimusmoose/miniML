@@ -1,5 +1,6 @@
 package workflow.context;
 
+import workflow.Keys;
 import workflow.state.StateFactory;
 
 /**
@@ -7,12 +8,10 @@ import workflow.state.StateFactory;
  */
 public class PreprocessContext extends AbstractCompositeContext {
 
-    public static final String KEY = "PREPROCESS_CONFIG";
-
     /**
      * no pre-processing functionality yet, state is ready
      */
     PreprocessContext(ContextInterface parentContext) {
-        super(StateFactory.INSTANCE.ready(), parentContext);
+        super(StateFactory.INSTANCE.ready(), parentContext, Keys.PreprocessConfig);
     }
 }

@@ -17,8 +17,8 @@ public abstract class AbstractParameterContext extends AbstractCompositeContext 
     /**
      * Instantiate context with a null state
      */
-    AbstractParameterContext(ContextInterface parentContext) {
-        super(StateFactory.INSTANCE.empty(), parentContext);
+    AbstractParameterContext(ContextInterface parentContext, String key) {
+        super(StateFactory.INSTANCE.empty(), parentContext, key);
     }
 
     /**
@@ -39,9 +39,8 @@ public abstract class AbstractParameterContext extends AbstractCompositeContext 
         {
             ReadyState.class.cast(this.state);
         }
-        MiniMLLogger.INSTANCE.debug("THE STATE OF A PARAMETER HAS UPDATED");
+        MiniMLLogger.INSTANCE.debug("THE STATE OF A PARAMETER HAS UPDATED " + this.state);
         this.parent.updateState();
-        return;
     }
 
     /**

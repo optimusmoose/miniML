@@ -7,28 +7,28 @@ import workflow.state.StateFactory;
  */
 public class MiniMLContext extends AbstractCompositeContext {
 
-    private DatasetContext dc;
-    private PreprocessContext pc;
-    private ModelContext mc;
+//    private DatasetContext dc;
+//    private PreprocessContext pc;
+//    private ModelContext mc;
 
     /*
         TODO: I would really like a DI solution, would make things more testable
      */
-    public MiniMLContext() {
+    public MiniMLContext(String key) {
         //there is no config on launch, null object pattern
-        super(StateFactory.INSTANCE.empty(), ContextFactory.INSTANCE.empty());
+        super(StateFactory.INSTANCE.empty(), ContextFactory.INSTANCE.empty(), key);
 
-        //instantiate context for each panel
-        dc = new DatasetContext(this);
-        pc = new PreprocessContext(this);
-        mc = new ModelContext(this);
-
-        this.addChildContext(DatasetContext.KEY, dc);
-        this.addChildContext(PreprocessContext.KEY, pc);
-        this.addChildContext(ModelContext.KEY, mc);
-
-        //note that the state is updated to something other than the nullstate within instantiation
-        this.updateState();
+//        //instantiate context for each panel
+//        dc = new DatasetContext(this);
+//        pc = new PreprocessContext(this);
+//        mc = new ModelContext(this);
+//
+//        this.addChildContext(DatasetContext.KEY, dc);
+//        this.addChildContext(PreprocessContext.KEY, pc);
+//        this.addChildContext(ModelContext.KEY, mc);
+//
+//        //note that the state is updated to something other than the nullstate within instantiation
+//        this.updateState();
     }
 
     //TODO: create and move to analise context

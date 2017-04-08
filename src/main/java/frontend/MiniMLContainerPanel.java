@@ -1,6 +1,9 @@
 package frontend;
 
 import utils.Logging.MiniMLLogger;
+import workflow.Keys;
+import workflow.WorkflowManager;
+import workflow.context.MiniMLContext;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,6 +16,10 @@ public class MiniMLContainerPanel extends JPanel {
 
     public MiniMLContainerPanel() {
         super(new GridLayout());
+        this.setName(Keys.App);
+
+        MiniMLContext context = new MiniMLContext(Keys.App);
+        WorkflowManager.INSTANCE.registerContext(context);
 
         setPreferredSize(new Dimension(APP_WIDTH, APP_HEIGHT));
         this.addComponents();

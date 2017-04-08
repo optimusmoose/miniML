@@ -1,7 +1,5 @@
 package workflow.state;
 
-import workflow.state.ProcessState;
-
 public class WarningState implements ProcessState {
 
     public boolean isError() {
@@ -14,5 +12,9 @@ public class WarningState implements ProcessState {
 
     public boolean isReady() {
         return false;
+    }
+
+    public String toString() {
+        return "Warning";
     }
 }
