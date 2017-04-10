@@ -16,7 +16,4 @@ public class NullState implements ProcessState {
         return false;
     }
 
-    public String toString() {
-        return "Null";
-    }
 }

@@ -14,7 +14,4 @@ public class ErrorState implements ProcessState {
         return false;
     }
 
-    public String toString() {
-        return "Error";
-    }
 }

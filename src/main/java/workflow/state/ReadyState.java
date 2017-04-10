@@ -13,8 +13,4 @@ public class ReadyState implements ProcessState {
     public boolean isReady() {
         return true;
     }
-
-    public String toString() {
-        return "Ready";
-    }
 }
