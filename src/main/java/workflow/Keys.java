@@ -1,5 +1,10 @@
 package workflow;
 
+/*
+ * The keys file holds a a group of keys needed to register and lookup contexts.
+ * This class cannot be instantiated, public static final Strings are all that is accessible.
+ * If a new context is needed somewhere in teh app, a key should be added to this file.
+ */
 public class Keys {
 
     public static final String App = "MML";
