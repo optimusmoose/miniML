@@ -1,5 +1,6 @@
 package workflow.context;
 
+import utils.Logging.MiniMLLogger;
 import utils.TypeFactory;
 import workflow.state.ReadyState;
 import workflow.state.StateFactory;
@@ -9,15 +10,15 @@ import workflow.state.StateFactory;
  * Will hold details about specific contextual objects
  * Validates and updates its own state
  */
-abstract class AbstractParameterContext extends AbstractCompositeContext {
+public abstract class AbstractParameterContext extends AbstractCompositeContext {
 
     protected Object value; //object form of a primative or other type such as range
 
     /**
      * Instantiate context with a null state
      */
-    AbstractParameterContext(ContextInterface parentContext) {
-        super(StateFactory.INSTANCE.empty(), parentContext);
+    AbstractParameterContext(ContextInterface parentContext, String key) {
+        super(StateFactory.INSTANCE.empty(), parentContext, key);
     }
 
     /**
@@ -36,8 +37,10 @@ abstract class AbstractParameterContext extends AbstractCompositeContext {
     {
         if(this.isValid())
         {
-            ReadyState.class.cast(this.state);
+            this.state = StateFactory.INSTANCE.ready();
         }
+        this.log();
+        this.parent.updateState();
     }
 
     /**
@@ -55,5 +58,12 @@ abstract class AbstractParameterContext extends AbstractCompositeContext {
      */
     Object getValue() {
         return this.value;
+    }
+
+    /**
+     * @param value
+     */
+    public void setValue(String value, String type) {
+        this.value = TypeFactory.INSTANCE.get(type, value);
     }
 }

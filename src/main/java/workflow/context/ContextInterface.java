@@ -8,7 +8,7 @@ import workflow.state.ProcessState;
  * States are updated based on that of child contexts
  * Contexts can perform actions dependent on state
  */
-interface ContextInterface {
+public interface ContextInterface {
     ProcessState getState();
     void updateState();
 }

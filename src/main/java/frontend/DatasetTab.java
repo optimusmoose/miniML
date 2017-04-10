@@ -1,89 +1,104 @@
 package frontend;
 
 import javax.swing.*;
-import java.awt.*;
-import javax.swing.JTabbedPane;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JFrame;
-import javax.swing.JComponent;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import javax.swing.JFileChooser;
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.Charset;
-
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
-import org.apache.commons.io.FileUtils;
-
-import utils.Logging.MiniMLLogger;
 
 import static org.apache.commons.io.FileUtils.readFileToString;
 
-/**
- * Created by dave on 3/3/17.
- */
-public class DatasetTab  extends JComponent {
-    private String dataset = "";
+import utils.Logging.MiniMLLogger;
+import workflow.Keys;
+import workflow.WorkflowManager;
+import workflow.context.*;
+
+public class DatasetTab extends JComponent {
+
+    private AbstractCompositeContext parentContext;
+    private DatasetContext context;
+    private FileContext fileSelectContext;
+    private String dataset;
     private JTextPane txt = new JTextPane();
 
     public DatasetTab() {
+        super();
+
+        parentContext = WorkflowManager.INSTANCE.getContextByKey(Keys.App);
+        context = new DatasetContext(parentContext, Keys.DatasetConfig);
+        WorkflowManager.INSTANCE.registerContext(context);
+
         this.setLayout(new GridLayout());
         JPanel panel = new JPanel(false);
         panel.setLayout(new GridLayout(6, 0));
-        panel.add(fs_panel());
+        panel.add(fileSelectPanel());
         this.add(panel);
+
     }
 
-    public JPanel fs_panel(){
+    private JPanel fileSelectPanel(){
+        //context for the file selector
+        fileSelectContext = new FileContext(this.context, Keys.DatasetFile);
+        WorkflowManager.INSTANCE.registerContext(fileSelectContext);
+
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout());
-        //JTextPane txt = new JTextPane();
-        JScrollPane jsp = new JScrollPane(txt);
-        JButton fs = new JButton("Browse...");
+        JScrollPane scrollPane = new JScrollPane(txt);
+        JButton fileSelect = new JButton("Browse...");
         JLabel tip = new JLabel("Select a Dataset: ");
-        fs.addActionListener(new fslistener());
+
+        /*
+         * listeners should be anonymous inner classes, this prevents nasty hacks
+         */
+        fileSelect.addActionListener(new ActionListener() {
+            private AbstractCompositeContext context;
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    context = WorkflowManager.INSTANCE.getContextByKey(Keys.DatasetFile);
+                    selectFile();
+                    handleFileSelectContext((AbstractParameterContext) context);
+                } catch (IOException exception) {
+                    MiniMLLogger.INSTANCE.exception(exception);
+                }
+            }
+        });
+
         panel.add(tip);
-        panel.add(fs);
-        panel.add(jsp);
-        MiniMLLogger.INSTANCE.info((dataset));
+        panel.add(fileSelect);
+        panel.add(scrollPane);
         return panel;
     }
 
-    public String fs_select() throws IOException{
-        String contents = null;
+    //TODO: move this to wrapper magic class that does not exist yet
+    public FileContext getFileSelectContext(){
+        return this.fileSelectContext;
+    }
+
+    public void handleFileSelectContext(AbstractParameterContext context) {
+        context.setValue(this.dataset, "str");
+        context.updateState();
+    }
+
+    public void selectFile() throws IOException {
+        String contents;
         JFileChooser fileChooser = new JFileChooser();
-        File selectedFile = null;
+        File selectedFile;
         fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
         int result = fileChooser.showOpenDialog(this.getParent());
         if (result == JFileChooser.APPROVE_OPTION) {
             selectedFile = fileChooser.getSelectedFile();
-            //System.out.println("Selected file: " + selectedFile.getAbsolutePath());
-            contents = readFileToString(selectedFile);
-        }
-        dataset = contents;
-        return(contents);
-    }
-
-    private class fslistener implements ActionListener {
-        public void actionPerformed(ActionEvent ev) {
-            try {
-                dataset = fs_select();
-                txt.setText(dataset);
-                //System.out.println(dataset);
-            } catch (IOException e) {
-                MiniMLLogger.INSTANCE.error(("Hit an error opening file."));
-            }
+            MiniMLLogger.INSTANCE.info("Selected file: " + selectedFile.getAbsolutePath());
+            contents = readFileToString(selectedFile);//TODO: deprecated fileread, why! this will explode on a huge file!
+            this.dataset = selectedFile.getAbsolutePath();
+            txt.setText(contents);
         }
     }
 
+    public void previewData() {
+
+    }
 
 }

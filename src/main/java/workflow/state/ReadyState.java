@@ -1,7 +1,5 @@
 package workflow.state;
 
-import workflow.state.ProcessState;
-
 public class ReadyState implements ProcessState {
 
     public boolean isError() {

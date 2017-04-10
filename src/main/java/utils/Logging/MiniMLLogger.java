@@ -2,6 +2,9 @@ package utils.Logging;
 
 import org.apache.log4j.Logger;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 public enum MiniMLLogger {
     INSTANCE;
     public static final String APPNAME = "miniML";
@@ -30,5 +33,12 @@ public enum MiniMLLogger {
     }
     public void fatal(Object message) {
         this.logger.fatal(message);
+    }
+
+    public void exception(Exception exception) {
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        exception.printStackTrace(pw);
+        this.logger.error(sw.toString());
     }
 }

@@ -1,42 +1,37 @@
 package frontend;
 
 import javax.swing.*;
-import java.awt.*;
-import javax.swing.JTabbedPane;
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JFrame;
 import javax.swing.JComponent;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.event.KeyEvent;
 
 public class ModelTab extends JComponent {
 
     public ModelTab(){
+        super();
+
         this.setLayout(new GridLayout());
         JPanel panel = new JPanel(false);
         panel.setLayout(new GridLayout(6,0));
-        JPanel ep = eta_panel();
-        JPanel ap = alg_panel();
-        JPanel lr = lr_panel();
-        JPanel nn = nn_panel();
-        JPanel svm = svm_panel();
-        JPanel dt = dt_panel();
-        panel.add(ep);
-        panel.add(ap);
-        panel.add(lr);
-        panel.add(nn);
-        panel.add(svm);
-        panel.add(dt);
+        JPanel etaPanel = getETAPanel();
+        JPanel algorithmPanel = getAlgorithmPanel();
+        JPanel linearRegressionPanel = getLinearRegressionPanel();
+        JPanel neuralNetPanel = getNeuralNetPanel();
+        JPanel supportVectorMachinePanel = getSupportVectorMachinePanel();
+        JPanel decisionTreePanel = getDecisionTreePanel();
+
+        panel.add(etaPanel);
+        panel.add(algorithmPanel);
+        panel.add(linearRegressionPanel);
+        panel.add(neuralNetPanel);
+        panel.add(supportVectorMachinePanel);
+        panel.add(decisionTreePanel);
+
         this.add(panel);
     }
 
-    public JPanel eta_panel(){
+    private JPanel getETAPanel(){
         JPanel e_panel = new JPanel();
         e_panel.setLayout(new GridLayout());
         String val = new String();
@@ -48,27 +43,27 @@ public class ModelTab extends JComponent {
         return e_panel;
     }
 
-    public JPanel alg_panel(){
-        JPanel alg_panel = new JPanel();
-        alg_panel.setLayout(new GridLayout());
+    private JPanel getAlgorithmPanel(){
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout());
         JLabel tip = new JLabel("Algorithms: ");
         JToggleButton lr = new JToggleButton("Linear Regression");
         JToggleButton nn = new JToggleButton("Neural Network");
         JToggleButton svm = new JToggleButton("Support Vector Machine");
         JToggleButton dt = new JToggleButton("Decision Tree");
-        alg_panel.add(tip);
-        alg_panel.add(lr);
-        alg_panel.add(nn);
-        alg_panel.add(svm);
-        alg_panel.add(dt);
-        return alg_panel;
+        panel.add(tip);
+        panel.add(lr);
+        panel.add(nn);
+        panel.add(svm);
+        panel.add(dt);
+        return panel;
     }
 
-    public JPanel lr_panel(){
-        JPanel lr_panel = new JPanel();
+    private JPanel getLinearRegressionPanel(){
+        JPanel panel = new JPanel();
         String val1 = new String();
         String val2 = new String();
-        lr_panel.setLayout(new GridLayout());
+        panel.setLayout(new GridLayout());
         JLabel tip = new JLabel("Linear Regression: ");
         JProgressBar pbar = new JProgressBar(0,0,100);
         JLabel par1 = new JLabel("Select Method: " + val1);
@@ -77,22 +72,22 @@ public class ModelTab extends JComponent {
         JSlider slider2 = new JSlider(0, 1, 1);
         val1 = String.valueOf(slider1.getValue());
         val2 = String.valueOf(slider2.getValue());
-        lr_panel.add(tip);
-        //lr_panel.add(pbar);
-        lr_panel.add(par1);
-        lr_panel.add(slider1);
-        lr_panel.add(par2);
-        lr_panel.add(slider2);
-        return lr_panel;
+        panel.add(tip);
+        //getLinearRegressionPanel.add(pbar);
+        panel.add(par1);
+        panel.add(slider1);
+        panel.add(par2);
+        panel.add(slider2);
+        return panel;
     }
 
-    public JPanel nn_panel(){
-        JPanel nn_panel = new JPanel();
+    private JPanel getNeuralNetPanel(){
+        JPanel panel = new JPanel();
         String val1 = new String();
         String val2 = new String();
         String val3 = new String();
         String val4 = new String();
-        nn_panel.setLayout(new GridLayout());
+        panel.setLayout(new GridLayout());
         JLabel tip = new JLabel("Neural Network: ");
         JProgressBar pbar = new JProgressBar(0,0,100);
         JLabel par1 = new JLabel("Hidden Layers: " + val1);
@@ -107,20 +102,20 @@ public class ModelTab extends JComponent {
         val2 = String.valueOf(slider2.getValue());
         val3 = String.valueOf(slider3.getValue());
         val4 = String.valueOf(slider4.getValue());
-        nn_panel.add(tip);
-        //nn_panel.add(pbar);
-        nn_panel.add(par1);
-        nn_panel.add(slider1);
-        nn_panel.add(par2);
-        nn_panel.add(slider2);
-        nn_panel.add(par3);
-        nn_panel.add(slider3);
-        nn_panel.add(par4);
-        nn_panel.add(slider4);
-        return nn_panel;
+        panel.add(tip);
+        //getNeuralNetPanel.add(pbar);
+        panel.add(par1);
+        panel.add(slider1);
+        panel.add(par2);
+        panel.add(slider2);
+        panel.add(par3);
+        panel.add(slider3);
+        panel.add(par4);
+        panel.add(slider4);
+        return panel;
     }
 
-    public JPanel svm_panel(){
+    public JPanel getSupportVectorMachinePanel(){
         JPanel panel = new JPanel();
         String val1 = new String();
         String val2 = new String();
@@ -154,7 +149,7 @@ public class ModelTab extends JComponent {
         return panel;
     }
 
-    public JPanel dt_panel(){
+    public JPanel getDecisionTreePanel(){
         JPanel panel = new JPanel();
         String val1 = new String();
         String val2 = new String();
