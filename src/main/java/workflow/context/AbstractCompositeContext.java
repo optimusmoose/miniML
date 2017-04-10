@@ -92,7 +92,7 @@ public abstract class AbstractCompositeContext implements ContextInterface {
     }
 
     protected void log() {
-        MiniMLLogger.INSTANCE.debug("Update:    key: " + this.key + " state: " + this.state);
+        MiniMLLogger.INSTANCE.debug("Update:    key: " + this.key + " state: " + this.state.getClass());
     }
 
     protected void log(String str) {
