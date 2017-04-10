@@ -34,10 +34,6 @@ class AnalyzeTab extends JComponent{
         panel.add(title, BorderLayout.PAGE_START);
         panel.add(new JScrollPane(consoleText));
 
-        MessageConsole console = new MessageConsole(consoleText);
-        console.redirectOut();
-        console.redirectError(Color.RED, null);
-
         return panel;
     }
 
