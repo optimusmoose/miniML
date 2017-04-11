@@ -27,7 +27,6 @@ public class DatasetTab extends JComponent {
 
         parentContext = WorkflowManager.INSTANCE.getContextByKey(Keys.App);
         context = new DatasetContext(parentContext, Keys.DatasetConfig);
-        WorkflowManager.INSTANCE.registerContext(context);
 
         this.setLayout(new GridLayout());
         JPanel panel = new JPanel(false);
@@ -40,7 +39,6 @@ public class DatasetTab extends JComponent {
     private JPanel fileSelectPanel(){
         //context for the file selector
         fileSelectContext = new FileContext(this.context, Keys.DatasetFile);
-        WorkflowManager.INSTANCE.registerContext(fileSelectContext);
 
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout());

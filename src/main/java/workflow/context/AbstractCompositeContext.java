@@ -1,6 +1,7 @@
 package workflow.context;
 
 import utils.Logging.MiniMLLogger;
+import workflow.WorkflowManager;
 import workflow.state.*;
 
 import java.util.HashMap;
@@ -24,6 +25,8 @@ public abstract class AbstractCompositeContext implements ContextInterface {
         this.parent = parentContext;
         this.key = key;
         this.childContexts = new HashMap<String, ContextInterface>();
+        WorkflowManager.INSTANCE.registerContext(this);
+
         this.log();
     }
 
