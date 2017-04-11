@@ -5,7 +5,7 @@ import utils.TypeFactory;
 import workflow.Keys;
 import workflow.WorkflowManager;
 import workflow.context.AbstractCompositeContext;
-import workflow.context.AbstractParameterContext;
+import workflow.context.ParameterContext;
 import workflow.context.DatasetContext;
 import workflow.context.FileContext;
 
@@ -59,8 +59,8 @@ public class DatasetTab extends JComponent {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    context = WorkflowManager.INSTANCE.getContextByKey(Keys.DatasetFile);
                     selectFile();
+                    context = WorkflowManager.INSTANCE.getContextByKey(Keys.DatasetFile);
                     handleFileSelectContext((ParameterContext) context);
                 } catch (IOException exception) {
                     MiniMLLogger.INSTANCE.exception(exception);
@@ -79,7 +79,7 @@ public class DatasetTab extends JComponent {
         return this.fileSelectContext;
     }
 
-    public void handleFileSelectContext(AbstractParameterContext context) {
+    public void handleFileSelectContext(ParameterContext context) {
         context.setValue(this.dataset, TypeFactory.STRING);
         context.updateState();
     }
