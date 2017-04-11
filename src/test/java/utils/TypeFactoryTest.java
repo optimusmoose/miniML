@@ -1,12 +1,11 @@
 package utils;
 
 import junit.framework.TestCase;
-import utils.TypeFactory;
 
 public class TypeFactoryTest extends TestCase {
 
     public void testString() {
-        String type = "str";
+        TypeFactory type = TypeFactory.STRING;
         String value = "somestring";
 
         Object result = TypeFactory.INSTANCE.get(type, value);
@@ -14,7 +13,7 @@ public class TypeFactoryTest extends TestCase {
     }
 
     public void testChar() {
-        String type = "char";
+        TypeFactory type = TypeFactory.CHARACTER;
         String value = "c";
 
         Object result = TypeFactory.INSTANCE.get(type, value);
@@ -22,7 +21,7 @@ public class TypeFactoryTest extends TestCase {
     }
 
     public void testShort() {
-        String type = "short";
+        TypeFactory type = TypeFactory.SHORT;
         String value = "1";
 
         Object result = TypeFactory.INSTANCE.get(type, value);
@@ -30,7 +29,7 @@ public class TypeFactoryTest extends TestCase {
     }
 
     public void testInt() {
-        String type = "int";
+        TypeFactory type = TypeFactory.INT;
         String value = "214783647";
 
         Object result = TypeFactory.INSTANCE.get(type, value);
@@ -38,7 +37,7 @@ public class TypeFactoryTest extends TestCase {
     }
 
     public void testLong() {
-        String type = "long";
+        TypeFactory type = TypeFactory.LONG;
         String value = "9223372036854775807";
 
         Object result = TypeFactory.INSTANCE.get(type, value);
@@ -47,7 +46,7 @@ public class TypeFactoryTest extends TestCase {
 
 
     public void testFloat() {
-        String type = "float";
+        TypeFactory type = TypeFactory.FLOAT;
         String value = "3.1415926";
 
         Object result = TypeFactory.INSTANCE.get(type, value);
@@ -55,7 +54,7 @@ public class TypeFactoryTest extends TestCase {
     }
 
     public void testDouble() {
-        String type = "double";
+        TypeFactory type = TypeFactory.DOUBLE;
         String value = "3.1415926535897932";
 
         Object result = TypeFactory.INSTANCE.get(type, value);
@@ -63,7 +62,7 @@ public class TypeFactoryTest extends TestCase {
     }
 
     public void testBoolean() {
-        String type = "boolean";
+        TypeFactory type = TypeFactory.BOOLEAN;
         String value = "true";
 
         Object result = TypeFactory.INSTANCE.get(type, value);
@@ -71,7 +70,7 @@ public class TypeFactoryTest extends TestCase {
     }
 
     public void testUnknownType() {
-        String type = "somenonexistenttype";
+        TypeFactory type = TypeFactory.NULL;
         String value ="itdoesntevenmatter";
 
         Object result = TypeFactory.INSTANCE.get(type, value);

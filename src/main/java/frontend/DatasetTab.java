@@ -1,18 +1,22 @@
 package frontend;
 
+import utils.Logging.MiniMLLogger;
+import utils.TypeFactory;
+import workflow.Keys;
+import workflow.WorkflowManager;
+import workflow.context.AbstractCompositeContext;
+import workflow.context.AbstractParameterContext;
+import workflow.context.DatasetContext;
+import workflow.context.FileContext;
+
 import javax.swing.*;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
 import static org.apache.commons.io.FileUtils.readFileToString;
-
-import utils.Logging.MiniMLLogger;
-import workflow.Keys;
-import workflow.WorkflowManager;
-import workflow.context.*;
 
 public class DatasetTab extends JComponent {
 
@@ -76,7 +80,7 @@ public class DatasetTab extends JComponent {
     }
 
     public void handleFileSelectContext(AbstractParameterContext context) {
-        context.setValue(this.dataset, "str");
+        context.setValue(this.dataset, TypeFactory.STRING);
         context.updateState();
     }
 
