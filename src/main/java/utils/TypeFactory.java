@@ -5,7 +5,10 @@ package utils;
  * enables abstract construction of config contexts
  * can be further extended for custom types such as ranges
  */
+
+
 public enum TypeFactory {
+    STRING, CHARACTER, BYTE, SHORT, INT, LONG, FLOAT, DOUBLE, BOOLEAN, NULL,
     INSTANCE;
 
     /**
@@ -14,30 +17,32 @@ public enum TypeFactory {
      * @param value String
      * @return Object
      */
-    public Object get(String type, String value) {
+    public Object get(TypeFactory type, String value) {
         switch (type) {
-            //if the value is a string return it
-            case "str":
+            //if the value is a typeString return it
+            case STRING:
                 return value;
-            //if it is a char, it is the first of the string
-            case "char":
+            //if it is a char, it is the first of the typeString
+            case CHARACTER:
                 return value.charAt(0);
-            //the remainder of the primatives parse to their objects
-            case "byte":
+            //the remainder of the primitives parse to their objects
+            case BYTE:
                 return Byte.parseByte(value);
-            case "short":
+            case SHORT:
                 return Short.parseShort(value);
-            case "int":
+            case INT:
                 return Integer.parseInt(value);
-            case "long":
+            case LONG:
                 return Long.parseLong(value);
-            case "float":
+            case FLOAT:
                 return Float.parseFloat(value);
-            case "double":
+            case DOUBLE:
                 return Double.parseDouble(value);
-            case "boolean":
+            case BOOLEAN:
                 return Boolean.parseBoolean(value);
             //if the type is not defined return null
+            case NULL:
+                return null;
             default:
                 return null;
         }
