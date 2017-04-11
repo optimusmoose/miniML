@@ -1,8 +1,6 @@
 package workflow.context;
 
-import utils.Logging.MiniMLLogger;
 import utils.TypeFactory;
-import workflow.state.ReadyState;
 import workflow.state.StateFactory;
 
 /**
@@ -56,7 +54,7 @@ public class ParameterContext extends AbstractCompositeContext {
     /**
      * @param value
      */
-    public void setValue(String value, String type) {
+    public void setValue(String value, TypeFactory type) {
         this.value = TypeFactory.INSTANCE.get(type, value);
     }
 }
