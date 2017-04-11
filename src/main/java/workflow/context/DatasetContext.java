@@ -1,6 +1,5 @@
 package workflow.context;
 
-import workflow.Keys;
 import workflow.state.StateFactory;
 
 /**
@@ -8,7 +7,7 @@ import workflow.state.StateFactory;
  */
 public class DatasetContext extends AbstractCompositeContext {
 
-    private AbstractParameterContext fileName;
+    private ParameterContext fileName;
 
     /**
      * Instantiate with error state, as no dataset is selecton on construction

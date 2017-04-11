@@ -57,7 +57,7 @@ public class DatasetTab extends JComponent {
                 try {
                     context = WorkflowManager.INSTANCE.getContextByKey(Keys.DatasetFile);
                     selectFile();
-                    handleFileSelectContext((AbstractParameterContext) context);
+                    handleFileSelectContext((ParameterContext) context);
                 } catch (IOException exception) {
                     MiniMLLogger.INSTANCE.exception(exception);
                 }
@@ -75,7 +75,7 @@ public class DatasetTab extends JComponent {
         return this.fileSelectContext;
     }
 
-    public void handleFileSelectContext(AbstractParameterContext context) {
+    public void handleFileSelectContext(ParameterContext context) {
         context.setValue(this.dataset, "str");
         context.updateState();
     }

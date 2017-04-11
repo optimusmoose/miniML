@@ -10,14 +10,14 @@ import workflow.state.StateFactory;
  * Will hold details about specific contextual objects
  * Validates and updates its own state
  */
-public abstract class AbstractParameterContext extends AbstractCompositeContext {
+public class ParameterContext extends AbstractCompositeContext {
 
     protected Object value; //object form of a primative or other type such as range
 
     /**
      * Instantiate context with a null state
      */
-    AbstractParameterContext(ContextInterface parentContext, String key) {
+    ParameterContext(ContextInterface parentContext, String key) {
         super(StateFactory.INSTANCE.empty(), parentContext, key);
     }
 
@@ -27,7 +27,9 @@ public abstract class AbstractParameterContext extends AbstractCompositeContext 
      * to be used for updating state
      * @return boolean
      */
-    abstract boolean isValid();
+    protected boolean isValid() {
+        return this.value != null;
+    }
 
     /**
      * update the State of the Context based on the self defined isValid method
@@ -44,19 +46,10 @@ public abstract class AbstractParameterContext extends AbstractCompositeContext 
     }
 
     /**
-     * Set the details of the Parameter
-     * @param type String
-     * @param value String
-     */
-    void setParameter(String type, String value) {
-        this.value = TypeFactory.INSTANCE.get(type, value);
-    }
-
-    /**
      * getter fot the value object
      * @return Object
      */
-    Object getValue() {
+    public Object getValue() {
         return this.value;
     }
 

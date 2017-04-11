@@ -4,7 +4,7 @@ import utils.Logging.MiniMLLogger;
 
 import java.io.File;
 
-public class FileContext extends AbstractParameterContext {
+public class FileContext extends ParameterContext {
 
     public final static String INPUT_FILE_KEY = "INPUT_FILE_0";
 
@@ -18,8 +18,11 @@ public class FileContext extends AbstractParameterContext {
     }
 
     @Override
-    boolean isValid() {
-        return this.fileExists() && this.fileIsValid();
+    protected boolean isValid() {
+        if(super.isValid()) {
+            return this.fileExists() && this.fileIsValid();
+        }
+        return false;
     }
 
     private boolean fileExists() {
