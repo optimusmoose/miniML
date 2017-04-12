@@ -67,6 +67,10 @@ class WrappedParamFinal extends WrappedParam{
         this.value = value;
     }
 
+    public String getFlag(){
+        return(flag);
+    }
+
     public String getValue() {
         return value;
     }

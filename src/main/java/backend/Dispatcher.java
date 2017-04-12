@@ -1,5 +1,6 @@
 package backend;
 
+import java.util.ArrayList;
 import java.util.Timer;
 
 /**
@@ -36,9 +37,25 @@ public class Dispatcher {
      */
     public void launch(){
         //calculates the timer
+        long endTime = System.currentTimeMillis() + (this.minutes * 60 * 1000);
         //starts the dispatch loop
-        //calls each algorithm (iterative? threads? hmm.)
-        //exit when time is up
+        while(System.currentTimeMillis() < endTime) {
+            //calls each algorithm (iterative? threads? hmm.)
+            //TODO: start with iterative, work up a threaded WTM
+            //
+            //LR
+            ArrayList<WrappedParamFinal> LR_params = searchType.getNextParamSet(param_iface_lr);
+            ArrayList<String> lr_pars = new ArrayList<String>();
+            for(WrappedParamFinal p : LR_params){ //unpack wrapped params into
+                lr_pars.add(p.getFlag());
+                lr_pars.add(p.getValue());
+            }
+            String[] lr_array = new String[lr_pars.size()];
+            lr_pars.toArray(lr_array);
+            lr.setParams(lr_array);
+            taskList.addTask(lr);
+            taskList.doTask();
+        }
     }
 
     /**

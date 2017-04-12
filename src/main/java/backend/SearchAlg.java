@@ -3,13 +3,11 @@ package backend;
 import java.util.ArrayList;
 import java.util.Random;
 
-import utils.TypeFactory;
-
 /**
  * Explore the parameter space of an algorithm.
  */
 public interface SearchAlg {
-    ArrayList<WrappedParam> getNextParamSet(ParameterIFace parameterSet);
+    ArrayList<WrappedParamFinal> getNextParamSet(ParameterIFace parameterSet);
 }
 
 class randomSearch implements SearchAlg {
@@ -26,7 +24,7 @@ class randomSearch implements SearchAlg {
         dsp = owner;
     }
 
-    public ArrayList<WrappedParam> getNextParamSet(ParameterIFace parameterSet){
+    public ArrayList<WrappedParamFinal> getNextParamSet(ParameterIFace parameterSet){
         ArrayList<WrappedParam> outParams = new ArrayList<WrappedParam>();
         ArrayList<WrappedParam> inParams = parameterSet.getParameters();
         //iterate through parameter set and generate some values for our weka call
