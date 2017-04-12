@@ -67,7 +67,7 @@ class ParameterIFace_LR implements ParameterIFace {
         WrappedParam ridge = new WrappedParamFloat("float","ridge","-R",0,1);
         params.add(ridge);
         //eliminate colinear variables
-        WrappedParam colinear = new WrappedParamBoolean("boolean","Eliminate Colinear","-C",true);
+        WrappedParam colinear = new WrappedParamEmpty("empty","Eliminate Colinear","-C");
         params.add(colinear);
         this.params = params;
     }
