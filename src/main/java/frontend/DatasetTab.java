@@ -5,26 +5,30 @@ import utils.TypeFactory;
 import workflow.Keys;
 import workflow.WorkflowManager;
 import workflow.context.AbstractCompositeContext;
-import workflow.context.ParameterContext;
 import workflow.context.DatasetContext;
 import workflow.context.FileContext;
+import workflow.context.ParameterContext;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
-
-import static org.apache.commons.io.FileUtils.readFileToString;
 
 public class DatasetTab extends JComponent {
 
     private AbstractCompositeContext parentContext;
     private DatasetContext context;
     private FileContext fileSelectContext;
+
     private String dataset;
-    private JTextPane txt = new JTextPane();
+    private String content;
+
+    private JTextPane previewDataset = new JTextPane();
+    private JTextPane previewContent = new JTextPane();
 
     public DatasetTab() {
         super();
@@ -34,25 +38,21 @@ public class DatasetTab extends JComponent {
 
         this.setLayout(new GridLayout());
         JPanel panel = new JPanel(false);
-        panel.setLayout(new GridLayout(6, 0));
+        panel.setLayout(new GridLayout());
         panel.add(fileSelectPanel());
         this.add(panel);
-
     }
 
     private JPanel fileSelectPanel(){
-        //context for the file selector
         fileSelectContext = new FileContext(this.context, Keys.DatasetFile);
 
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout());
-        JScrollPane scrollPane = new JScrollPane(txt);
+        JScrollPane datasetScrollPane = new JScrollPane(previewDataset);
+        JScrollPane contentScrollPane = new JScrollPane(previewContent);
         JButton fileSelect = new JButton("Browse...");
         JLabel tip = new JLabel("Select a Dataset: ");
 
-        /*
-         * listeners should be anonymous inner classes, this prevents nasty hacks
-         */
         fileSelect.addActionListener(new ActionListener() {
             private AbstractCompositeContext context;
 
@@ -62,7 +62,7 @@ public class DatasetTab extends JComponent {
                     selectFile();
                     context = WorkflowManager.INSTANCE.getContextByKey(Keys.DatasetFile);
                     handleFileSelectContext((ParameterContext) context);
-                } catch (IOException exception) {
+                } catch (Exception exception) {
                     MiniMLLogger.INSTANCE.exception(exception);
                 }
             }
@@ -70,13 +70,10 @@ public class DatasetTab extends JComponent {
 
         panel.add(tip);
         panel.add(fileSelect);
-        panel.add(scrollPane);
-        return panel;
-    }
+        panel.add(datasetScrollPane);
+        panel.add(contentScrollPane);
 
-    //TODO: move this to wrapper magic class that does not exist yet
-    public FileContext getFileSelectContext(){
-        return this.fileSelectContext;
+        return panel;
     }
 
     public void handleFileSelectContext(ParameterContext context) {
@@ -85,22 +82,38 @@ public class DatasetTab extends JComponent {
     }
 
     public void selectFile() throws IOException {
-        String contents;
         JFileChooser fileChooser = new JFileChooser();
         File selectedFile;
         fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
         int result = fileChooser.showOpenDialog(this.getParent());
         if (result == JFileChooser.APPROVE_OPTION) {
             selectedFile = fileChooser.getSelectedFile();
-            MiniMLLogger.INSTANCE.info("Selected file: " + selectedFile.getAbsolutePath());
-            contents = readFileToString(selectedFile);//TODO: deprecated fileread, why! this will explode on a huge file!
             this.dataset = selectedFile.getAbsolutePath();
-            txt.setText(contents);
+            this.previewDataset.setText(this.dataset);
+            this.previewData(selectedFile);
+
+            MiniMLLogger.INSTANCE.info("Selected file: " + selectedFile.getAbsolutePath());
         }
     }
 
-    public void previewData() {
+    public void previewData(File file) {
+        String line;
+        int lines = 0;
+        int linesToRead = 250; //TODO: extract to a config
+        BufferedReader reader;
 
+        try {
+            reader = new BufferedReader(new FileReader(file.getAbsolutePath()));
+            while(((line = reader.readLine()) != null) && lines < linesToRead) {
+                this.content += line + '\n';
+                lines++;
+            }
+            reader.close();
+        } catch (IOException exception) {
+            MiniMLLogger.INSTANCE.exception(exception);
+        }
+
+        previewContent.setText(this.content);
     }
 
 }
