@@ -40,8 +40,7 @@ public class DatasetTab extends JComponent {
         context = new DatasetContext(parentContext, Keys.DatasetConfig);
 
         this.setLayout(new GridLayout());
-        constraints = new GridBagConstraints();
-        constraints.fill = GridBagConstraints.BOTH;
+        this.constraints = new GridBagConstraints();
 
         this.panel = new JPanel(false);
         this.panel.setLayout(new GridBagLayout());
@@ -74,21 +73,24 @@ public class DatasetTab extends JComponent {
 
         constraints.gridx = 0;
         constraints.gridy = 0;
-        constraints.weightx = 10;
-        constraints.weighty = 10;
+        constraints.weightx = 0.33;
+        constraints.weighty = 0.1;
         this.panel.add(browsLabel, this.constraints);
 
         this.constraints.gridx = 1;
-        constraints.weightx = 40;
+        constraints.weightx = 0.4;
         this.panel.add(browseButton, this.constraints);
 
+        this.constraints.fill = GridBagConstraints.HORIZONTAL;
         this.constraints.gridx = 2;
         this.panel.add(datasetScrollPane, this.constraints);
 
+        this.constraints.fill = GridBagConstraints.BOTH;
         this.constraints.gridx = 0;
         this.constraints.gridy = 1;
-        this.constraints.weightx = 100;
-        this.constraints.weighty = 90;
+        this.constraints.gridwidth = 3;
+        this.constraints.weightx = 1;
+        this.constraints.weighty = 0.9;
 
         this.panel.add(contentScrollPane, this.constraints);
     }
