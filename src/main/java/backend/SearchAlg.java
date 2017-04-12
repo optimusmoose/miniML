@@ -3,6 +3,8 @@ package backend;
 import java.util.ArrayList;
 import java.util.Random;
 
+import utils.TypeFactory;
+
 /**
  * Explore the parameter space of an algorithm.
  */
