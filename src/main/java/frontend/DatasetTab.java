@@ -27,6 +27,9 @@ public class DatasetTab extends JComponent {
     private String dataset;
     private String content;
 
+    GridBagConstraints constraints;
+    JPanel panel;
+
     private JTextPane previewDataset = new JTextPane();
     private JTextPane previewContent = new JTextPane();
 
@@ -37,23 +40,24 @@ public class DatasetTab extends JComponent {
         context = new DatasetContext(parentContext, Keys.DatasetConfig);
 
         this.setLayout(new GridLayout());
-        JPanel panel = new JPanel(false);
-        panel.setLayout(new GridLayout());
-        panel.add(fileSelectPanel());
-        this.add(panel);
+        constraints = new GridBagConstraints();
+        constraints.fill = GridBagConstraints.BOTH;
+
+        this.panel = new JPanel(false);
+        this.panel.setLayout(new GridBagLayout());
+        fileSelectPanel();
+        this.add(this.panel);
     }
 
-    private JPanel fileSelectPanel(){
+    private void fileSelectPanel(){
         fileSelectContext = new FileContext(this.context, Keys.DatasetFile);
 
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout());
         JScrollPane datasetScrollPane = new JScrollPane(previewDataset);
         JScrollPane contentScrollPane = new JScrollPane(previewContent);
-        JButton fileSelect = new JButton("Browse...");
-        JLabel tip = new JLabel("Select a Dataset: ");
+        JLabel browsLabel = new JLabel("Select a Dataset: ");
+        JButton browseButton = new JButton("Browse...");
 
-        fileSelect.addActionListener(new ActionListener() {
+        browseButton.addActionListener(new ActionListener() {
             private AbstractCompositeContext context;
 
             @Override
@@ -68,12 +72,25 @@ public class DatasetTab extends JComponent {
             }
         });
 
-        panel.add(tip);
-        panel.add(fileSelect);
-        panel.add(datasetScrollPane);
-        panel.add(contentScrollPane);
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.weightx = 10;
+        constraints.weighty = 10;
+        this.panel.add(browsLabel, this.constraints);
 
-        return panel;
+        this.constraints.gridx = 1;
+        constraints.weightx = 40;
+        this.panel.add(browseButton, this.constraints);
+
+        this.constraints.gridx = 2;
+        this.panel.add(datasetScrollPane, this.constraints);
+
+        this.constraints.gridx = 0;
+        this.constraints.gridy = 1;
+        this.constraints.weightx = 100;
+        this.constraints.weighty = 90;
+
+        this.panel.add(contentScrollPane, this.constraints);
     }
 
     public void handleFileSelectContext(ParameterContext context) {
