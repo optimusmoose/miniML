@@ -8,6 +8,7 @@ import workflow.context.AbstractCompositeContext;
 //import workflow.context.AbstractParameterContext;
 import workflow.context.DatasetContext;
 import workflow.context.FileContext;
+import workflow.context.ParameterContext;
 
 import javax.swing.*;
 import java.awt.*;
@@ -79,7 +80,7 @@ public class DatasetTab extends JComponent {
         return this.fileSelectContext;
     }
 
-    public void handleFileSelectContext(AbstractParameterContext context) {
+    public void handleFileSelectContext(ParameterContext context) {
         context.setValue(this.dataset, TypeFactory.STRING);
         context.updateState();
     }

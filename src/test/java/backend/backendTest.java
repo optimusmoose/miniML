@@ -74,6 +74,7 @@ public class backendTest extends TestCase{
         //give data to the WekaTaskManager
         //mgr.setData(data);
         dispatch.setData(data);
+        dispatch.setTimeLimit(1);
         dispatch.launch();
 
         //run some tests on the data.

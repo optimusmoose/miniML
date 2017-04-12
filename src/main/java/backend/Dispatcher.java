@@ -39,6 +39,7 @@ public class Dispatcher {
      * Start the dispatcher. Your foes tremble!
      */
     public void launch(){
+        mgr.setData(data);
         //calculates the timer
         long endTime = System.currentTimeMillis() + (this.minutes * 60 * 1000);
         //starts the dispatch loop
@@ -49,15 +50,24 @@ public class Dispatcher {
             //LR
             ArrayList<WrappedParamFinal> LR_params = searchType.getNextParamSet(param_iface_lr);
             ArrayList<String> lr_pars = new ArrayList<String>();
-            for(WrappedParamFinal p : LR_params){ //unpack wrapped params into
+            for (WrappedParamFinal p : LR_params) { //unpack wrapped params into
                 lr_pars.add(p.getFlag());
                 lr_pars.add(p.getValue());
             }
+            System.out.println("1");
             String[] lr_array = new String[lr_pars.size()];
             lr_pars.toArray(lr_array);
-            lr.setParams(lr_array);
-            taskList.addTask(lr);
-            taskList.doTask();
+            //lr.setParams(lr_array);
+            mgr.manage_LR(lr_array);
+            System.out.println("2");
+            //taskList.addTask(lr);
+            System.out.println("3");
+            //taskList.doTask();
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ex) {
+                Thread.currentThread().interrupt();
+            }
         }
     }
 
