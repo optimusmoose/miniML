@@ -25,7 +25,7 @@ class randomSearch implements SearchAlg {
     }
 
     public ArrayList<WrappedParamFinal> getNextParamSet(ParameterIFace parameterSet){
-        ArrayList<WrappedParam> outParams = new ArrayList<WrappedParam>();
+        ArrayList<WrappedParamFinal> outParams = new ArrayList<WrappedParamFinal>();
         ArrayList<WrappedParam> inParams = parameterSet.getParameters();
         //iterate through parameter set and generate some values for our weka call
         for(WrappedParam p : inParams){

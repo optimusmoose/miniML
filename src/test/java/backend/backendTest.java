@@ -50,10 +50,11 @@ public class backendTest extends TestCase{
      */
     public static void main(String[] args) {
         //build command pattern objects
-        WekaTaskManager mgr = new WekaTaskManager();
-        LR_Task lr = new LR_Task(mgr);
-        NN_Task nn = new NN_Task(mgr);
-        WekaInvoker taskList = new WekaInvoker();
+        //WekaTaskManager mgr = new WekaTaskManager();
+        //LR_Task lr = new LR_Task(mgr);
+        //NN_Task nn = new NN_Task(mgr);
+        //WekaInvoker taskList = new WekaInvoker();
+        Dispatcher dispatch = new Dispatcher();
 
         //load some data
         String path = "src/test/resources/data/cpu.arff";
@@ -69,14 +70,17 @@ public class backendTest extends TestCase{
 
         //designate the last column as the data's 'class'
         data.setClassIndex(data.numAttributes() - 1);
+
         //give data to the WekaTaskManager
-        mgr.setData(data);
+        //mgr.setData(data);
+        dispatch.setData(data);
+        dispatch.launch();
 
         //run some tests on the data.
-        taskList.addTask(lr); // run LR
-        taskList.addTask(nn); // run NN
-        taskList.doTask();
-        taskList.doTask();
+        //taskList.addTask(lr); // run LR
+        //taskList.addTask(nn); // run NN
+        //taskList.doTask();
+        //taskList.doTask();
     }
 
     /**

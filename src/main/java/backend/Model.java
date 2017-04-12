@@ -102,7 +102,7 @@ class LR_Model extends Model {
     protected void run() throws Exception {
         //invoke crossfold validation (Classifier obj, Instance, #folds, RNG)
         eval.crossValidateModel(classifier, data, 10, new Random(1));
-        //System.out.println(eval.toSummaryString("\nResults\n======\n", false));
+        System.out.println(eval.toSummaryString("\nResults\n======\n", false));
     }
 }
 
@@ -124,6 +124,6 @@ class NN_Model extends Model {
     protected void run() throws Exception {
         //invoke crossfold validation (Classifier obj, Instance, #folds, RNG)
         eval.crossValidateModel(classifier, data, 10, new Random(1));
-        //System.out.println(eval.toSummaryString("\nResults\n======\n", false));
+        System.out.println(eval.toSummaryString("\nResults\n======\n", false));
     }
 }
