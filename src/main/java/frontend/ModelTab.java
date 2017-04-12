@@ -1,15 +1,28 @@
 package frontend;
 
+import utils.Logging.MiniMLLogger;
+import workflow.Keys;
+import workflow.WorkflowManager;
+import workflow.context.AbstractCompositeContext;
+import workflow.context.ModelContext;
+import workflow.context.ParameterContext;
+
 import javax.swing.*;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JComponent;
-import java.awt.GridLayout;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import java.awt.*;
 
 public class ModelTab extends JComponent {
 
+    private AbstractCompositeContext parentContext;
+    private ModelContext context;
+    private ParameterContext estimatedRuntimeContext;
+
     public ModelTab(){
         super();
+
+        parentContext = WorkflowManager.INSTANCE.getContextByKey(Keys.App);
+        context = new ModelContext(parentContext, Keys.ModelConfig);
 
         this.setLayout(new GridLayout());
         JPanel panel = new JPanel(false);
@@ -32,15 +45,44 @@ public class ModelTab extends JComponent {
     }
 
     private JPanel getETAPanel(){
+        this.estimatedRuntimeContext = new ParameterContext(this.context, Keys.EstimatedTimeConfig);
+
         JPanel e_panel = new JPanel();
         e_panel.setLayout(new GridLayout());
-        String val = new String();
+        String val = "";
         JLabel tip = new JLabel("Estimated Runtime: " + val);
         JSlider slider = new JSlider(1,60,10);
-        val = String.valueOf(slider.getValue());
+                /*
+         * listeners should be anonymous inner classes, this prevents nasty hacks
+         */
+        slider.addChangeListener(new ChangeListener() {
+            private AbstractCompositeContext context;
+
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                try {
+                    context = WorkflowManager.INSTANCE.getContextByKey(Keys.EstimatedTimeConfig);
+                    updateEstimatedTime();
+                    handleEstimatedTimeContext((ParameterContext) context);
+                } catch(Exception exception) {
+                    MiniMLLogger.INSTANCE.exception(exception);
+                }
+            }
+        });
+
+        val = String.valueOf(slider.getValue());//TODO: extract to class
         e_panel.add(tip);
         e_panel.add(slider);
         return e_panel;
+    }
+
+    public void updateEstimatedTime() {
+        //TODO: do the things with the frontend
+    }
+
+    public void handleEstimatedTimeContext(ParameterContext context) {
+        //TODO: set the value on the context
+        context.updateState();
     }
 
     private JPanel getAlgorithmPanel(){

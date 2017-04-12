@@ -15,7 +15,7 @@ public class ParameterContext extends AbstractCompositeContext {
     /**
      * Instantiate context with a null state
      */
-    ParameterContext(ContextInterface parentContext, String key) {
+    public ParameterContext(ContextInterface parentContext, String key) {
         super(StateFactory.INSTANCE.empty(), parentContext, key);
     }
 

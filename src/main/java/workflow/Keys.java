@@ -13,6 +13,7 @@ public class Keys {
     public static final String DatasetFile = "MML_DS_CFG_FILE";
 
     public static final String ModelConfig = "MML_ALGS_CFG";
+    public static final String EstimatedTimeConfig = "MML_ALGS_ET_CFG";
 
     public static final String PreprocessConfig = "MML_PP_CFG";
 
