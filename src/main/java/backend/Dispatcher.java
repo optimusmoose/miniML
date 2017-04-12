@@ -1,5 +1,7 @@
 package backend;
 
+import weka.core.Instances;
+
 import java.util.ArrayList;
 import java.util.Timer;
 
@@ -9,6 +11,7 @@ import java.util.Timer;
  */
 public class Dispatcher {
     int minutes; //number of minutes for the run
+    Instances data;
     SearchAlg searchType;
     WekaTaskManager mgr;
     WekaInvoker taskList;
@@ -64,6 +67,10 @@ public class Dispatcher {
      */
     public void setTimeLimit(int mins){
         minutes = mins;
+    }
+
+    public void setData(Instances d){
+        data = d;
     }
 
 
