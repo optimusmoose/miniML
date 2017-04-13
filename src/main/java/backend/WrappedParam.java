@@ -107,6 +107,33 @@ class WrappedParamFloat extends WrappedParam {
     }
 }
 
+class WrappedParamLong extends WrappedParam {
+    long minValue;
+    long maxValue;
+
+    public WrappedParamLong(String type, String name, String flag, long minValue, long maxValue){
+        super(type,name,flag);
+        this.minValue = minValue;
+        this.maxValue = maxValue;
+    }
+
+    public float getMinValue() {
+        return minValue;
+    }
+
+    public void setMinValue(long minValue) {
+        this.minValue = minValue;
+    }
+
+    public float getMaxValue() {
+        return maxValue;
+    }
+
+    public void setMaxValue(long maxValue) {
+        this.maxValue = maxValue;
+    }
+}
+
 class WrappedParamInt extends WrappedParam {
     int minValue;
     int maxValue;
