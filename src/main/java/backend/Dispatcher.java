@@ -49,20 +49,15 @@ public class Dispatcher {
             //
             //LR
             ArrayList<WrappedParamFinal> LR_params = searchType.getNextParamSet(param_iface_lr);
-            ArrayList<String> lr_pars = new ArrayList<String>();
-            for (WrappedParamFinal p : LR_params) { //unpack wrapped params into
-                lr_pars.add(p.getFlag());
-                lr_pars.add(p.getValue());
-            }
-            System.out.println("1");
-            String[] lr_array = new String[lr_pars.size()];
-            lr_pars.toArray(lr_array);
-            //lr.setParams(lr_array);
+            String[] lr_array = unpackWrappedParams(LR_params);
             mgr.manage_LR(lr_array);
-            System.out.println("2");
-            //taskList.addTask(lr);
-            System.out.println("3");
-            //taskList.doTask();
+            //NN
+            ArrayList<WrappedParamFinal> NN_params = searchType.getNextParamSet(param_iface_nn);
+            String[] nn_array = unpackWrappedParams(NN_params);
+            mgr.manage_NN(nn_array);
+            //TODO: SVM
+            //TODO: decision tree
+            //sleep; then check if we need new threads?
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException ex) {
@@ -81,6 +76,17 @@ public class Dispatcher {
 
     public void setData(Instances d){
         data = d;
+    }
+
+    public String[] unpackWrappedParams(ArrayList<WrappedParamFinal> packed){
+        ArrayList<String> pars = new ArrayList<String>();
+        for (WrappedParamFinal p : packed) { //unpack wrapped params into
+            pars.add(p.getFlag());
+            pars.add(p.getValue());
+        }
+        String[] parArr = new String[pars.size()];
+        pars.toArray(parArr);
+        return(parArr);
     }
 
 

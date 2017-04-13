@@ -32,8 +32,8 @@ class ParameterIFace_NN implements ParameterIFace {
         WrappedParam valid = new WrappedParamInt("int","validation set size","-V",1,99);
         params.add(valid);
         //seed
-        WrappedParam seed = new WrappedParamFloat("float","RNG seed","-S",0,1);
-        params.add(seed);
+        //WrappedParam seed = new WrappedParamFloat("float","RNG seed","-S",0,1);
+        //params.add(seed);
         //nodes each layer
         WrappedParam layer = new WrappedParamString("String","layer width","-H","aiot");
         params.add(layer);
