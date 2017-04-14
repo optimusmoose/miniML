@@ -21,6 +21,8 @@ public class ModelTab extends JComponent {
     private ParameterContext toggleNeuralNetContext;
     private ParameterContext toggleSuppVecContext;
     private ParameterContext toggleDecTreeContext;
+    private ParameterContext methodSelectContext;
+    private ParameterContext ridgeContext;
 
     public ModelTab(){
         super();
@@ -205,18 +207,53 @@ public class ModelTab extends JComponent {
 
 
     private JPanel getLinearRegressionPanel(){
+        this.methodSelectContext = new ParameterContext(this.context, Keys.MethodSelect);
+        this.ridgeContext = new ParameterContext(this.context, Keys.Ridge);
+
         JPanel panel = new JPanel();
         String val1 = "";
         String val2 = "";
         panel.setLayout(new GridLayout());
         JLabel tip = new JLabel("Linear Regression: ");
-        JProgressBar pbar = new JProgressBar(0,0,100);
+        JProgressBar pbar = new JProgressBar(0,0,100); // Do we need this?
         JLabel par1 = new JLabel("Select Method: " + val1);
         JLabel par2 = new JLabel("Ridge: " + val2);
         JSlider slider1 = new JSlider(0,2,1);
         JSlider slider2 = new JSlider(0, 1, 1);
-        val1 = String.valueOf(slider1.getValue());
-        val2 = String.valueOf(slider2.getValue());
+
+        slider1.addChangeListener(new ChangeListener() {
+            private AbstractCompositeContext context;
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                try {
+                    context = WorkflowManager.INSTANCE.getContextByKey(Keys.MethodSelect);
+                    updateMethodSelect();
+                    handleMethodSelectContext((ParameterContext) context);
+                } catch(Exception exception) {
+                    MiniMLLogger.INSTANCE.exception(exception);
+                }
+            }
+        });
+
+        slider2.addChangeListener(new ChangeListener() {
+            private AbstractCompositeContext context;
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                try {
+                    context = WorkflowManager.INSTANCE.getContextByKey(Keys.Ridge);
+                    updateRidge();
+                    handleRidgeContext((ParameterContext) context);
+                } catch(Exception exception) {
+                    MiniMLLogger.INSTANCE.exception(exception);
+                }
+            }
+        });
+
+
+        //        val1 = String.valueOf(slider1.getValue());
+//        val2 = String.valueOf(slider2.getValue());
+
+
         panel.add(tip);
         //getLinearRegressionPanel.add(pbar);
         panel.add(par1);
@@ -224,6 +261,24 @@ public class ModelTab extends JComponent {
         panel.add(par2);
         panel.add(slider2);
         return panel;
+    }
+
+    public void updateMethodSelect() {
+        //TODO: do the things with the frontend
+    }
+
+    public void updateRidge() {
+        //TODO: do the things with the frontend
+    }
+
+    public void handleMethodSelectContext(ParameterContext context) {
+        //TODO: set the value on the context
+        context.updateState();
+    }
+
+    public void handleRidgeContext(ParameterContext context) {
+        //TODO: set the value on the context
+        context.updateState();
     }
 
     private JPanel getNeuralNetPanel(){
