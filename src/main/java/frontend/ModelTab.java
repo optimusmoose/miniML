@@ -109,6 +109,8 @@ public class ModelTab extends JComponent {
             public void stateChanged(ChangeEvent e) {
                 try {
                     context = WorkflowManager.INSTANCE.getContextByKey(Keys.ToggleLinReg);
+                    updateLinearRegression();
+                    handleLinearRegressionContext((ParameterContext) context);
                 } catch(Exception exception) {
                     MiniMLLogger.INSTANCE.exception(exception);
                 }
@@ -120,7 +122,9 @@ public class ModelTab extends JComponent {
             @Override
             public void stateChanged(ChangeEvent e) {
                 try {
-                    //context = WorkflowManager.INSTANCE.getContextByKey(Keys.)
+                    context = WorkflowManager.INSTANCE.getContextByKey(Keys.ToggleNeuralNet);
+                    updateNeuralNetwork();
+                    handleNeuralNetworkContext((ParameterContext) context);
                 } catch(Exception exception) {
                     MiniMLLogger.INSTANCE.exception(exception);
                 }
@@ -132,7 +136,9 @@ public class ModelTab extends JComponent {
             @Override
             public void stateChanged(ChangeEvent e) {
                 try {
-                    //context = WorkflowManager.INSTANCE.getContextByKey(Keys.)
+                    context = WorkflowManager.INSTANCE.getContextByKey(Keys.ToggleSuppVec);
+                    updateSuppVector();
+                    handleSuppVectorContext((ParameterContext) context);
                 } catch(Exception exception) {
                     MiniMLLogger.INSTANCE.exception(exception);
                 }
@@ -144,7 +150,9 @@ public class ModelTab extends JComponent {
             @Override
             public void stateChanged(ChangeEvent e) {
                 try {
-                    //context = WorkflowManager.INSTANCE.getContextByKey(Keys.)
+                    context = WorkflowManager.INSTANCE.getContextByKey(Keys.ToggleDecTree);
+                    updateDecisionTree();
+                    handleDecisionTreeContext((ParameterContext) context);
                 } catch(Exception exception) {
                     MiniMLLogger.INSTANCE.exception(exception);
                 }
@@ -159,10 +167,47 @@ public class ModelTab extends JComponent {
         return panel;
     }
 
+    public void updateLinearRegression() {
+        //TODO: do the things with the frontend
+    }
+
+    public void updateNeuralNetwork() {
+        //TODO: do the things with the frontend
+    }
+
+    public void updateSuppVector() {
+        //TODO: do the things with the frontend
+    }
+
+    public void updateDecisionTree() {
+        //TODO: do the things with the frontend
+    }
+
+    public void handleLinearRegressionContext(ParameterContext context) {
+        //TODO: set the value on the context
+        context.updateState();
+        }
+
+    public void handleNeuralNetworkContext(ParameterContext context) {
+        //TODO: set the value on the context
+        context.updateState();
+    }
+
+    public void handleSuppVectorContext(ParameterContext context) {
+        //TODO: set the value on the context
+        context.updateState();
+    }
+
+    public void handleDecisionTreeContext(ParameterContext context) {
+        //TODO: set the value on the context
+        context.updateState();
+    }
+
+
     private JPanel getLinearRegressionPanel(){
         JPanel panel = new JPanel();
-        String val1 = new String();
-        String val2 = new String();
+        String val1 = "";
+        String val2 = "";
         panel.setLayout(new GridLayout());
         JLabel tip = new JLabel("Linear Regression: ");
         JProgressBar pbar = new JProgressBar(0,0,100);
