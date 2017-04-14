@@ -3,7 +3,6 @@ package backend;
 import weka.core.Instances;
 
 import java.util.ArrayList;
-import java.util.Timer;
 
 /**
  * Big one. This class will be responsible for making calls to the Weka command system
@@ -18,7 +17,7 @@ public class Dispatcher {
     //TODO tasks are hardcoded for now; fix it in future iterations so user can specify which to make
     LR_Task lr;
     NN_Task nn;
-    //TODO see TODO above
+    //TODO ParameterIFaces are hardcoded until we can generalize parameter selection
     ParameterIFace param_iface_nn;
     ParameterIFace param_iface_lr;
 
@@ -36,7 +35,10 @@ public class Dispatcher {
     }
 
     /**
-     * Start the dispatcher. Your foes tremble!
+     * Launches the dispatcher which starts generating parameter sets for models, dispatching models,
+     * and more all while counting down the time it has to run.
+     *
+     * A lot happens here and a flurry of changes are imminent. TODO
      */
     public void launch(){
         mgr.setData(data);
@@ -45,8 +47,7 @@ public class Dispatcher {
         //starts the dispatch loop
         while(System.currentTimeMillis() < endTime) {
             //calls each algorithm (iterative? threads? hmm.)
-            //TODO: start with iterative, work up a threaded WTM
-            //
+            //TODO: start with iterative, work up a threaded WekaTaskManager
             //LR
             ArrayList<WrappedParamFinal> LR_params = searchType.getNextParamSet(param_iface_lr);
             String[] lr_array = unpackWrappedParams(LR_params);
@@ -57,9 +58,9 @@ public class Dispatcher {
             mgr.manage_NN(nn_array);
             //TODO: SVM
             //TODO: decision tree
-            //sleep; then check if we need new threads?
+            //sleep; then check if we need new threads
             try {
-                Thread.sleep(1000);
+                Thread.sleep(100);
             } catch (InterruptedException ex) {
                 Thread.currentThread().interrupt();
             }
@@ -74,10 +75,21 @@ public class Dispatcher {
         minutes = mins;
     }
 
+    /**
+     * Set the data set that the dispatcher will be using.
+     * @param d
+     */
     public void setData(Instances d){
         data = d;
     }
 
+    /**
+     * Unpack an arraylist of wrapped params into a string array for passing to model.
+     * There is probably a better place for this method, but it escapes me at the moment.
+     *
+     * @param packed : an  ArrayList<WrappedParamFinal> with all parameters for one run.
+     * @return a String[] of flags and their values.
+     */
     public String[] unpackWrappedParams(ArrayList<WrappedParamFinal> packed){
         ArrayList<String> pars = new ArrayList<String>();
         for (WrappedParamFinal p : packed) { //unpack wrapped params into
