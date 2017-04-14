@@ -559,10 +559,14 @@ public class ModelTab extends JComponent {
     }
 
     public JPanel getDecisionTreePanel(){
+        this.pruningConfidenceContext = new ParameterContext(this.context, Keys.PruningConfidence);
+        this.pruningFoldsContext = new ParameterContext(this.context, Keys.PruningFolds);
+        this.instancesContext = new ParameterContext(this.context, Keys.Instances);
+
         JPanel panel = new JPanel();
-        String val1 = new String();
-        String val2 = new String();
-        String val3 = new String();
+        String val1 = "";
+        String val2 = "";
+        String val3 = "";
         panel.setLayout(new GridLayout());
         JLabel tip = new JLabel("Decision Tree: ");
         JProgressBar pbar = new JProgressBar(0,0,100);
@@ -572,6 +576,50 @@ public class ModelTab extends JComponent {
         JSlider slider1 = new JSlider(1,9,1);
         JSlider slider2 = new JSlider(1, 100, 10);
         JSlider slider3 = new JSlider(0,100,20);
+
+        slider1.addChangeListener(new ChangeListener() {
+            private AbstractCompositeContext context;
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                try {
+                    context = WorkflowManager.INSTANCE.getContextByKey(Keys.PruningConfidence);
+                    updatePruningConfidence();
+                    handlePruningConfidenceContext((ParameterContext) context);
+                } catch(Exception exception) {
+                    MiniMLLogger.INSTANCE.exception(exception);
+                }
+            }
+        });
+
+        slider2.addChangeListener(new ChangeListener() {
+            private AbstractCompositeContext context;
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                try {
+                    context = WorkflowManager.INSTANCE.getContextByKey(Keys.PruningFolds);
+                    updatePruningFolds();
+                    handlePruningFoldsContext((ParameterContext) context);
+                } catch(Exception exception) {
+                    MiniMLLogger.INSTANCE.exception(exception);
+                }
+            }
+        });
+
+        slider3.addChangeListener(new ChangeListener() {
+            private AbstractCompositeContext context;
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                try {
+                    context = WorkflowManager.INSTANCE.getContextByKey(Keys.Instances);
+                    updateInstances();
+                    handleInstancesContext((ParameterContext) context);
+                } catch(Exception exception) {
+                    MiniMLLogger.INSTANCE.exception(exception);
+                }
+            }
+        });
+
+
         val1 = String.valueOf(slider1.getValue());
         val2 = String.valueOf(slider2.getValue());
         val3 = String.valueOf(slider3.getValue());
@@ -583,6 +631,33 @@ public class ModelTab extends JComponent {
         panel.add(par3);
         panel.add(slider3);
         return panel;
+    }
+
+    public void updatePruningConfidence() {
+        //TODO: do the things with the frontend
+    }
+
+    public void updatePruningFolds() {
+        //TODO: do the things with the frontend
+    }
+
+    public void updateInstances() {
+        //TODO: do the things with the frontend
+    }
+
+    public void handlePruningConfidenceContext(ParameterContext context) {
+        //TODO: set the value on the context
+        context.updateState();
+    }
+
+    public void handlePruningFoldsContext(ParameterContext context) {
+        //TODO: set the value on the context
+        context.updateState();
+    }
+
+    public void handleInstancesContext(ParameterContext context) {
+        //TODO: set the value on the context
+        context.updateState();
     }
 
 }
