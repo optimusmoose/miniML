@@ -17,6 +17,10 @@ public class ModelTab extends JComponent {
     private AbstractCompositeContext parentContext;
     private ModelContext context;
     private ParameterContext estimatedRuntimeContext;
+    private ParameterContext toggleLinRegContext;
+    private ParameterContext toggleNeuralNetContext;
+    private ParameterContext toggleSuppVecContext;
+    private ParameterContext toggleDecTreeContext;
 
     public ModelTab(){
         super();
@@ -86,6 +90,11 @@ public class ModelTab extends JComponent {
     }
 
     private JPanel getAlgorithmPanel(){
+        this.toggleLinRegContext = new ParameterContext(this.context, Keys.ToggleLinReg);
+        this.toggleNeuralNetContext = new ParameterContext(this.context, Keys.ToggleNeuralNet);
+        this.toggleSuppVecContext = new ParameterContext(this.context, Keys.ToggleSuppVec);
+        this.toggleDecTreeContext = new ParameterContext(this.context, Keys.ToggleDecTree);
+
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout());
         JLabel tip = new JLabel("Algorithms: ");
@@ -93,6 +102,55 @@ public class ModelTab extends JComponent {
         JToggleButton nn = new JToggleButton("Neural Network");
         JToggleButton svm = new JToggleButton("Support Vector Machine");
         JToggleButton dt = new JToggleButton("Decision Tree");
+
+        lr.addChangeListener(new ChangeListener() {
+            private AbstractCompositeContext context;
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                try {
+                    context = WorkflowManager.INSTANCE.getContextByKey(Keys.ToggleLinReg);
+                } catch(Exception exception) {
+                    MiniMLLogger.INSTANCE.exception(exception);
+                }
+            }
+        });
+
+        nn.addChangeListener(new ChangeListener() {
+            private AbstractCompositeContext context;
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                try {
+                    //context = WorkflowManager.INSTANCE.getContextByKey(Keys.)
+                } catch(Exception exception) {
+                    MiniMLLogger.INSTANCE.exception(exception);
+                }
+            }
+        });
+
+        svm.addChangeListener(new ChangeListener() {
+            private AbstractCompositeContext context;
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                try {
+                    //context = WorkflowManager.INSTANCE.getContextByKey(Keys.)
+                } catch(Exception exception) {
+                    MiniMLLogger.INSTANCE.exception(exception);
+                }
+            }
+        });
+
+        dt.addChangeListener(new ChangeListener() {
+            private AbstractCompositeContext context;
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                try {
+                    //context = WorkflowManager.INSTANCE.getContextByKey(Keys.)
+                } catch(Exception exception) {
+                    MiniMLLogger.INSTANCE.exception(exception);
+                }
+            }
+        });
+
         panel.add(tip);
         panel.add(lr);
         panel.add(nn);
