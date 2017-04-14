@@ -1,8 +1,10 @@
 package backend;
 
-import weka.core.Instances;
+import utils.Logging.MiniMLLogger;
 
+import weka.core.Instances;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Big one. This class will be responsible for making calls to the Weka command system
@@ -98,8 +100,12 @@ public class Dispatcher {
         }
         String[] parArr = new String[pars.size()];
         pars.toArray(parArr);
+        log("Selected Parameters: " + Arrays.toString(parArr));
         return(parArr);
     }
 
+    protected void log(String str) {
+        MiniMLLogger.INSTANCE.debug("In dispatcher: " + str);
+    }
 
 }

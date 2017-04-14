@@ -1,5 +1,7 @@
 package backend;
 
+import utils.Logging.MiniMLLogger;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -62,7 +64,7 @@ class randomSearch implements SearchAlg {
                         if (val <= q.getMaxValue() && val >= q.getMinValue()) {
                             search = false;
                         }
-                    } while(search == true);
+                    } while(search);
                     outParams.add(new WrappedParamFinal("long", q.getName(), q.getFlag(), String.valueOf(val)));
                     break;
                 }
@@ -75,7 +77,7 @@ class randomSearch implements SearchAlg {
                 case "empty": { //add this flag, or do not add this flag
                     WrappedParamEmpty q = (WrappedParamEmpty) p;
                     boolean val = random.nextBoolean();
-                    if (val == true) {
+                    if (val) {
                         outParams.add(new WrappedParamFinal("empty", q.getName(), q.getFlag(), String.valueOf("")));
                     }
                     break;
@@ -83,5 +85,9 @@ class randomSearch implements SearchAlg {
             }
         }
         return outParams;
+    }
+
+    protected void log(String str) {
+        MiniMLLogger.INSTANCE.debug("In SearchAlg: " + str);
     }
 }
