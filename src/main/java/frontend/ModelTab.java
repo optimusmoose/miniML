@@ -31,6 +31,9 @@ public class ModelTab extends JComponent {
     private ParameterContext epsilonContext;
     private ParameterContext degreeContext;
     private ParameterContext nuContext;
+    private ParameterContext pruningConfidenceContext;
+    private ParameterContext pruningFoldsContext;
+    private ParameterContext instancesContext;
 
 
     public ModelTab(){
@@ -291,6 +294,11 @@ public class ModelTab extends JComponent {
     }
 
     private JPanel getNeuralNetPanel(){
+        this.hiddenLayerContext = new ParameterContext(this.context, Keys.NumHiddenLayers);
+        this.hiddenNodesContext = new ParameterContext(this.context, Keys.NumHiddenNodes);
+        this.learnRateContext = new ParameterContext(this.context, Keys.LearnRate);
+        this.epochContext = new ParameterContext(this.context, Keys.NumEpochs);
+
         JPanel panel = new JPanel();
         String val1 = "";
         String val2 = "";
@@ -417,12 +425,18 @@ public class ModelTab extends JComponent {
         context.updateState();
     }
 
+
     public JPanel getSupportVectorMachinePanel(){
+        this.gammaContext = new ParameterContext(this.context, Keys.Gamma);
+        this.epsilonContext = new ParameterContext(this.context, Keys.Epsilon);
+        this.degreeContext = new ParameterContext(this.context, Keys.Degree);
+        this.nuContext = new ParameterContext(this.context, Keys.Nu);
+
         JPanel panel = new JPanel();
-        String val1 = new String();
-        String val2 = new String();
-        String val3 = new String();
-        String val4 = new String();
+        String val1 = "";
+        String val2 = "";
+        String val3 = "";
+        String val4 = "";
         panel.setLayout(new GridLayout());
         JLabel tip = new JLabel("Support Vector Machine: ");
         JProgressBar pbar = new JProgressBar(0,0,100);
@@ -434,6 +448,63 @@ public class ModelTab extends JComponent {
         JSlider slider2 = new JSlider(1, 100, 10);
         JSlider slider3 = new JSlider(0,100,20);
         JSlider slider4 = new JSlider(1, 1000, 100);
+
+        slider1.addChangeListener(new ChangeListener() {
+            private AbstractCompositeContext context;
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                try {
+                    context = WorkflowManager.INSTANCE.getContextByKey(Keys.Gamma);
+                    updateGamma();
+                    handleGammaContext((ParameterContext) context);
+                } catch(Exception exception) {
+                    MiniMLLogger.INSTANCE.exception(exception);
+                }
+            }
+        });
+
+        slider2.addChangeListener(new ChangeListener() {
+            private AbstractCompositeContext context;
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                try {
+                    context = WorkflowManager.INSTANCE.getContextByKey(Keys.Epsilon);
+                    updateEpsilon();
+                    handleEpsilonContext((ParameterContext) context);
+                } catch(Exception exception) {
+                    MiniMLLogger.INSTANCE.exception(exception);
+                }
+            }
+        });
+
+        slider3.addChangeListener(new ChangeListener() {
+            private AbstractCompositeContext context;
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                try {
+                    context = WorkflowManager.INSTANCE.getContextByKey(Keys.Degree);
+                    updateDegree();
+                    handleDegreeContext((ParameterContext) context);
+                } catch(Exception exception) {
+                    MiniMLLogger.INSTANCE.exception(exception);
+                }
+            }
+        });
+
+        slider4.addChangeListener(new ChangeListener() {
+            private AbstractCompositeContext context;
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                try {
+                    context = WorkflowManager.INSTANCE.getContextByKey(Keys.Nu);
+                    updateNu();
+                    handleNuContext((ParameterContext) context);
+                } catch(Exception exception) {
+                    MiniMLLogger.INSTANCE.exception(exception);
+                }
+            }
+        });
+
         val1 = String.valueOf(slider1.getValue());
         val2 = String.valueOf(slider2.getValue());
         val3 = String.valueOf(slider3.getValue());
@@ -449,6 +520,42 @@ public class ModelTab extends JComponent {
         panel.add(par4);
         panel.add(slider4);
         return panel;
+    }
+
+    public void updateGamma() {
+        //TODO: do the things with the frontend
+    }
+
+    public void updateEpsilon() {
+        //TODO: do the things with the frontend
+    }
+
+    public void updateDegree() {
+        //TODO: do the things with the frontend
+    }
+
+    public void updateNu() {
+        //TODO: do the things with the frontend
+    }
+
+    public void handleGammaContext(ParameterContext context) {
+        //TODO: set the value on the context
+        context.updateState();
+    }
+
+    public void handleEpsilonContext(ParameterContext context) {
+        //TODO: set the value on the context
+        context.updateState();
+    }
+
+    public void handleDegreeContext(ParameterContext context) {
+        //TODO: set the value on the context
+        context.updateState();
+    }
+
+    public void handleNuContext(ParameterContext context) {
+        //TODO: set the value on the context
+        context.updateState();
     }
 
     public JPanel getDecisionTreePanel(){
