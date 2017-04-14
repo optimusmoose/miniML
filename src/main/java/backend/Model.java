@@ -3,6 +3,8 @@ package backend;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Random;
+
+import utils.Logging.MiniMLLogger;
 import weka.classifiers.AbstractClassifier;
 import weka.core.Instances;
 import weka.core.Option;
@@ -82,6 +84,9 @@ public abstract class Model implements Serializable {
         String[] arr = parameter_descriptions.toArray(new String[parameter_descriptions.size()]);
         return(arr);
     }
+    protected void log(String str) {
+        MiniMLLogger.INSTANCE.info("In Model: " + str);
+    }
 }
 
 class LR_Model extends Model {
@@ -102,7 +107,7 @@ class LR_Model extends Model {
     protected void run() throws Exception {
         //invoke crossfold validation (Classifier obj, Instance, #folds, RNG)
         eval.crossValidateModel(classifier, data, 10, new Random(1));
-        System.out.println(eval.toSummaryString("\nResults\n======\n", false));
+        log(eval.toSummaryString("\nResults\n======\n", false));
     }
 }
 
@@ -124,6 +129,6 @@ class NN_Model extends Model {
     protected void run() throws Exception {
         //invoke crossfold validation (Classifier obj, Instance, #folds, RNG)
         eval.crossValidateModel(classifier, data, 10, new Random(1));
-        System.out.println(eval.toSummaryString("\nResults\n======\n", false));
+        log(eval.toSummaryString("\nResults\n======\n", false));
     }
 }
