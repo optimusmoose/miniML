@@ -23,6 +23,15 @@ public class ModelTab extends JComponent {
     private ParameterContext toggleDecTreeContext;
     private ParameterContext methodSelectContext;
     private ParameterContext ridgeContext;
+    private ParameterContext hiddenLayerContext;
+    private ParameterContext hiddenNodesContext;
+    private ParameterContext learnRateContext;
+    private ParameterContext epochContext;
+    private ParameterContext gammaContext;
+    private ParameterContext epsilonContext;
+    private ParameterContext degreeContext;
+    private ParameterContext nuContext;
+
 
     public ModelTab(){
         super();
@@ -283,10 +292,10 @@ public class ModelTab extends JComponent {
 
     private JPanel getNeuralNetPanel(){
         JPanel panel = new JPanel();
-        String val1 = new String();
-        String val2 = new String();
-        String val3 = new String();
-        String val4 = new String();
+        String val1 = "";
+        String val2 = "";
+        String val3 = "";
+        String val4 = "";
         panel.setLayout(new GridLayout());
         JLabel tip = new JLabel("Neural Network: ");
         JProgressBar pbar = new JProgressBar(0,0,100);
@@ -298,6 +307,63 @@ public class ModelTab extends JComponent {
         JSlider slider2 = new JSlider(1, 100, 10);
         JSlider slider3 = new JSlider(0,100,20);
         JSlider slider4 = new JSlider(1, 1000, 100);
+
+        slider1.addChangeListener(new ChangeListener() {
+            private AbstractCompositeContext context;
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                try {
+                    context = WorkflowManager.INSTANCE.getContextByKey(Keys.NumHiddenLayers);
+                    updateHiddenLayers();
+                    handleHiddenLayersContext((ParameterContext) context);
+                } catch(Exception exception) {
+                    MiniMLLogger.INSTANCE.exception(exception);
+                }
+            }
+        });
+
+        slider2.addChangeListener(new ChangeListener() {
+            private AbstractCompositeContext context;
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                try {
+                    context = WorkflowManager.INSTANCE.getContextByKey(Keys.NumHiddenNodes);
+                    updateHiddenNodes();
+                    handleHiddenNodesContext((ParameterContext) context);
+                } catch(Exception exception) {
+                    MiniMLLogger.INSTANCE.exception(exception);
+                }
+            }
+        });
+
+        slider3.addChangeListener(new ChangeListener() {
+            private AbstractCompositeContext context;
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                try {
+                    context = WorkflowManager.INSTANCE.getContextByKey(Keys.LearnRate);
+                    updateLearnRate();
+                    handleLearnRateContext((ParameterContext) context);
+                } catch(Exception exception) {
+                    MiniMLLogger.INSTANCE.exception(exception);
+                }
+            }
+        });
+
+        slider4.addChangeListener(new ChangeListener() {
+            private AbstractCompositeContext context;
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                try {
+                    context = WorkflowManager.INSTANCE.getContextByKey(Keys.NumEpochs);
+                    updateEpochs();
+                    handleEpochsContext((ParameterContext) context);
+                } catch(Exception exception) {
+                    MiniMLLogger.INSTANCE.exception(exception);
+                }
+            }
+        });
+
         val1 = String.valueOf(slider1.getValue());
         val2 = String.valueOf(slider2.getValue());
         val3 = String.valueOf(slider3.getValue());
@@ -313,6 +379,42 @@ public class ModelTab extends JComponent {
         panel.add(par4);
         panel.add(slider4);
         return panel;
+    }
+
+    public void updateHiddenLayers() {
+        //TODO: do the things with the frontend
+    }
+
+    public void updateHiddenNodes() {
+        //TODO: do the things with the frontend
+    }
+
+    public void updateLearnRate() {
+        //TODO: do the things with the frontend
+    }
+
+    public void updateEpochs() {
+        //TODO: do the things with the frontend
+    }
+
+    public void handleHiddenLayersContext(ParameterContext context) {
+        //TODO: set the value on the context
+        context.updateState();
+    }
+
+    public void handleHiddenNodesContext(ParameterContext context) {
+        //TODO: set the value on the context
+        context.updateState();
+    }
+
+    public void handleLearnRateContext(ParameterContext context) {
+        //TODO: set the value on the context
+        context.updateState();
+    }
+
+    public void handleEpochsContext(ParameterContext context) {
+        //TODO: set the value on the context
+        context.updateState();
     }
 
     public JPanel getSupportVectorMachinePanel(){

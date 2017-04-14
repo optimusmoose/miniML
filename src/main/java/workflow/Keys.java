@@ -30,6 +30,7 @@ public class Keys {
     public static final String Ridge = "MM_MD_RID";
 
     public static final String NumHiddenLayers = "MM_MD_NUM_HLAY";
+    public static final String NumHiddenNodes = "MM_MD_NUM_NDS";
     public static final String LearnRate = "MM_MD_LRN_RATE";
     public static final String NumEpochs = "MM_MD_NUM_EPO";
 
