@@ -49,11 +49,6 @@ public class backendTest extends TestCase{
      * @param args
      */
     public static void main(String[] args) {
-        //build command pattern objects
-        //WekaTaskManager mgr = new WekaTaskManager();
-        //LR_Task lr = new LR_Task(mgr);
-        //NN_Task nn = new NN_Task(mgr);
-        //WekaInvoker taskList = new WekaInvoker();
         Dispatcher dispatch = new Dispatcher();
 
         //load some data
