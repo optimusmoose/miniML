@@ -104,6 +104,11 @@ public class Dispatcher {
         return(parArr);
     }
 
+    /**
+     * Logs a string using the util.log
+     * @param str some message we want to log
+     * @param type the type of message (debug, info, error, etc)
+     */
     protected void log(String str, String type) {
         switch(type) {
             case "debug": {
