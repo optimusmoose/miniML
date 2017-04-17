@@ -82,6 +82,9 @@ class randomSearch implements SearchAlgorithmInterface {
                     }
                     break;
                 }
+                default: {
+                    log("Encountered an unknown parameter type: " + p.getType());
+                }
             }
         }
         return outParams;
