@@ -37,7 +37,7 @@ public abstract class Model implements Serializable {
     * @return  void      Other software will be able to get the Evaluation of the Model, but it will not return
     *                    anything by default.
     */
-    public Model(Instances d, String[] params) throws Exception {
+    public Model(Instances d, String[] params) throws ModelConstructException,Exception {
         data = d;
         pars = params;
         eval = new Evaluation(data);
@@ -65,7 +65,7 @@ public abstract class Model implements Serializable {
      *
      * @throws Exception    a general-purpose catch-all
      */
-    abstract void run() throws Exception;
+    abstract void run() throws ModelRunException,Exception;
 
     /**
      * get information from the classifier about what options (parameters) it accepts
@@ -106,7 +106,7 @@ class LR_Model extends Model {
     /**
     * Generates a Weka LinearRegression function Model acting on our data instance with our parameters.
     */
-    public LR_Model(Instances d, String[] params) throws Exception {
+    public LR_Model(Instances d, String[] params) throws ModelConstructException,Exception {
         super(d,params);
         classifier = new LinearRegression();
         prepare();
@@ -117,7 +117,7 @@ class LR_Model extends Model {
      * Configure crossfold validation and run the linear regression model
      * @throws Exception
      */
-    protected void run() throws Exception {
+    protected void run() throws ModelRunException,Exception {
         //invoke crossfold validation (Classifier obj, Instance, #folds, RNG)
         eval.crossValidateModel(classifier, data, 10, new Random(1));
         summarize();
@@ -128,7 +128,7 @@ class NN_Model extends Model {
     /**
     * Generates a Weka MultlayerPerceptron function Model acting on our data instance with our parameters.
     */
-    public NN_Model(Instances d, String[] params) throws Exception {
+    public NN_Model(Instances d, String[] params) throws ModelConstructException,Exception {
         super(d,params);
         classifier = new MultilayerPerceptron();
         prepare();
@@ -139,9 +139,35 @@ class NN_Model extends Model {
      * Configure crossfold validation and run the neural network model
      * @throws Exception
      */
-    protected void run() throws Exception {
+    protected void run() throws ModelRunException,Exception {
         //invoke crossfold validation (Classifier obj, Instance, #folds, RNG)
         eval.crossValidateModel(classifier, data, 10, new Random(1));
         summarize();
     }
+}
+
+/**
+ * A special exception for failed Model.run() calls.
+ * TODO should the message have more information?
+ */
+class ModelRunException extends Exception {
+    public ModelRunException(){}
+
+    public ModelRunException(String message){
+        super(message);
+    }
+
+}
+
+/**
+ * A special exception for failed Model() instantiation calls.
+ * TODO should the message have more information?
+ */
+class ModelConstructException extends Exception {
+    public ModelConstructException(){}
+
+    public ModelConstructException(String message){
+        super(message);
+    }
+
 }
