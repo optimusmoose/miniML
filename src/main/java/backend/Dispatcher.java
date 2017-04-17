@@ -98,10 +98,10 @@ public class Dispatcher {
             parameters.add(p.getFlag());
             parameters.add(p.getValue());
         }
-        String[] parArr = new String[parameters.size()];
-        parameters.toArray(parArr);
-        log("Selected Parameters: " + Arrays.toString(parArr), "debug");
-        return(parArr);
+        String[] parameterArray = new String[parameters.size()];
+        parameters.toArray(parameterArray);
+        log("Selected Parameters: " + Arrays.toString(parameterArray), "debug");
+        return(parameterArray);
     }
 
     /**
