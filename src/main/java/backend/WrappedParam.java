@@ -22,7 +22,7 @@ abstract class WrappedParam {
      * @return
      */
     public String getFlag() {
-        return flag;
+        return this.flag;
     }
 
     public void setFlag(String flag) {
