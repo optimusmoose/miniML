@@ -71,10 +71,10 @@ public class Dispatcher {
 
     /**
      * Set the time limit for the run. Actual counter is created when dispatcher gets to work.
-     * @param mins
+     * @param minutes
      */
-    public void setTimeLimit(int mins){
-        minutesToRun = mins;
+    public void setTimeLimit(int minutes){
+        this.minutesToRun = minutes;
     }
 
     /**
@@ -82,7 +82,7 @@ public class Dispatcher {
      * @param d
      */
     public void setData(Instances d){
-        data = d;
+        this.data = d;
     }
 
     /**
