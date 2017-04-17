@@ -93,13 +93,13 @@ public class Dispatcher {
      * @return a String[] of flags and their values.
      */
     public String[] unpackWrappedParams(ArrayList<WrappedParamFinal> packed){
-        ArrayList<String> pars = new ArrayList<String>();
+        ArrayList<String> parameters = new ArrayList<String>();
         for (WrappedParamFinal p : packed) { //unpack wrapped params into
-            pars.add(p.getFlag());
-            pars.add(p.getValue());
+            parameters.add(p.getFlag());
+            parameters.add(p.getValue());
         }
-        String[] parArr = new String[pars.size()];
-        pars.toArray(parArr);
+        String[] parArr = new String[parameters.size()];
+        parameters.toArray(parArr);
         log("Selected Parameters: " + Arrays.toString(parArr), "debug");
         return(parArr);
     }
