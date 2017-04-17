@@ -45,7 +45,8 @@ public class Dispatcher {
     public void launch(){
         mgr.setData(data);
         //calculates the timer
-        long endTime = System.currentTimeMillis() + (this.minutesToRun * 60 * 1000);
+        //long endTime = System.currentTimeMillis() + (this.minutesToRun * 60 * 1000);
+        long endTime = this.calculateTimer();
         //starts the dispatch loop
         while(System.currentTimeMillis() < endTime) {
             //calls each algorithm (iterative? threads? hmm.)
@@ -106,6 +107,11 @@ public class Dispatcher {
 
     protected void log(String str) {
         MiniMLLogger.INSTANCE.debug("In dispatcher: " + str);
+    }
+
+    private long calculateTimer(){
+        long endTime = System.currentTimeMillis() + (this.minutesToRun * 60 * 1000);
+        return(endTime);
     }
 
 }
