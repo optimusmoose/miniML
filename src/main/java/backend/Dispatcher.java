@@ -13,7 +13,7 @@ import java.util.Arrays;
 public class Dispatcher {
     int minutesToRun;
     Instances data;
-    SearchAlg searchType;
+    SearchAlgorithmInterface searchType;
     WekaTaskManager mgr;
     WekaInvoker taskList;
     //TODO tasks are hardcoded for now; fix it in future iterations so user can specify which to make

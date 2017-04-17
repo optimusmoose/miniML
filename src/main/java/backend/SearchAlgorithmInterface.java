@@ -8,25 +8,25 @@ import java.util.Random;
 /**
  * Explore the parameter space of an algorithm.
  */
-public interface SearchAlg {
+public interface SearchAlgorithmInterface {
     ArrayList<WrappedParamFinal> getNextParamSet(ParameterIFace parameterSet);
 }
 
 /**
  * Class implements truly random search of parameter space.
  */
-class randomSearch implements SearchAlg {
-    Dispatcher dsp;
+class randomSearch implements SearchAlgorithmInterface {
+    Dispatcher dispatcher;
     Random random = new Random();
 
     /**
      * Build our search algorithm and make it know who holds it.
      * This allows it to access other members of the dispatcher (like parameterIFace instances)
      *
-     * @param owner
+     * @param dispatcher
      */
-    public randomSearch(Dispatcher owner){
-        dsp = owner;
+    public randomSearch(Dispatcher dispatcher){
+        this.dispatcher = dispatcher;
     }
 
     /**
