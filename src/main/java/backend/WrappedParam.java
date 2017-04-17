@@ -91,7 +91,7 @@ class WrappedParamFloat extends WrappedParam {
     }
 
     public float getMinValue() {
-        return minValue;
+        return this.minValue;
     }
 
     public void setMinValue(float minValue) {
@@ -99,7 +99,7 @@ class WrappedParamFloat extends WrappedParam {
     }
 
     public float getMaxValue() {
-        return maxValue;
+        return this.maxValue;
     }
 
     public void setMaxValue(float maxValue) {
@@ -118,7 +118,7 @@ class WrappedParamLong extends WrappedParam {
     }
 
     public float getMinValue() {
-        return minValue;
+        return this.minValue;
     }
 
     public void setMinValue(long minValue) {
@@ -126,7 +126,7 @@ class WrappedParamLong extends WrappedParam {
     }
 
     public float getMaxValue() {
-        return maxValue;
+        return this.maxValue;
     }
 
     public void setMaxValue(long maxValue) {
@@ -146,7 +146,7 @@ class WrappedParamInt extends WrappedParam {
     }
 
     public int getMinValue() {
-        return minValue;
+        return this.minValue;
     }
 
     public void setMinValue(int minValue) {
@@ -154,7 +154,7 @@ class WrappedParamInt extends WrappedParam {
     }
 
     public int getMaxValue() {
-        return maxValue;
+        return this.maxValue;
     }
 
     public void setMaxValue(int maxValue) {
@@ -172,11 +172,11 @@ class WrappedParamBoolean extends WrappedParam {
     }
 
     public boolean getValue() {
-        return value;
+        return this.value;
     }
 
     public void setValue(boolean value) {
-        this.value = value;
+        this.value = this.value;
     }
 }
 
@@ -189,7 +189,7 @@ class WrappedParamString extends WrappedParam {
     }
 
     public String getValue() {
-        return value;
+        return this.value;
     }
 
     public void setValue(String value) {
