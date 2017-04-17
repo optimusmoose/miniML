@@ -11,7 +11,7 @@ import java.util.Arrays;
  * and returning something useful and visible to the UI.
  */
 public class Dispatcher {
-    int minutes; //number of minutes for the run
+    int minutesToRun;
     Instances data;
     SearchAlg searchType;
     WekaTaskManager mgr;
@@ -45,7 +45,7 @@ public class Dispatcher {
     public void launch(){
         mgr.setData(data);
         //calculates the timer
-        long endTime = System.currentTimeMillis() + (this.minutes * 60 * 1000);
+        long endTime = System.currentTimeMillis() + (this.minutesToRun * 60 * 1000);
         //starts the dispatch loop
         while(System.currentTimeMillis() < endTime) {
             //calls each algorithm (iterative? threads? hmm.)
@@ -74,7 +74,7 @@ public class Dispatcher {
      * @param mins
      */
     public void setTimeLimit(int mins){
-        minutes = mins;
+        minutesToRun = mins;
     }
 
     /**
