@@ -32,8 +32,8 @@ public class Dispatcher {
         lr = new LR_Task(mgr);
         nn = new NN_Task(mgr);
         searchType = new randomSearch(this);
-        param_iface_lr = new ParameterIFace_LR();
-        param_iface_nn = new ParameterIFace_NN();
+        param_iface_lr = new LinearRegressionParameters();
+        param_iface_nn = new NeuralNetworkParameters();
     }
 
     /**

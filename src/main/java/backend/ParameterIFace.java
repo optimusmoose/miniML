@@ -10,14 +10,14 @@ public interface ParameterIFace {
     ArrayList<WrappedParam> getParameters();
 }
 
-class ParameterIFace_NN implements ParameterIFace {
+class NeuralNetworkParameters implements ParameterIFace {
     ArrayList<WrappedParam> parameters;
     /**
      * Creates an array of all useful parameters, their mins/maxes, flags, etc.
      * For now, we are skipping: E,G,A,B,C,I,R,D
      * @return
      */
-    public ParameterIFace_NN(){
+    public NeuralNetworkParameters(){
         ArrayList<WrappedParam> parameters = new ArrayList<WrappedParam>();
         //learning rate
         WrappedParam learnRate = new WrappedParamFloat("float","learning rate","-L",0,1);
@@ -51,14 +51,14 @@ class ParameterIFace_NN implements ParameterIFace {
 }
 
 
-class ParameterIFace_LR implements ParameterIFace {
+class LinearRegressionParameters implements ParameterIFace {
     ArrayList<WrappedParam> parameters;
     /**
      * Creates an array of all useful parameters, their mins/maxes, flags, etc.
      * For now, we are skipping: minimal, additional stats, debug, capabilities
      * @return
      */
-    public ParameterIFace_LR(){
+    public LinearRegressionParameters(){
         ArrayList<WrappedParam> parameters = new ArrayList<WrappedParam>();
         //selection method
         WrappedParam selection = new WrappedParamInt("int","Selection method","-S",0,2);
