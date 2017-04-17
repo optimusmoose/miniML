@@ -84,9 +84,22 @@ public abstract class Model implements Serializable {
         String[] arr = parameter_descriptions.toArray(new String[parameter_descriptions.size()]);
         return(arr);
     }
+
+    /**
+     * Log a message from the Model.
+     * @param str
+     */
     protected void log(String str) {
         MiniMLLogger.INSTANCE.info("In Model: " + str);
     }
+
+    /**
+     * Quick-fast method to log a summary of a Model's Evaluation.
+     */
+    protected void summarize() {
+        log(eval.toSummaryString("\nResults\n======\n", false));
+    }
+
 }
 
 class LR_Model extends Model {
@@ -107,7 +120,7 @@ class LR_Model extends Model {
     protected void run() throws Exception {
         //invoke crossfold validation (Classifier obj, Instance, #folds, RNG)
         eval.crossValidateModel(classifier, data, 10, new Random(1));
-        log(eval.toSummaryString("\nResults\n======\n", false));
+        summarize();
     }
 }
 
@@ -129,6 +142,6 @@ class NN_Model extends Model {
     protected void run() throws Exception {
         //invoke crossfold validation (Classifier obj, Instance, #folds, RNG)
         eval.crossValidateModel(classifier, data, 10, new Random(1));
-        log(eval.toSummaryString("\nResults\n======\n", false));
+        summarize();
     }
 }
