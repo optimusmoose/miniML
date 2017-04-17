@@ -34,12 +34,12 @@ abstract class WrappedParam {
      * @return
      */
     public String getType(){
-        return type;
+        return this.type;
     }
 
 
-    public void setType(String t){
-        type = t;
+    public void setType(String type){
+        this.type = type;
     }
 
     /**
