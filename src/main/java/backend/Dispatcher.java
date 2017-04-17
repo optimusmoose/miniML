@@ -44,8 +44,6 @@ public class Dispatcher {
      */
     public void launch(){
         mgr.setData(data);
-        //calculates the timer
-        //long endTime = System.currentTimeMillis() + (this.minutesToRun * 60 * 1000);
         long endTime = this.calculateTimer();
         //starts the dispatch loop
         while(System.currentTimeMillis() < endTime) {
@@ -66,6 +64,7 @@ public class Dispatcher {
                 Thread.sleep(100);
             } catch (InterruptedException ex) {
                 Thread.currentThread().interrupt();
+                log(ex.toString(), "error");
             }
         }
     }
@@ -101,14 +100,30 @@ public class Dispatcher {
         }
         String[] parArr = new String[pars.size()];
         pars.toArray(parArr);
-        log("Selected Parameters: " + Arrays.toString(parArr));
+        log("Selected Parameters: " + Arrays.toString(parArr), "debug");
         return(parArr);
     }
 
-    protected void log(String str) {
-        MiniMLLogger.INSTANCE.debug("In dispatcher: " + str);
+    protected void log(String str, String type) {
+        switch(type) {
+            case "debug": {
+                MiniMLLogger.INSTANCE.debug("In dispatcher: " + str);
+                break;
+            }
+            case "exception": {
+                MiniMLLogger.INSTANCE.error("In dispatcher: " + str);
+                break;
+            }
+            default: {
+                MiniMLLogger.INSTANCE.debug("Dispatcher encountered an unhandled message type: " + type);
+            }
+        }
     }
 
+    /**
+     * Calculate the end time for the dispatcher from minutesToRun and current time.
+     * @return the end time (a long)
+     */
     private long calculateTimer(){
         long endTime = System.currentTimeMillis() + (this.minutesToRun * 60 * 1000);
         return(endTime);
