@@ -32,12 +32,18 @@ public class MiniMLContainerPanel extends JPanel {
         tabbedPane.setTabPlacement(SwingConstants.LEFT);
 
         ImageIcon icon = new ImageIcon();
+        ImageIcon settingsIcon = new ImageIcon();
         Image image;
-        URL path = this.getClass().getResource("img/miniml_icon.png");
+        URL iconPath = this.getClass().getResource("img/miniml_icon.png");
+        URL settingsIconPath = this.getClass().getResource("img/settings_icon.png");
 
         try {
-            image = new ImageIcon(path).getImage().getScaledInstance(24, 24, Image.SCALE_SMOOTH);
+            image = new ImageIcon(iconPath).getImage().getScaledInstance(24, 24, Image.SCALE_SMOOTH);
             icon = new ImageIcon(image);
+
+            image = new ImageIcon(settingsIconPath).getImage().getScaledInstance(24, 24, Image.SCALE_SMOOTH);
+            settingsIcon = new ImageIcon(image);
+
         } catch(Exception e) {
             MiniMLLogger.INSTANCE.exception(e);
         }
@@ -55,7 +61,7 @@ public class MiniMLContainerPanel extends JPanel {
         tabbedPane.setMnemonicAt(2, KeyEvent.VK_3);
 
         AdvancedTab advancedTab = new AdvancedTab();
-        tabbedPane.addTab("Advanced Settings", icon, advancedTab,"Change system settings.");
+        tabbedPane.addTab("Advanced Settings", settingsIcon, advancedTab,"Change system settings.");
         tabbedPane.setMnemonicAt(3, KeyEvent.VK_4);
 
         this.add(tabbedPane);
