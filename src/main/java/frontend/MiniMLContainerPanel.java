@@ -15,6 +15,10 @@ public class MiniMLContainerPanel extends JPanel {
     private static final int APP_WIDTH = 1200;
     private static final int APP_HEIGHT = 600;
 
+    private static final int ICON_SIZE = 32;
+    private static final String ICON_PATH = "img/miniml_icon.png";
+    private static final String SETTINGS_ICON_PATH = "img/settings_icon.png";
+
     public MiniMLContainerPanel() {
         super(new GridLayout());
         this.setName(Keys.App);
@@ -34,16 +38,15 @@ public class MiniMLContainerPanel extends JPanel {
         ImageIcon icon = new ImageIcon();
         ImageIcon settingsIcon = new ImageIcon();
         Image image;
-        URL iconPath = this.getClass().getResource("img/miniml_icon.png");
-        URL settingsIconPath = this.getClass().getResource("img/settings_icon.png");
+        URL iconPath = this.getClass().getResource(ICON_PATH);
+        URL settingsIconPath = this.getClass().getResource(SETTINGS_ICON_PATH);
 
         try {
-            image = new ImageIcon(iconPath).getImage().getScaledInstance(24, 24, Image.SCALE_SMOOTH);
+            image = new ImageIcon(iconPath).getImage().getScaledInstance(ICON_SIZE, ICON_SIZE, Image.SCALE_SMOOTH);
             icon = new ImageIcon(image);
 
-            image = new ImageIcon(settingsIconPath).getImage().getScaledInstance(24, 24, Image.SCALE_SMOOTH);
+            image = new ImageIcon(settingsIconPath).getImage().getScaledInstance(ICON_SIZE, ICON_SIZE, Image.SCALE_SMOOTH);
             settingsIcon = new ImageIcon(image);
-
         } catch(Exception e) {
             MiniMLLogger.INSTANCE.exception(e);
         }
