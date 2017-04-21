@@ -86,7 +86,9 @@ class DecisionTreeParameters implements ParameterIFace {
     ArrayList<WrappedParam> parameters;
     /**
      * Creates an array of all useful parameters, their mins/maxes, flags, etc.
-     * For now, we are skipping: minimal, additional stats, debug, capabilities
+     * For now, we are skipping: Q,L
+     *
+     * TODO: some of these parameters interact in nasty ways. which do we actually want?
      * @return
      */
     public DecisionTreeParameters(){

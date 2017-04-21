@@ -181,7 +181,7 @@ class DT_Model extends Model implements Runnable {
     }
 
     /**
-     * Configure crossfold validation and run the neural network model
+     * Configure crossfold validation and run the decision tree model
      * @throws Exception
      */
     @Override

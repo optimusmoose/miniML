@@ -44,37 +44,35 @@ public class Dispatcher {
      * Launches the dispatcher which starts generating parameter sets for models, dispatching models,
      * and more all while counting down the time it has to run.
      *
-     * A lot happens here and a flurry of changes are imminent. TODO
+     * The WekaTaskManager is loaded up with models to evaluate. It empties this queue at the end
+     * of every iteration of this main loop, pouring these models into its thread pool (which, in
+     * turn, has a blocking queue which is used to populate the threads.
+     *
+     * The finished models are saved by the WekaTaskManager-- TODO do we cull them?
      */
     public void launch(){
         mgr.setData(data);
         long endTime = this.calculateTimer();
-        //starts the dispatch loop
         while(System.currentTimeMillis() < endTime) {
-            //calls each algorithm (iterative? threads? hmm.)
-            //TODO: start with iterative, work up a threaded WekaTaskManager
             //LR
             ArrayList<WrappedParamFinal> LR_params = searchType.getNextParamSet(param_iface_lr);
             String[] lr_array = unpackWrappedParams(LR_params,"lr");
-            //mgr.manage_LR(lr_array);
             mgr.addModel(lr_array);
             //NN
             ArrayList<WrappedParamFinal> NN_params = searchType.getNextParamSet(param_iface_nn);
             String[] nn_array = unpackWrappedParams(NN_params, "nn");
             mgr.addModel(nn_array);
-            //mgr.manage_NN(nn_array);
-            //TODO: SVM
-            //TODO: decision tree
+            //DT
             ArrayList<WrappedParamFinal> DT_params = searchType.getNextParamSet(param_iface_dt);
             String[] dt_array = unpackWrappedParams(DT_params, "dt");
             mgr.addModel(dt_array);
-            //sleep; then check if we need new threads
-            try {
+            //TODO: SVM
+            try { //
                 mgr.runModel();
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            try {
+            try { //sleep; then check if we need new threads
                 Thread.sleep(1);
             } catch (InterruptedException ex) {
                 Thread.currentThread().interrupt();
@@ -82,6 +80,9 @@ public class Dispatcher {
             }
         }
         log("Number of completed models: " + String.valueOf(this.mgr.done_models.size()), "debug");
+        Model bestModel = mgr.findBestModel();
+        log("Best model found: " +
+                bestModel.eval.toSummaryString("\nResults\n======\n", false), "debug");
     }
 
     /**

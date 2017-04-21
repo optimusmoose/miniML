@@ -1,6 +1,7 @@
 package backend;
 
 import utils.Logging.MiniMLLogger;
+
 import weka.core.Instances;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -67,15 +68,29 @@ class WekaTaskManager{
     protected ArrayList<String[]> new_models = new ArrayList<String[]>();
     protected ThreadPoolExecutor executor;
 
+    /**
+     * Construct the WekaTaskManager. Accepts a number of threads to use.
+     * @param maxThreads
+     */
     public WekaTaskManager(int maxThreads){
         this.maxThreads = maxThreads;
         this.executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(this.maxThreads);
     }
 
+    /**
+     * Add a model to the new_models; it will be pulled into a thread soon.
+     * @param new_model
+     */
     public void addModel(String[] new_model){
        this.new_models.add(new_model);
     }
 
+    /**
+     * Dump the new_models arraylist into the thread pool, causing lots of models to be evaluated in short order.
+     *
+     * This could probably be handled more elegantly, but it seems to work fairly well.
+     * @throws Exception
+     */
     public void runModel() throws Exception {
         while(this.new_models.size() > 0) {
             String[] next_model = this.new_models.remove(0);
@@ -97,6 +112,8 @@ class WekaTaskManager{
                     executor.execute(dt_model);
                     done_models.add(dt_model);
                     break;
+                default:
+                    log("Encountered unknown model type" + model_name);
             }
         }
     }
@@ -167,6 +184,26 @@ class WekaTaskManager{
         Object obj = ois.readObject(); //TODO recast as some concrete Model!
         ois.close();
         return obj;
+    }
+
+    public Model findBestModel(){
+        double lowestError = 100;
+        Model bestModel = null;
+        for(Model model : done_models){
+            if(model.eval.rootRelativeSquaredError() < lowestError){
+                lowestError = model.eval.rootRelativeSquaredError();
+                bestModel = model;
+            }
+        }
+        return(bestModel);
+    }
+
+    /**
+     * Log a message from the WekaTaskManager.
+     * @param str
+     */
+    protected void log(String str) {
+        MiniMLLogger.INSTANCE.info("In WekaTaskManager: " + str);
     }
 }
 
