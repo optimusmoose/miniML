@@ -102,7 +102,7 @@ public abstract class Model implements Serializable {
 
 }
 
-class LR_Model extends Model {
+class LR_Model extends Model implements Runnable {
     /**
     * Generates a Weka LinearRegression function Model acting on our data instance with our parameters.
     */
@@ -117,14 +117,20 @@ class LR_Model extends Model {
      * Configure crossfold validation and run the linear regression model
      * @throws Exception
      */
-    protected void run() throws ModelRunException,Exception {
+    @Override
+    public void run() {
         //invoke crossfold validation (Classifier obj, Instance, #folds, RNG)
-        eval.crossValidateModel(classifier, data, 10, new Random(1));
-        summarize();
+        try {
+            log("Running a LR_Model");
+            eval.crossValidateModel(classifier, data, 10, new Random(1));
+            summarize();
+        } catch (Exception e) {
+            log("Hit exception: " + e);
+        }
     }
 }
 
-class NN_Model extends Model {
+class NN_Model extends Model implements Runnable {
     /**
     * Generates a Weka MultlayerPerceptron function Model acting on our data instance with our parameters.
     */
@@ -139,9 +145,14 @@ class NN_Model extends Model {
      * Configure crossfold validation and run the neural network model
      * @throws Exception
      */
-    protected void run() throws ModelRunException,Exception {
+    public void run() {
         //invoke crossfold validation (Classifier obj, Instance, #folds, RNG)
-        eval.crossValidateModel(classifier, data, 10, new Random(1));
+        try {
+            log("Running a NN_Model");
+            eval.crossValidateModel(classifier, data, 10, new Random(1));
+        } catch (Exception e) {
+            log("Hit exception: " + e);
+        }
         summarize();
     }
 }

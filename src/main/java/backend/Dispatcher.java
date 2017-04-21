@@ -11,6 +11,7 @@ import java.util.Arrays;
  * and returning something useful and visible to the UI.
  */
 public class Dispatcher {
+    int maxThreads;
     int minutesToRun;
     Instances data;
     SearchAlgorithmInterface searchType;
@@ -26,8 +27,9 @@ public class Dispatcher {
     /**
      * Construct the major parts of the backend so that the dispatcher can use them.
      */
-    public Dispatcher(){
-        mgr = new WekaTaskManager();
+    public Dispatcher(int maxThreads){
+        this.maxThreads = maxThreads;
+        mgr = new WekaTaskManager(this.maxThreads);
         taskList = new WekaInvoker();
         lr = new LR_Task(mgr);
         nn = new NN_Task(mgr);
@@ -51,22 +53,30 @@ public class Dispatcher {
             //TODO: start with iterative, work up a threaded WekaTaskManager
             //LR
             ArrayList<WrappedParamFinal> LR_params = searchType.getNextParamSet(param_iface_lr);
-            String[] lr_array = unpackWrappedParams(LR_params);
-            mgr.manage_LR(lr_array);
+            String[] lr_array = unpackWrappedParams(LR_params,"lr");
+            //mgr.manage_LR(lr_array);
+            mgr.addModel(lr_array);
             //NN
             ArrayList<WrappedParamFinal> NN_params = searchType.getNextParamSet(param_iface_nn);
-            String[] nn_array = unpackWrappedParams(NN_params);
-            mgr.manage_NN(nn_array);
+            String[] nn_array = unpackWrappedParams(NN_params, "nn");
+            mgr.addModel(nn_array);
+            //mgr.manage_NN(nn_array);
             //TODO: SVM
             //TODO: decision tree
             //sleep; then check if we need new threads
             try {
-                Thread.sleep(100);
+                mgr.runModel();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            try {
+                Thread.sleep(1);
             } catch (InterruptedException ex) {
                 Thread.currentThread().interrupt();
                 log(ex.toString(), "error");
             }
         }
+        log("Number of completed models: " + String.valueOf(this.mgr.done_models.size()), "debug");
     }
 
     /**
@@ -92,8 +102,9 @@ public class Dispatcher {
      * @param packed : an  ArrayList<WrappedParamFinal> with all parameters for one run.
      * @return a String[] of flags and their values.
      */
-    public String[] unpackWrappedParams(ArrayList<WrappedParamFinal> packed){
+    public String[] unpackWrappedParams(ArrayList<WrappedParamFinal> packed, String model){
         ArrayList<String> parameters = new ArrayList<String>();
+        parameters.add(model);
         for (WrappedParamFinal p : packed) { //unpack wrapped params into
             parameters.add(p.getFlag());
             parameters.add(p.getValue());

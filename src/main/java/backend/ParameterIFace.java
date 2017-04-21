@@ -35,7 +35,7 @@ class NeuralNetworkParameters implements ParameterIFace {
         WrappedParam seed = new WrappedParamInt("int","RNG seed","-S",0, Integer.MAX_VALUE - 1);
         parameters.add(seed);
         //nodes each layer
-        WrappedParam layer = new WrappedParamString("String","layer width","-H","aiot");
+        WrappedParam layer = new WrappedParamString("string","layer width","-H","aiot");
         parameters.add(layer);
         this.parameters = parameters;
     }
