@@ -101,6 +101,16 @@ public abstract class Model implements Serializable {
         log(eval.toSummaryString("\nResults\n======\n", false));
     }
 
+    /**
+     * On classifiable data sets, we may determine the percentage of classes we got right
+     * TODO use this method on discrete-classed data!!
+     * @throws Exception
+     */
+    protected void getPercentCorrect() throws Exception {
+        eval.evaluateModel(this.classifier, this.data);
+        log(String.valueOf(eval.pctCorrect()));
+    }
+
 }
 
 class LR_Model extends Model implements Runnable {
