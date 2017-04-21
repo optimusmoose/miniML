@@ -23,6 +23,7 @@ public class Dispatcher {
     //TODO ParameterIFaces are hardcoded until we can generalize parameter selection
     ParameterIFace param_iface_nn;
     ParameterIFace param_iface_lr;
+    ParameterIFace param_iface_dt;
 
     /**
      * Construct the major parts of the backend so that the dispatcher can use them.
@@ -36,6 +37,7 @@ public class Dispatcher {
         searchType = new randomSearch(this);
         param_iface_lr = new LinearRegressionParameters();
         param_iface_nn = new NeuralNetworkParameters();
+        param_iface_dt = new DecisionTreeParameters();
     }
 
     /**
@@ -63,6 +65,9 @@ public class Dispatcher {
             //mgr.manage_NN(nn_array);
             //TODO: SVM
             //TODO: decision tree
+            ArrayList<WrappedParamFinal> DT_params = searchType.getNextParamSet(param_iface_dt);
+            String[] dt_array = unpackWrappedParams(DT_params, "dt");
+            mgr.addModel(dt_array);
             //sleep; then check if we need new threads
             try {
                 mgr.runModel();

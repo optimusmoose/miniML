@@ -10,6 +10,7 @@ import weka.core.Instances;
 import weka.core.Option;
 import weka.classifiers.functions.LinearRegression;
 import weka.classifiers.functions.MultilayerPerceptron;
+import weka.classifiers.trees.J48;
 import weka.classifiers.Evaluation;
 import java.io.Serializable;
 
@@ -145,10 +146,38 @@ class NN_Model extends Model implements Runnable {
      * Configure crossfold validation and run the neural network model
      * @throws Exception
      */
+    @Override
     public void run() {
         //invoke crossfold validation (Classifier obj, Instance, #folds, RNG)
         try {
             log("Running a NN_Model");
+            eval.crossValidateModel(classifier, data, 10, new Random(1));
+        } catch (Exception e) {
+            log("Hit exception: " + e);
+        }
+        summarize();
+    }
+}
+
+class DT_Model extends Model implements Runnable {
+    /**
+     * Generates a Weka J48 Model acting on our data instance with our parameters.
+     */
+    public DT_Model(Instances d, String[] params) throws ModelConstructException,Exception {
+        super(d,params);
+        classifier = new J48();
+        prepare();
+        run();
+    }
+
+    /**
+     * Configure crossfold validation and run the neural network model
+     * @throws Exception
+     */
+    @Override
+    public void run() {
+        try {
+            log("Running a DT_Model");
             eval.crossValidateModel(classifier, data, 10, new Random(1));
         } catch (Exception e) {
             log("Hit exception: " + e);

@@ -92,6 +92,11 @@ class WekaTaskManager{
                     executor.execute(nn_model);
                     done_models.add(nn_model);
                     break;
+                case ("dt"):
+                    DT_Model dt_model = new DT_Model(data, parameters);
+                    executor.execute(dt_model);
+                    done_models.add(dt_model);
+                    break;
             }
         }
     }
