@@ -2,10 +2,11 @@
 	"weka_executable_src" : "C:/\"Program Files\"/Weka-3-6/weka.jar",
 	"tolerance_ratio" : 0.05,
 	"runs_per_algorithm" : 3,
+	"jre_maximum_memory":1024,
 	"attribute_selection_algorithms":[
 	{
-			"run_name" : "supermarket_sel",
-			"dataset_src": "C:/\"Program Files\"/Weka-3-6/data/supermarket.arff",
+			"run_name" : "soy_attr_sel",
+			"dataset_src": "C:/\"Program Files\"/Weka-3-6/data/soybean.arff",
 			"algorithm_scheme":"weka.filters.supervised.attribute.AttributeSelection -E \"weka.attributeSelection.CfsSubsetEval \" -S \"weka.attributeSelection.RandomSearch -F 25.0 -seed 1\"",
 			"goal_times" : [30,60,120,300]
 		},
