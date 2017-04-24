@@ -76,13 +76,13 @@ public class Dispatcher {
                 Thread.sleep(1);
             } catch (InterruptedException ex) {
                 Thread.currentThread().interrupt();
-                log(ex.toString(), "error");
+                MiniMLLogger.INSTANCE.exception(ex);
             }
         }
-        log("Number of completed models: " + String.valueOf(this.mgr.done_models.size()), "debug");
+        MiniMLLogger.INSTANCE.info("Number of completed models: " + String.valueOf(this.mgr.finishedModels.size()));
         Model bestModel = mgr.findBestModel();
-        log("Best model found: " +
-                bestModel.eval.toSummaryString("\nResults\n======\n", false), "debug");
+        MiniMLLogger.INSTANCE.info("Best model found: " +
+                bestModel.eval.toSummaryString("\nResults\n======\n", false));
     }
 
     /**
@@ -117,29 +117,8 @@ public class Dispatcher {
         }
         String[] parameterArray = new String[parameters.size()];
         parameters.toArray(parameterArray);
-        log("Selected Parameters: " + Arrays.toString(parameterArray), "debug");
+        MiniMLLogger.INSTANCE.info("Selected Parameters: " + Arrays.toString(parameterArray));
         return(parameterArray);
-    }
-
-    /**
-     * Logs a string using the util.log
-     * @param str some message we want to log
-     * @param type the type of message (debug, info, error, etc)
-     */
-    protected void log(String str, String type) {
-        switch(type) {
-            case "debug": {
-                MiniMLLogger.INSTANCE.debug("In dispatcher: " + str);
-                break;
-            }
-            case "exception": {
-                MiniMLLogger.INSTANCE.error("In dispatcher: " + str);
-                break;
-            }
-            default: {
-                MiniMLLogger.INSTANCE.debug("Dispatcher encountered an unhandled message type: " + type);
-            }
-        }
     }
 
     /**

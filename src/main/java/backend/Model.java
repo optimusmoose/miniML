@@ -86,19 +86,12 @@ public abstract class Model implements Serializable {
         return(arr);
     }
 
-    /**
-     * Log a message from the Model.
-     * @param str
-     */
-    protected void log(String str) {
-        MiniMLLogger.INSTANCE.info("In Model: " + str);
-    }
 
     /**
      * Quick-fast method to log a summary of a Model's Evaluation.
      */
     protected void summarize() {
-        log(eval.toSummaryString("\nResults\n======\n", false));
+        MiniMLLogger.INSTANCE.info(eval.toSummaryString("\nResults\n======\n", false));
     }
 
     /**
@@ -108,7 +101,7 @@ public abstract class Model implements Serializable {
      */
     protected void getPercentCorrect() throws Exception {
         eval.evaluateModel(this.classifier, this.data);
-        log(String.valueOf(eval.pctCorrect()));
+        MiniMLLogger.INSTANCE.info(String.valueOf(eval.pctCorrect()));
     }
 
 }
@@ -132,11 +125,11 @@ class LR_Model extends Model implements Runnable {
     public void run() {
         //invoke crossfold validation (Classifier obj, Instance, #folds, RNG)
         try {
-            log("Running a LR_Model");
+            MiniMLLogger.INSTANCE.info("Running a LR_Model");
             eval.crossValidateModel(classifier, data, 10, new Random(1));
             summarize();
         } catch (Exception e) {
-            log("Hit exception: " + e);
+            MiniMLLogger.INSTANCE.exception(e);
         }
     }
 }
@@ -160,10 +153,10 @@ class NN_Model extends Model implements Runnable {
     public void run() {
         //invoke crossfold validation (Classifier obj, Instance, #folds, RNG)
         try {
-            log("Running a NN_Model");
+            MiniMLLogger.INSTANCE.info("Running a NN_Model");
             eval.crossValidateModel(classifier, data, 10, new Random(1));
         } catch (Exception e) {
-            log("Hit exception: " + e);
+            MiniMLLogger.INSTANCE.exception(e);
         }
         summarize();
     }
@@ -187,10 +180,10 @@ class DT_Model extends Model implements Runnable {
     @Override
     public void run() {
         try {
-            log("Running a DT_Model");
+            MiniMLLogger.INSTANCE.info("Running a DT_Model");
             eval.crossValidateModel(classifier, data, 10, new Random(1));
         } catch (Exception e) {
-            log("Hit exception: " + e);
+            MiniMLLogger.INSTANCE.exception(e);
         }
         summarize();
     }

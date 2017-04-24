@@ -64,8 +64,8 @@ abstract class TaskInvoker {
 class WekaTaskManager{
     protected int maxThreads;
     protected Instances data;
-    protected ArrayList<Model> done_models = new ArrayList<Model>();
-    protected ArrayList<String[]> new_models = new ArrayList<String[]>();
+    protected ArrayList<Model> finishedModels = new ArrayList<Model>();
+    protected ArrayList<String[]> unsolvedModels = new ArrayList<String[]>();
     protected ThreadPoolExecutor executor;
 
     /**
@@ -78,42 +78,42 @@ class WekaTaskManager{
     }
 
     /**
-     * Add a model to the new_models; it will be pulled into a thread soon.
-     * @param new_model
+     * Add a model to the unsolvedModels; it will be pulled into a thread soon.
+     * @param unsolvedModel
      */
-    public void addModel(String[] new_model){
-       this.new_models.add(new_model);
+    public void addModel(String[] unsolvedModel){
+       this.unsolvedModels.add(unsolvedModel);
     }
 
     /**
-     * Dump the new_models arraylist into the thread pool, causing lots of models to be evaluated in short order.
+     * Dump the unsolvedModels arraylist into the thread pool, causing lots of models to be evaluated in short order.
      *
      * This could probably be handled more elegantly, but it seems to work fairly well.
      * @throws Exception
      */
     public void runModel() throws Exception {
-        while(this.new_models.size() > 0) {
-            String[] next_model = this.new_models.remove(0);
+        while(this.unsolvedModels.size() > 0) {
+            String[] next_model = this.unsolvedModels.remove(0);
             String model_name = next_model[0];
             String[] parameters = Arrays.copyOfRange(next_model, 1, next_model.length);
             switch (model_name) {
                 case ("lr"):
                     LR_Model lr_model = new LR_Model(data, parameters);
                     executor.execute(lr_model);
-                    done_models.add(lr_model);
+                    finishedModels.add(lr_model);
                     break;
                 case ("nn"):
                     NN_Model nn_model = new NN_Model(data, parameters);
                     executor.execute(nn_model);
-                    done_models.add(nn_model);
+                    finishedModels.add(nn_model);
                     break;
                 case ("dt"):
                     DT_Model dt_model = new DT_Model(data, parameters);
                     executor.execute(dt_model);
-                    done_models.add(dt_model);
+                    finishedModels.add(dt_model);
                     break;
                 default:
-                    log("Encountered unknown model type" + model_name);
+                    MiniMLLogger.INSTANCE.debug("Encountered unknown model type" + model_name);
             }
         }
     }
@@ -127,7 +127,7 @@ class WekaTaskManager{
         MiniMLLogger.INSTANCE.info("Calling linear regression");
         try {
             LR_Model lr = new LR_Model(data, params);
-            done_models.add(lr);
+            finishedModels.add(lr);
         } catch (Exception e) {
             MiniMLLogger.INSTANCE.error("LR hit error: " + e);
         }
@@ -142,7 +142,7 @@ class WekaTaskManager{
         MiniMLLogger.INSTANCE.info("Calling neural network");
         try {
             NN_Model nn = new NN_Model(data, params);
-            done_models.add(nn);
+            finishedModels.add(nn);
         } catch (Exception e) {
             MiniMLLogger.INSTANCE.error("NN hit error: " + e);
         }
@@ -189,21 +189,13 @@ class WekaTaskManager{
     public Model findBestModel(){
         double lowestError = 100;
         Model bestModel = null;
-        for(Model model : done_models){
+        for(Model model : finishedModels){
             if(model.eval.rootRelativeSquaredError() < lowestError){
                 lowestError = model.eval.rootRelativeSquaredError();
                 bestModel = model;
             }
         }
         return(bestModel);
-    }
-
-    /**
-     * Log a message from the WekaTaskManager.
-     * @param str
-     */
-    protected void log(String str) {
-        MiniMLLogger.INSTANCE.info("In WekaTaskManager: " + str);
     }
 }
 
