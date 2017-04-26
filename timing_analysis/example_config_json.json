@@ -1,189 +1,157 @@
 {
-	"weka_executable_src" : "C:/\"Program Files\"/Weka-3-6/weka.jar",
-	"tolerance_ratio" : 0.05,
-	"runs_per_algorithm" : 3,
-	"jre_maximum_memory":1024,
-	"attribute_selection_algorithms":[
-	{
-			"run_name" : "soy_attr_sel",
-			"dataset_src": "C:/\"Program Files\"/Weka-3-6/data/soybean.arff",
-			"algorithm_scheme":"weka.filters.supervised.attribute.AttributeSelection -E \"weka.attributeSelection.CfsSubsetEval \" -S \"weka.attributeSelection.RandomSearch -F 25.0 -seed 1\"",
-			"goal_times" : [30,60,120,300]
-		},
-		{
-			"run_name" : "vote_attr_sel",
-			"dataset_src": "C:/\"Program Files\"/Weka-3-6/data/vote.arff",
-			"algorithm_scheme":"weka.filters.supervised.attribute.AttributeSelection -E \"weka.attributeSelection.CfsSubsetEval \" -S \"weka.attributeSelection.RandomSearch -F 25.0 -seed 1\"",
-			"goal_times" : [5,10,30,60,120]
-		}
-		
-	],
-	"classification_algorithms":[
-	{
-		"run_name" : "iris_smo",
-		"dataset_src": "C:/\"Program Files\"/Weka-3-6/data/iris.arff",
-		"algorithm_scheme":"weka.classifiers.functions.SMO -C 1.0 -L 0.001 -P 1.0E-12 -N 0 -V -1 -W 1 -K \"weka.classifiers.functions.supportVector.PolyKernel -C 250007 -E 1.0\"",
-		"goal_times" : [5, 15, 30],
-		"flags":
-		[
-			{
-			  "in_subscheme":"SMO",
-				"flag_char": "C",
-				"min": 0.1,
-				"max":5
-			},
-			{
-				"flag_char": "E",
-				"min": 0.1,
-				"max":2
-			},
-		  {
-		  		"in_subscheme":"SMO",
-				"flag_char": "N",
-				"min": 0,
-				"max":3,
-				"type":"int"
-		  }
-		]
-	},
-	{
-		"run_name" : "iris_j48",
-			"dataset_src": "C:/\"Program Files\"/Weka-3-6/data/iris.arff",
-			"algorithm_scheme":"weka.classifiers.trees.J48 -C 0.25 -M 2",
-			"goal_times" : [5, 15, 30],
-			"flags":
-			[
-				{
-					"flag_char": "C",
-					"min": 0.001,
-					"max":0.5
-				},
-				{
-					"flag_char": "M",
-					"min": 1,
-					"max":10,
-					"type": "int"
-				}
-			]
-		},
-		{
-			"run_name" : "iris_linreg",
-			"dataset_src": "C:/\"Program Files\"/Weka-3-6/data/iris.arff",
-			"algorithm_scheme":"weka.classifiers.functions.LinearRegression -S 0 -R 1.0E-8 -c 1",
-			"goal_times" : [5, 15, 30],
-			"flags":
-			[
-				{
-					"flag_char": "R",
-					"min": 1.0E-10,
-					"max":1.0E-6
-				},
-				{
-					"flag_char": "S",
-					"min": 1,
-					"max":3,
-					"type": "int"
-				}
-			]
-		},
-		{
-			"run_name" : "soy_linreg_param_R",
-			"dataset_src": "C:/\"Program Files\"/Weka-3-6/data/iris.arff",
-			"algorithm_scheme":"weka.classifiers.functions.LinearRegression -S 0 -R 1.0E-8 -c 1",
-			"goal_times" : [300],
-			"flags":
-			[
-				{
-					"flag_char": "R",
-					"min": 1.0E-15,
-					"max":1.0E-1
-				}
-			]
-		},
-		{
-			"run_name" : "soy_linreg_param_S",
-			"dataset_src": "C:/\"Program Files\"/Weka-3-6/data/iris.arff",
-			"algorithm_scheme":"weka.classifiers.functions.LinearRegression -S 0 -R 1.0E-8 -c 1",
-			"goal_times" : [30],
-			"flags":
-			[
-				{
-					"flag_char": "S",
-					"min": 1,
-					"max":3,
-					"type": "int"
-				}
-			]
-		},		
-		
-		{
-			"run_name" : "iris_linreg_param_R",
-			"dataset_src": "C:/\"Program Files\"/Weka-3-6/data/iris.arff",
-			"algorithm_scheme":"weka.classifiers.functions.LinearRegression -S 0 -R 1.0E-8 -c 1",
-			"goal_times" : [300],
-			"flags":
-			[
-				{
-					"flag_char": "R",
-					"min": 1.0E-15,
-					"max":1.0E-1
-				}
-			]
-		},
-		{
-			"run_name" : "iris_linreg_param_S",
-			"dataset_src": "C:/\"Program Files\"/Weka-3-6/data/iris.arff",
-			"algorithm_scheme":"weka.classifiers.functions.LinearRegression -S 0 -R 1.0E-8 -c 1",
-			"goal_times" : [30],
-			"flags":
-			[
-				{
-					"flag_char": "S",
-					"min": 1,
-					"max":3,
-					"type": "int"
-				}
-			]
-		},
-		{
-			"run_name" : "iris_j48",
-			"dataset_src": "C:/\"Program Files\"/Weka-3-6/data/iris.arff",
-			"algorithm_scheme":"weka.classifiers.functions.LinearRegression -S 0 -R 1.0E-8 -c 1",
-			"goal_times" : [5, 15, 30],
-			"flags":
-			[
-				{
-					"flag_char": "R",
-					"min": 1.0E-10,
-					"max":1.0E-6
-				},
-				{
-					"flag_char": "S",
-					"min": 1,
-					"max":3,
-					"type": "int"
-				}
-			]
-		},
-		{
-			"run_name" : "iris_linreg",
-			"dataset_src": "C:/\"Program Files\"/Weka-3-6/data/iris.arff",
-			"algorithm_scheme":"weka.classifiers.functions.LinearRegression -S 0 -R 1.0E-8 -c 1",
-			"goal_times" : [5, 15, 30],
-			"flags":
-			[
-				{
-					"flag_char": "R",
-					"min": 1.0E-10,
-					"max":1.0E-6
-				},
-				{
-					"flag_char": "S",
-					"min": 1,
-					"max":3,
-					"type": "int"
-				}
-			]
-		}
-	]
+  "weka_executable_src": "C:/\"Program Files\"/Weka-3-6/weka.jar",
+  "tolerance_ratio": 0.05,
+  "runs_per_algorithm": 3,
+  "jre_maximum_memory": 1024,
+  "dataset_directory": "C:/\"Program Files\"/Weka-3-6/data",
+  "attribute_selection_algorithms": [
+    {
+      "run_name": "general_attribute_selection",
+      "datasets": [
+        "soybean.arff",
+        "iris.arff",
+        "ionosphere.arff",
+        "cpu.arff",
+        "supermarket.arff"
+      ],
+      "algorithm_scheme": "weka.filters.supervised.attribute.AttributeSelection -E \"weka.attributeSelection.CfsSubsetEval \" -S \"weka.attributeSelection.RandomSearch -F 25.0 -seed 1\"",
+      "goal_times": [
+        30,
+        60,
+        120,
+        300,
+        600,
+        1200
+      ]
+    }
+  ],
+  "classification_algorithms": {
+    "goal_times": [
+      5,
+      15,
+      30,
+      60,
+      300,
+      600,
+      120,
+      1800
+    ],
+    "datasets": [
+      "soybean.arff",
+      "iris.arff",
+      "cpu.arff",
+      "ionosphere.arff",
+      "supermarket.arff"
+    ],
+    "schemes": [
+      {
+        "scheme_name": "SMO",
+        "scheme": "weka.classifiers.functions.SMO -C 1.0 -L 0.001 -P 1.0E-12 -N 0 -V -1 -W 1 -K \"weka.classifiers.functions.supportVector.PolyKernel -C 250007 -E 1.0\"",
+        "flags": [
+          {
+            "in_subscheme": "SMO",
+            "flag_char": "C",
+            "min": 0.1,
+            "max": 5
+          },
+          {
+            "in_subscheme": "SMO",
+            "flag_char": "L",
+            "min": 1e-5,
+            "max": 1e-1
+          },
+          {
+            "flag_char": "E",
+            "min": 0.1,
+            "max": 2
+          },
+          {
+            "in_subscheme": "SMO",
+            "flag_char": "N",
+            "min": 0,
+            "max": 3,
+            "type": "int"
+          }
+        ]
+      },
+      {
+        "scheme_name": "j48",
+        "scheme": "weka.classifiers.trees.J48 -C 0.25 -M 2",
+        "flags": [
+          {
+            "flag_char": "C",
+            "min": 0.001,
+            "max": 0.5
+          },
+          {
+            "flag_char": "M",
+            "min": 1,
+            "max": 10,
+            "type": "int"
+          },
+          {
+            "flag_char": "N",
+            "min": 1,
+            "max": 16,
+            "type": "int"
+          }
+        ]
+      },
+      {
+        "scheme_name": "lin_reg",
+        "scheme": "weka.classifiers.functions.LinearRegression -S 0 -R 1.0E-8 -c 1",
+        "flags": [
+          {
+            "flag_char": "R",
+            "min": 1.0E-10,
+            "max": 1.0E-6
+          },
+          {
+            "flag_char": "S",
+            "min": 1,
+            "max": 3,
+            "type": "int"
+          },
+          {
+            "flag_char": "R",
+            "min": 1e-10,
+            "max": 1e-6,
+            "type": "int"
+          }
+        ]
+      },
+      {
+        "scheme_name": "MLP",
+        "scheme": "weka.classifiers.functions.MultilayerPerceptron -L 0.3 -M 0.2 -N 500 -V 0 -S 0 -E 20 -H a",
+        "flags": [
+          {
+            "flag_char": "L",
+            "min": 0,
+            "max": 1
+          },
+          {
+            "flag_char": "M",
+            "min": 0,
+            "max": 1
+          },
+          {
+            "flag_char": "N",
+            "min": 10,
+            "max": 1000,
+            "type": "int"
+          },
+          {
+            "flag_char": "V",
+            "min": 0,
+            "max": 100
+          },
+          {
+            "flag_char": "E",
+            "min": 50,
+            "max": 40
+          }
+        ]
+      }
+    ]
+  }
 }

@@ -17,12 +17,14 @@ json_key_jre_max_memory = "jre_maximum_memory"
 json_key_tolerance_ratio = "tolerance_ratio"
 json_key_runs_per_algorithm = "runs_per_algorithm"
 json_key_attribute_selection = "attribute_selection_algorithms"
-json_key_parameter_search_class = "classification_algorithms"
+json_key_parameter_search_schemes = "classification_algorithms"
+json_key_datasets = "datasets"
 
-json_key_run_name = "run_name"
+json_key_scheme_name = "scheme_name"
 json_key_dataset_src = "dataset_src"
 json_key_algorithm_scheme = "algorithm_scheme"
 json_key_goal_times = "goal_times"
+json_key_dataset_dir = "dataset_director"
 
 # for output
 json_key_regression_list = "regression_list"
@@ -42,6 +44,7 @@ json_key_in_subscheme = "in_subscheme"
 json_key_flag_format_string = "format_string"
 json_key_flag_min = "min"
 json_key_flag_max = "max"
+
 attribute_selection_formattable_call_str = "java -Xmx{max_jre_mem}m -classpath {wekaJarSrc} {scheme} -i {input} -o {output}"
 classification_formattable_call_str = "java -Xmx{max_jre_mem}m -classpath {wekaJarSrc} {classification_scheme} -t {dataset_file_src}"
 
@@ -139,22 +142,62 @@ def load_json(json_file_src):
 
 
 def run_classification(json_data_obj):
-    for classification in json_data_obj[json_key_parameter_search_class]:
+    # make sure the goal times are sorted
+    json_data_obj[json_key_parameter_search_schemes][json_key_goal_times].sort()
+    goal_time_list = json_data_obj[json_key_parameter_search_schemes][json_key_goal_times]
+    datasets = json_data_obj[json_key_parameter_search_schemes][json_key_datasets]
+    for scheme in json_data_obj[json_key_parameter_search_schemes][json_key_parameter_search_schemes]:
+        # create scheme output directory if it's missing
+        scheme_output_dir = os.path.join(this_dir_path, scheme[json_key_scheme_name])
+        if not os.path.exists(scheme_output_dir):
+            os.makedirs(scheme_output_dir)
+
         algorithm_timings = classification_create_timings(json_data_obj[json_key_weka_src],
-                                                          json_data_obj[json_key_jre_max_memory], classification)
+                                                          json_data_obj[json_key_dataset_dir],
+                                                          scheme_output_dir,
+                                                          json_data_obj[json_key_jre_max_memory],
+                                                          goal_time_list,
+                                                          datasets,
+                                                          scheme)
 
-        output_file_src = os.path.join(this_dir_path, "{0}.json".format(classification[json_key_run_name]))
-        with open(output_file_src, "w+") as output_file:
-            json.dump(algorithm_timings, output_file, indent=1)
-        print("{0} written to file {1}".format(classification[json_key_run_name], output_file_src))
-
-    print("all attribute selection algorithm dumped to corresponding json files")
+    print("all parameter selection algorithms dumped to corresponding json files")
 
 
-def classification_create_timings(weka_src, max_jre_memory, classification_algorithm):
-    scheme_flags = classification_algorithm[json_key_scheme_flags]
-    scheme_str = classification_algorithm[json_key_algorithm_scheme]
+def classification_create_timings(weka_src, dataset_dir, output_dir, max_jre_memory, goal_time_list, datasets,
+                                  scheme_data):
+    # start by configuring the scheme for randomization
+    scheme_flags = scheme_data[json_key_scheme_flags]
+    scheme_str = scheme_data[json_key_algorithm_scheme]
 
+    scheme_str = format_scheme_for_flags(scheme_flags, scheme_str)
+
+    for dataset in datasets:
+        dataset_src = os.path.join(dataset_dir, dataset)
+
+        formattable_call_str = classification_formattable_call_str.format(max_jre_mem=max_jre_memory,
+                                                                          wekaJarSrc=weka_src,
+                                                                          classification_scheme=scheme_str,
+                                                                          dataset_file_src=dataset_src)
+
+        output_timing_dict = {json_key_scheme_name: scheme_data[json_key_scheme_name], json_key_goal_times: []}
+
+        print("beginning random parameter selection on run {0}".format(scheme_data[json_key_scheme_name]))
+
+        for goal_time in goal_time_list:
+            classification_list = classification_randomize_until_goal_time(formattable_call_str, scheme_flags,
+                                                                           goal_time)
+            output_timing_dict[json_key_goal_times].append(
+                {json_key_time: goal_time, json_key_classification_list: classification_list})
+
+        # output this dataset/scheme's goal time list to file
+        output_file = os.path.join(output_dir, scheme_data[json_key_scheme_name] + ".json")
+        with open(output_file, "w+") as output_file:
+            json.dump(output_timing_dict, output_file, indent=1)
+
+        print("{0} written to file {1}".format(scheme_data[json_key_scheme_name], output_file))
+
+
+def format_scheme_for_flags(scheme_flags, scheme_str):
     # use regex to alter the scheme to easily allow formatting of flag values
     for flag in scheme_flags:
         flag_character = flag[json_key_flag_character]
@@ -168,35 +211,18 @@ def classification_create_timings(weka_src, max_jre_memory, classification_algor
             re_match_groups = re.search(subscheme_regex, scheme_str)
             subscheme_string = re_match_groups.group(0)
             # replace the key in the subscheme with the formattable key
-            subscheme_string = re.sub(flag_value_regex(flag[json_key_flag_character]), "{{{0}}}".format(flag_format_replacement),
+            subscheme_string = re.sub(flag_value_regex(flag[json_key_flag_character]),
+                                      "{{{0}}}".format(flag_format_replacement),
                                       subscheme_string)
             # put the newly formatted subscheme back
             scheme_str = re.sub(subscheme_regex, subscheme_string, scheme_str)
-            #put the flag format in the string for easy replacement later
+            # put the flag format in the string for easy replacement later
             flag[json_key_flag_format_string] = flag_format_replacement
         else:
             this_flag_value_format = "{0}_value".format(flag_character)
             scheme_str = re.sub(flag_value_str, "{{{0}}}".format(this_flag_value_format), scheme_str)
             flag[json_key_flag_format_string] = this_flag_value_format
-
-    formattable_call_str = classification_formattable_call_str.format(max_jre_mem=max_jre_memory,
-                                                                      wekaJarSrc=weka_src,
-                                                                      classification_scheme=scheme_str,
-                                                                      dataset_file_src=classification_algorithm[
-                                                                          json_key_dataset_src])
-
-    output_timing_dict = {json_key_run_name: classification_algorithm[json_key_run_name], json_key_goal_times: []}
-
-    print("beginning random parameter selection on run {0}".format(classification_algorithm[json_key_run_name]))
-    goal_time_list = classification_algorithm[json_key_goal_times]
-    goal_time_list.sort()
-
-    for goal_time in goal_time_list:
-        classification_list = classification_randomize_until_goal_time(formattable_call_str, scheme_flags, goal_time)
-        output_timing_dict[json_key_goal_times].append(
-            {json_key_time: goal_time, json_key_classification_list: classification_list})
-
-    return output_timing_dict
+    return scheme_str
 
 
 def find_best_classification(classification_list):
@@ -221,7 +247,7 @@ def classification_randomize_until_goal_time(formattable_call_str, scheme_flags,
         elapsed_time = end_time - start_time
         total_time_taken += elapsed_time
 
-        #convert to string, if we received byte-like object
+        # convert to string, if we received byte-like object
         result_str = str(result_str, 'utf-8')
         algorithm_output_quality_groups = re.search(algorithm_quality_regex_string, result_str)
         if algorithm_output_quality_groups:
@@ -241,10 +267,12 @@ def randomize_flags(scheme_flags):
     for flag in scheme_flags:
         if json_key_flag_type in flag and flag[json_key_flag_type] == "int":
             rand_flag_value = random.randrange(flag[json_key_flag_min], flag[json_key_flag_max])
-            flag_value_dict[flag[json_key_flag_format_string]] ="-{0} {1}".format(flag[json_key_flag_character], rand_flag_value)
+            flag_value_dict[flag[json_key_flag_format_string]] = "-{0} {1}".format(flag[json_key_flag_character],
+                                                                                   rand_flag_value)
         else:
             rand_flag_value = random.uniform(flag[json_key_flag_min], flag[json_key_flag_max])
-            flag_value_dict[flag[json_key_flag_format_string]] ="-{0} {1:.5f}".format(flag[json_key_flag_character], rand_flag_value)
+            flag_value_dict[flag[json_key_flag_format_string]] = "-{0} {1:.5f}".format(flag[json_key_flag_character],
+                                                                                       rand_flag_value)
     return flag_value_dict
 
 
@@ -264,10 +292,10 @@ def run_attribute_selection(json_data_obj):
                                                                json_data_obj[json_key_tolerance_ratio],
                                                                json_data_obj[json_key_runs_per_algorithm])
 
-        output_file_src = os.path.join(this_dir_path, attr_sel_algorithm[json_key_run_name])
+        output_file_src = os.path.join(this_dir_path, attr_sel_algorithm[json_key_scheme_name])
         with open(output_file_src, "w+") as output_file:
             json.dump(attr_sel_algorithm, output_file, indent=1)
-        print("{0} written to file {1}".format(attr_sel_algorithm[json_key_run_name]), output_file_src)
+        print("{0} written to file {1}".format(attr_sel_algorithm[json_key_scheme_name]), output_file_src)
 
     print("all attribute selection algorithm dumped to corresponding json files")
 
@@ -283,18 +311,18 @@ def attribute_selection_create_timings(weka_executable_src, jre_maximum_memory, 
                                                                                json_key_dataset_src],
                                                                            output=temp_file_src)
 
-    output_timing_dict = {json_key_run_name: attr_sel_algorithm[json_key_run_name], json_key_goal_times: []}
+    output_timing_dict = {json_key_scheme_name: attr_sel_algorithm[json_key_scheme_name], json_key_goal_times: []}
 
     goal_time_list = attr_sel_algorithm[json_key_goal_times]
     goal_time_list.sort()
 
-    print("beginning runs for attribute selection {0}.".format(attr_sel_algorithm[json_key_run_name]))
+    print("beginning runs for attribute selection {0}.".format(attr_sel_algorithm[json_key_scheme_name]))
     for goal_time in goal_time_list:
         print("beginning timing for {0} seconds".format(goal_time))
         output_timing_dict[json_key_goal_times].append(
             attribute_selection_tweak_and_find_goal_time(formattable_call_str, goal_time, tolerance_ratio,
-                                                         runs_per_goal_time, attr_sel_algorithm[json_key_run_name]))
-    print("completed run {0}.".format(attr_sel_algorithm[json_key_run_name]))
+                                                         runs_per_goal_time, attr_sel_algorithm[json_key_scheme_name]))
+    print("completed run {0}.".format(attr_sel_algorithm[json_key_scheme_name]))
 
     return output_timing_dict
 
@@ -352,10 +380,10 @@ def test_config_json_validity(json_obj):
     '''
 
     top_level_json_keys = [json_key_weka_src, json_key_tolerance_ratio, json_key_jre_max_memory,
-                           json_key_runs_per_algorithm, json_key_attribute_selection, json_key_parameter_search_class]
-    attribute_selection_subkeys = [json_key_run_name, json_key_dataset_src, json_key_algorithm_scheme,
+                           json_key_runs_per_algorithm, json_key_attribute_selection, json_key_parameter_search_schemes]
+    attribute_selection_subkeys = [json_key_scheme_name, json_key_dataset_src, json_key_algorithm_scheme,
                                    json_key_goal_times]
-    parameter_search_classification_subkeys = [json_key_run_name, json_key_dataset_src, json_key_algorithm_scheme,
+    parameter_search_classification_subkeys = [json_key_scheme_name, json_key_dataset_src, json_key_algorithm_scheme,
                                                json_key_goal_times, json_key_scheme_flags]
 
     for json_key in top_level_json_keys:
@@ -372,7 +400,7 @@ def test_config_json_validity(json_obj):
                       "Please check configuration for correctness.".format(attr_sel_subkey))
                 return False
 
-    for param_search_instance in json_obj[json_key_parameter_search_class]:
+    for param_search_instance in json_obj[json_key_parameter_search_schemes]:
         for param_search_subkey in parameter_search_classification_subkeys:
             if not param_search_subkey in param_search_instance:
                 print("key {0} not found in an instance of attribute selection test. "
