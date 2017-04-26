@@ -37,22 +37,22 @@ json_key_best_classification = "best_classification_percentage"
 
 json_key_scheme_flags = "flags"
 json_key_flag_character = "flag_char"
-json_key_flag_type = "flag_type"
+json_key_flag_type = "type"
+json_key_in_subscheme = "in_subscheme"
+json_key_flag_format_string = "format_string"
 json_key_flag_min = "min"
 json_key_flag_max = "max"
 attribute_selection_formattable_call_str = "java -Xmx{max_jre_mem}m -classpath {wekaJarSrc} {scheme} -i {input} -o {output}"
 classification_formattable_call_str = "java -Xmx{max_jre_mem}m -classpath {wekaJarSrc} {classification_scheme} -t {dataset_file_src}"
 
 float_regex = "([0-9]*.[0-9]"
-correctly_classified_regex_string = "Correctly Classified Instances:* *([0-9]* *[0-9]*\\.[0-9]*) *%"
-correlation_coefficient_regex_string = "Correlation coefficient:* *([0-9]* *[0-9]*\\.[0-9]*"
+correctly_classified_regex_string = "Correctly Classified Instances:? *[(]?[0-9]*[)]? *[(]?[0-9]*[.]?[0-9]*[)]? *%"
+correlation_coefficient_regex_string = "Correlation coefficient:? *[(]?[0-9]*[)]? *[(]?[0-9]*[.]?[0-9]*[)]?"
 algorithm_quality_regex_string = "({0})|({1})".format(correctly_classified_regex_string,
                                                       correlation_coefficient_regex_string)
 
 weka_random_search_regex = "\"weka.\\S+?RandomSearch [^\"]"
-flag_value_regex = lambda flag_char: "-{0} *[0-9]*.?[0-9]*".format(flag_char)
-flag_value_format_str = "-{flag} \{{{flag}_value}}"
-rand_search_value_regex = flag_value_regex('F')
+flag_value_format_str = "-{flag_char} {{{flag_char}_value}}"
 timeTakenRegexString = "Time taken to build model:* *([0-9]*\\.[0-9]*) *seconds"
 num_expected_cmd_args = 2
 cmd_args = sys.argv
@@ -84,6 +84,10 @@ linspace with n points, if there's more time, linspace with 2n points, do ones b
 
 
 '''
+
+
+def flag_value_regex(flag):
+    return "-{0} *[0-9]*[.]?[0-9]*".format(flag)
 
 
 def show_help():
@@ -136,13 +140,13 @@ def load_json(json_file_src):
 
 def run_classification(json_data_obj):
     for classification in json_data_obj[json_key_parameter_search_class]:
-        algorithm_timings = classification_create_timings(json_data_obj[json_key_weka_src], classification)
+        algorithm_timings = classification_create_timings(json_data_obj[json_key_weka_src],
+                                                          json_data_obj[json_key_jre_max_memory], classification)
 
-        output_file_src = os.path.join(this_dir_path, classification[json_key_run_name])
+        output_file_src = os.path.join(this_dir_path, "{0}.json".format(classification[json_key_run_name]))
         with open(output_file_src, "w+") as output_file:
             json.dump(algorithm_timings, output_file, indent=1)
-        print("{0} written to file {1}".format(classification[json_key_run_name]),
-              json_data_obj[json_key_jre_max_memory], output_file_src)
+        print("{0} written to file {1}".format(classification[json_key_run_name], output_file_src))
 
     print("all attribute selection algorithm dumped to corresponding json files")
 
@@ -153,18 +157,40 @@ def classification_create_timings(weka_src, max_jre_memory, classification_algor
 
     # use regex to alter the scheme to easily allow formatting of flag values
     for flag in scheme_flags:
-        scheme_str = re.sub(flag_value_regex(flag), flag_value_format_str, scheme_str)
+        flag_character = flag[json_key_flag_character]
+        flag_value_str = flag_value_regex(flag[json_key_flag_character])
+
+        # if this flag specifies a specific subscheme, take out that subscheme and work on that!
+        if json_key_in_subscheme in flag:
+            flag_format_replacement = "{0}_{1}_value".format(flag[json_key_in_subscheme], flag[json_key_flag_character])
+            # find the subscheme
+            subscheme_regex = "{0}.*?\"".format(flag[json_key_in_subscheme])
+            re_match_groups = re.search(subscheme_regex, scheme_str)
+            subscheme_string = re_match_groups.group(0)
+            # replace the key in the subscheme with the formattable key
+            subscheme_string = re.sub(flag_value_regex(flag[json_key_flag_character]), "{{{0}}}".format(flag_format_replacement),
+                                      subscheme_string)
+            # put the newly formatted subscheme back
+            scheme_str = re.sub(subscheme_regex, subscheme_string, scheme_str)
+            #put the flag format in the string for easy replacement later
+            flag[json_key_flag_format_string] = flag_format_replacement
+        else:
+            this_flag_value_format = "{0}_value".format(flag_character)
+            scheme_str = re.sub(flag_value_str, "{{{0}}}".format(this_flag_value_format), scheme_str)
+            flag[json_key_flag_format_string] = this_flag_value_format
 
     formattable_call_str = classification_formattable_call_str.format(max_jre_mem=max_jre_memory,
                                                                       wekaJarSrc=weka_src,
                                                                       classification_scheme=scheme_str,
-                                                                      datasetFileSrc=classification_algorithm[
+                                                                      dataset_file_src=classification_algorithm[
                                                                           json_key_dataset_src])
 
     output_timing_dict = {json_key_run_name: classification_algorithm[json_key_run_name], json_key_goal_times: []}
 
     print("beginning random parameter selection on run {0}".format(classification_algorithm[json_key_run_name]))
-    goal_time_list = classification_algorithm[json_key_goal_times].sort()
+    goal_time_list = classification_algorithm[json_key_goal_times]
+    goal_time_list.sort()
+
     for goal_time in goal_time_list:
         classification_list = classification_randomize_until_goal_time(formattable_call_str, scheme_flags, goal_time)
         output_timing_dict[json_key_goal_times].append(
@@ -183,7 +209,11 @@ def classification_randomize_until_goal_time(formattable_call_str, scheme_flags,
     classification_results = []
     while total_time_taken < goal_time:
         random_flags = randomize_flags(scheme_flags)
-        call_str = formattable_call_str.format(random_flags)
+        call_str = ""
+        # for flag in random_flags:
+        #     flag_value = random_flags[flag]
+        #     call_str = formattable_call_str.format(flag, flag_value)
+        call_str = formattable_call_str.format(**random_flags)
 
         start_time = timer()
         result_str = check_output(call_str)
@@ -191,22 +221,30 @@ def classification_randomize_until_goal_time(formattable_call_str, scheme_flags,
         elapsed_time = end_time - start_time
         total_time_taken += elapsed_time
 
-        algorithm_output_quality = re.match(algorithm_quality_regex_string, result_str).group(0)
+        #convert to string, if we received byte-like object
+        result_str = str(result_str, 'utf-8')
+        algorithm_output_quality_groups = re.search(algorithm_quality_regex_string, result_str)
+        if algorithm_output_quality_groups:
+            algorithm_output_quality = algorithm_output_quality_groups.group(0)
+        else:
+            algorithm_output_quality = "Could not parse algorithm quality, potentially failed weka command"
         classification_results.append({json_key_time: elapsed_time,
                                        json_key_flags: random_flags,
                                        json_key_correctly_classified: algorithm_output_quality})
-        print("ran classification/regression, time taken: {0}".format(total_time_taken))
+        print("ran classification/regression, total time taken: {0}".format(total_time_taken))
+    print("reached goal time with {0} algorithm runs".format(len(classification_results)))
     return classification_results
 
 
 def randomize_flags(scheme_flags):
     flag_value_dict = {}
     for flag in scheme_flags:
-        flag_value_str = "{{0}_value}".format(flag[json_key_flag_character])
         if json_key_flag_type in flag and flag[json_key_flag_type] == "int":
-            flag_value_dict[flag_value_str] = random.randrange(flag[json_key_flag_min], flag[json_key_flag_max])
+            rand_flag_value = random.randrange(flag[json_key_flag_min], flag[json_key_flag_max])
+            flag_value_dict[flag[json_key_flag_format_string]] ="-{0} {1}".format(flag[json_key_flag_character], rand_flag_value)
         else:
-            flag_value_dict[flag_value_str] = random.uniform(flag[json_key_flag_min], flag[json_key_flag_max])
+            rand_flag_value = random.uniform(flag[json_key_flag_min], flag[json_key_flag_max])
+            flag_value_dict[flag[json_key_flag_format_string]] ="-{0} {1:.5f}".format(flag[json_key_flag_character], rand_flag_value)
     return flag_value_dict
 
 
@@ -236,6 +274,7 @@ def run_attribute_selection(json_data_obj):
 
 def attribute_selection_create_timings(weka_executable_src, jre_maximum_memory, attr_sel_algorithm, tolerance_ratio,
                                        runs_per_goal_time):
+    rand_search_value_regex = flag_value_regex('F')
     formattable_scheme = re.sub(rand_search_value_regex, "-F {0}", attr_sel_algorithm[json_key_algorithm_scheme])
     formattable_call_str = attribute_selection_formattable_call_str.format(max_jre_mem=jre_maximum_memory,
                                                                            wekaJarSrc=weka_executable_src,

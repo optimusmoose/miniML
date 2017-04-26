@@ -27,15 +27,23 @@
 		"flags":
 		[
 			{
-				"flag_char": "c",
+			  "in_subscheme":"SMO",
+				"flag_char": "C",
 				"min": 0.1,
 				"max":5
 			},
 			{
-				"flag_char": "C",
+				"flag_char": "E",
 				"min": 0.1,
 				"max":2
-			}
+			},
+		  {
+		  		"in_subscheme":"SMO",
+				"flag_char": "N",
+				"min": 0,
+				"max":3,
+				"type":"int"
+		  }
 		]
 	},
 	{
@@ -47,8 +55,8 @@
 			[
 				{
 					"flag_char": "C",
-					"min": 0.1,
-					"max":0.9
+					"min": 0.001,
+					"max":0.5
 				},
 				{
 					"flag_char": "M",
