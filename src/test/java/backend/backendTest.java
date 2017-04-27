@@ -49,7 +49,8 @@ public class backendTest extends TestCase{
      * @param args
      */
     public static void main(String[] args) {
-        Dispatcher dispatch = new Dispatcher();
+        int maxThreads = 8;
+        Dispatcher dispatch = new Dispatcher(maxThreads);
 
         //load some data
         String path = "src/test/resources/data/cpu.arff";
@@ -67,16 +68,9 @@ public class backendTest extends TestCase{
         data.setClassIndex(data.numAttributes() - 1);
 
         //give data to the WekaTaskManager
-        //mgr.setData(data);
         dispatch.setData(data);
         dispatch.setTimeLimit(1);
         dispatch.launch();
-
-        //run some tests on the data.
-        //taskList.addTask(lr); // run LR
-        //taskList.addTask(nn); // run NN
-        //taskList.doTask();
-        //taskList.doTask();
     }
 
     /**

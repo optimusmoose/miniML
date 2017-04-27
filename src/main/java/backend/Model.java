@@ -10,6 +10,7 @@ import weka.core.Instances;
 import weka.core.Option;
 import weka.classifiers.functions.LinearRegression;
 import weka.classifiers.functions.MultilayerPerceptron;
+import weka.classifiers.trees.J48;
 import weka.classifiers.Evaluation;
 import java.io.Serializable;
 
@@ -85,24 +86,27 @@ public abstract class Model implements Serializable {
         return(arr);
     }
 
-    /**
-     * Log a message from the Model.
-     * @param str
-     */
-    protected void log(String str) {
-        MiniMLLogger.INSTANCE.info("In Model: " + str);
-    }
 
     /**
      * Quick-fast method to log a summary of a Model's Evaluation.
      */
     protected void summarize() {
-        log(eval.toSummaryString("\nResults\n======\n", false));
+        MiniMLLogger.INSTANCE.info(eval.toSummaryString("\nResults\n======\n", false));
+    }
+
+    /**
+     * On classifiable data sets, we may determine the percentage of classes we got right
+     * TODO use this method on discrete-classed data!!
+     * @throws Exception
+     */
+    protected void getPercentCorrect() throws Exception {
+        eval.evaluateModel(this.classifier, this.data);
+        MiniMLLogger.INSTANCE.info(String.valueOf(eval.pctCorrect()));
     }
 
 }
 
-class LR_Model extends Model {
+class LR_Model extends Model implements Runnable {
     /**
     * Generates a Weka LinearRegression function Model acting on our data instance with our parameters.
     */
@@ -117,14 +121,20 @@ class LR_Model extends Model {
      * Configure crossfold validation and run the linear regression model
      * @throws Exception
      */
-    protected void run() throws ModelRunException,Exception {
+    @Override
+    public void run() {
         //invoke crossfold validation (Classifier obj, Instance, #folds, RNG)
-        eval.crossValidateModel(classifier, data, 10, new Random(1));
-        summarize();
+        try {
+            MiniMLLogger.INSTANCE.info("Running a LR_Model");
+            eval.crossValidateModel(classifier, data, 10, new Random(1));
+            summarize();
+        } catch (Exception e) {
+            MiniMLLogger.INSTANCE.exception(e);
+        }
     }
 }
 
-class NN_Model extends Model {
+class NN_Model extends Model implements Runnable {
     /**
     * Generates a Weka MultlayerPerceptron function Model acting on our data instance with our parameters.
     */
@@ -139,9 +149,42 @@ class NN_Model extends Model {
      * Configure crossfold validation and run the neural network model
      * @throws Exception
      */
-    protected void run() throws ModelRunException,Exception {
+    @Override
+    public void run() {
         //invoke crossfold validation (Classifier obj, Instance, #folds, RNG)
-        eval.crossValidateModel(classifier, data, 10, new Random(1));
+        try {
+            MiniMLLogger.INSTANCE.info("Running a NN_Model");
+            eval.crossValidateModel(classifier, data, 10, new Random(1));
+        } catch (Exception e) {
+            MiniMLLogger.INSTANCE.exception(e);
+        }
+        summarize();
+    }
+}
+
+class DT_Model extends Model implements Runnable {
+    /**
+     * Generates a Weka J48 Model acting on our data instance with our parameters.
+     */
+    public DT_Model(Instances d, String[] params) throws ModelConstructException,Exception {
+        super(d,params);
+        classifier = new J48();
+        prepare();
+        run();
+    }
+
+    /**
+     * Configure crossfold validation and run the decision tree model
+     * @throws Exception
+     */
+    @Override
+    public void run() {
+        try {
+            MiniMLLogger.INSTANCE.info("Running a DT_Model");
+            eval.crossValidateModel(classifier, data, 10, new Random(1));
+        } catch (Exception e) {
+            MiniMLLogger.INSTANCE.exception(e);
+        }
         summarize();
     }
 }
