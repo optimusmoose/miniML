@@ -29,9 +29,10 @@ public class ImperativeContext extends AbstractCompositeContext {
     /**
      * Perform whatever imperative this context handles.
      */
-    protected void execute(){
+    public void execute(){
         if(this.verifyParentIsReady()){
             //TODO do something.
+            this.log();
         }
 
     }
