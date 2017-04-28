@@ -1,6 +1,7 @@
 package frontend;
 
 import utils.Logging.MiniMLLogger;
+import utils.TypeFactory;
 import workflow.Keys;
 import workflow.WorkflowManager;
 import workflow.context.AbstractCompositeContext;
@@ -33,7 +34,7 @@ public class ModelTab extends JComponent {
     private ParameterContext nuContext;
     private ParameterContext pruningConfidenceContext;
     private ParameterContext pruningFoldsContext;
-    private ParameterContext instancesContext;
+    private ParameterContext decisionTreeInstancesContext;
 
 
     public ModelTab(){
@@ -561,7 +562,7 @@ public class ModelTab extends JComponent {
     public JPanel getDecisionTreePanel(){
         this.pruningConfidenceContext = new ParameterContext(this.context, Keys.PruningConfidence);
         this.pruningFoldsContext = new ParameterContext(this.context, Keys.PruningFolds);
-        this.instancesContext = new ParameterContext(this.context, Keys.Instances);
+        this.decisionTreeInstancesContext = new ParameterContext(this.context, Keys.DecisionTreeInstances);
 
         JPanel panel = new JPanel();
         String val1 = "";
@@ -583,8 +584,7 @@ public class ModelTab extends JComponent {
             public void stateChanged(ChangeEvent e) {
                 try {
                     context = WorkflowManager.INSTANCE.getContextByKey(Keys.PruningConfidence);
-                    updatePruningConfidence();
-                    handlePruningConfidenceContext((ParameterContext) context);
+                    handlePruningConfidenceContext((ParameterContext) context, slider1.getValue());
                 } catch(Exception exception) {
                     MiniMLLogger.INSTANCE.exception(exception);
                 }
@@ -597,8 +597,7 @@ public class ModelTab extends JComponent {
             public void stateChanged(ChangeEvent e) {
                 try {
                     context = WorkflowManager.INSTANCE.getContextByKey(Keys.PruningFolds);
-                    updatePruningFolds();
-                    handlePruningFoldsContext((ParameterContext) context);
+                    handlePruningFoldsContext((ParameterContext) context, slider2.getValue());
                 } catch(Exception exception) {
                     MiniMLLogger.INSTANCE.exception(exception);
                 }
@@ -610,19 +609,14 @@ public class ModelTab extends JComponent {
             @Override
             public void stateChanged(ChangeEvent e) {
                 try {
-                    context = WorkflowManager.INSTANCE.getContextByKey(Keys.Instances);
-                    updateInstances();
-                    handleInstancesContext((ParameterContext) context);
+                    context = WorkflowManager.INSTANCE.getContextByKey(Keys.DecisionTreeInstances);
+                    handleDecisionTreeInstancesContext((ParameterContext) context, slider3.getValue());
                 } catch(Exception exception) {
                     MiniMLLogger.INSTANCE.exception(exception);
                 }
             }
         });
 
-
-        val1 = String.valueOf(slider1.getValue());
-        val2 = String.valueOf(slider2.getValue());
-        val3 = String.valueOf(slider3.getValue());
         panel.add(tip);
         panel.add(par1);
         panel.add(slider1);
@@ -633,30 +627,18 @@ public class ModelTab extends JComponent {
         return panel;
     }
 
-    public void updatePruningConfidence() {
-        //TODO: do the things with the frontend
-    }
-
-    public void updatePruningFolds() {
-        //TODO: do the things with the frontend
-    }
-
-    public void updateInstances() {
-        //TODO: do the things with the frontend
-    }
-
-    public void handlePruningConfidenceContext(ParameterContext context) {
-        //TODO: set the value on the context
+    public void handlePruningConfidenceContext(ParameterContext context, int value) {
+        context.setValue(Integer.toString(value), TypeFactory.INT);
         context.updateState();
     }
 
-    public void handlePruningFoldsContext(ParameterContext context) {
-        //TODO: set the value on the context
+    public void handlePruningFoldsContext(ParameterContext context, int value) {
+        context.setValue(Integer.toString(value), TypeFactory.INT);
         context.updateState();
     }
 
-    public void handleInstancesContext(ParameterContext context) {
-        //TODO: set the value on the context
+    public void handleDecisionTreeInstancesContext(ParameterContext context, int value) {
+        context.setValue(Integer.toString(value), TypeFactory.INT);
         context.updateState();
     }
 
