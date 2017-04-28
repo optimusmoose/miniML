@@ -23,6 +23,7 @@ public class ImperativeContext extends AbstractCompositeContext {
      * @return true/false depending on whether parent is ready.
      */
     protected boolean verifyParentIsReady(){
+        this.parentContext.updateState();
         return(this.parentContext.getState().isReady());
     }
 
@@ -32,7 +33,9 @@ public class ImperativeContext extends AbstractCompositeContext {
     public void execute(){
         if(this.verifyParentIsReady()){
             //TODO do something.
-            this.log();
+            this.log("Parent Ready. Executing workflow.");
+        } else {
+            this.log("Parent not ready. Check settings.");
         }
 
     }

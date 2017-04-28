@@ -13,6 +13,8 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 class AnalyzeTab extends JComponent{
     private AbstractCompositeContext parentContext;
@@ -64,11 +66,11 @@ class AnalyzeTab extends JComponent{
         JLabel graphInfoAndSave = new JLabel("Important graph info goes here and so does the save button", SwingConstants.CENTER);
         JButton button = new JButton();
 
-        button.addChangeListener(new ChangeListener() {
+        button.addActionListener(new ActionListener() {
             private AbstractCompositeContext context;
 
             @Override
-            public void stateChanged(ChangeEvent e) {
+            public void actionPerformed(ActionEvent e) {
                 try {
                     context = WorkflowManager.INSTANCE.getContextByKey(Keys.StartAnalysisButton);
                     handleStartAnalysisButtonContext((ImperativeContext) context);
@@ -87,7 +89,7 @@ class AnalyzeTab extends JComponent{
 
     public void handleStartAnalysisButtonContext(ImperativeContext context) {
         context.execute();
-        context.updateState();
+        //context.updateState();
     }
 
     private JPanel timeRemainingPanel() {
