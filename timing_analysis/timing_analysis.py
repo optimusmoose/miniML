@@ -10,8 +10,10 @@ import random
 from timeit import default_timer as timer
 import datetime
 
+
 def gen_timestamp():
     return datetime.datetime.now()
+
 
 def print_with_timestamp(string):
     print("{0}: {1}".format(gen_timestamp(), string))
@@ -41,6 +43,8 @@ json_key_time = "goal_time"
 json_key_flags = "flag_values"
 json_key_run_success = "run_success"
 json_key_output_times = "run_times"
+json_key_selected_attributes = "selected_attrs"
+json_key_total_time = "time_taken"
 
 json_key_correctly_classified = "correctly_classified"
 json_key_best_classification = "best_classification_percentage"
@@ -53,12 +57,13 @@ json_key_flag_format_string = "format_string"
 json_key_flag_min = "min"
 json_key_flag_max = "max"
 
-attribute_selection_formattable_call_str = "java -Xmx{max_jre_mem}m -classpath {wekaJarSrc} {scheme} -i {input} -o {output}"
+attribute_selection_formattable_call_str = "java -Xmx{max_jre_mem}m -classpath {wekaJarSrc} {scheme} -i {input}"
 classification_formattable_call_str = "java -Xmx{max_jre_mem}m -classpath {wekaJarSrc} {classification_scheme} -t {dataset_file_src}"
 
 float_regex = "([0-9]*.[0-9]"
 correctly_classified_regex_string = "Correctly Classified Instances:? *[(]?[0-9]*[)]? *[(]?[0-9]*[.]?[0-9]*[)]? *%"
 correlation_coefficient_regex_string = "Correlation coefficient:? *[(]?[0-9]*[)]? *[(]?[0-9]*[.]?[0-9]*[)]?"
+regex_pattern_attr_sel_output_attribute = "@attribute(.*)\\{"
 algorithm_quality_regex_string = "({0})|({1})".format(correctly_classified_regex_string,
                                                       correlation_coefficient_regex_string)
 
@@ -185,7 +190,8 @@ def classification_create_timings(weka_src, dataset_dir, output_dir, max_jre_mem
 
         output_timing_dict = {json_key_scheme_name: scheme_data[json_key_scheme_name], json_key_goal_times: []}
 
-        print_with_timestamp("beginning random parameter selection on run {0}".format(scheme_data[json_key_scheme_name]))
+        print_with_timestamp(
+            "beginning random parameter selection on run {0}".format(scheme_data[json_key_scheme_name]))
 
         for goal_time in goal_time_list:
             classification_list = classification_randomize_until_goal_time(formattable_call_str, scheme_flags,
@@ -199,7 +205,7 @@ def classification_create_timings(weka_src, dataset_dir, output_dir, max_jre_mem
         dataset_without_extension = os.path.splitext(dataset)[0]
         output_file_src = os.path.join(output_dir, "{0}_{1}.json".format(scheme_data[json_key_scheme_name],
                                                                          dataset_without_extension))
-        with open(output_file_src, "w+") as output_file:
+        with open(output_file_src, "w") as output_file:
             json.dump(output_timing_dict, output_file, indent=1)
 
         print_with_timestamp("{0} written to file {1}".format(scheme_data[json_key_scheme_name], output_file_src))
@@ -262,7 +268,8 @@ def classification_randomize_until_goal_time(formattable_call_str, scheme_flags,
                                        json_key_flags: random_flags,
                                        json_key_correctly_classified: algorithm_output_quality})
         print_with_timestamp("ran classification/regression, total time taken: {0}".format(total_time_taken))
-    print_with_timestamp("reached goal time of {0} with {1} algorithm runs".format(goal_time, len(classification_results)))
+    print_with_timestamp(
+        "reached goal time of {0} with {1} algorithm runs".format(goal_time, len(classification_results)))
     return classification_results
 
 
@@ -309,8 +316,7 @@ def attribute_selection_create_timings(weka_executable_src, jre_maximum_memory, 
         formattable_call_str = attribute_selection_formattable_call_str.format(max_jre_mem=jre_maximum_memory,
                                                                                wekaJarSrc=weka_executable_src,
                                                                                scheme=formattable_scheme,
-                                                                               input=dataset_src,
-                                                                               output=temp_file_src)
+                                                                               input=dataset_src)
 
         output_timing_dict = {json_key_scheme_name: attr_sel_algorithm[json_key_scheme_name], json_key_goal_times: []}
 
@@ -335,13 +341,19 @@ def attribute_selection_create_timings(weka_executable_src, jre_maximum_memory, 
         print_with_timestamp("completed run {0}.".format(attr_sel_algorithm[json_key_scheme_name]))
 
         dataset_without_extension = os.path.splitext(dataset_filename)[0]
-        output_file_src = os.path.join(this_dir_path, attr_sel_algorithm[json_key_scheme_name],
+
+        #dump json to file, creating output dir if needed
+        scheme_output_dir = os.path.join(this_dir_path, attr_sel_algorithm[json_key_scheme_name])
+        if not os.path.exists(scheme_output_dir):
+            os.mkdir(scheme_output_dir)
+        output_file_src = os.path.join(scheme_output_dir,
                                        "{0}_{1}.json".format(attr_sel_algorithm[json_key_scheme_name],
                                                              dataset_without_extension))
-        with open(output_file_src, "w+") as output_file:
+
+        with open(output_file_src, "w") as output_file:
             json.dump(output_timing_dict, output_file, indent=1)
         print_with_timestamp("{0} for dataset {1} written to file {2}".format(attr_sel_algorithm[json_key_scheme_name]),
-              dataset_filename, output_file_src)
+                             dataset_filename, output_file_src)
 
         print_with_timestamp("all attribute selection algorithm dumped to corresponding json files")
 
@@ -357,6 +369,8 @@ def attribute_selection_tweak_and_find_goal_time(formattable_call_str, goal_time
     # if we had a previous percentage, use it to inform next percentage choice
     if previous_percent_and_timing:
         rand_percent = previous_percent_and_timing[0] * (goal_time / previous_percent_and_timing[1])
+        rand_percent = min(rand_percent, maximum_allowable_rand_percentage)
+        rand_percent = min(rand_percent, minimum_allowable_rand_percentage)
 
     # create output dictionary
     this_goal_time_result = {json_key_time: goal_time, json_key_output_times: []}
@@ -364,23 +378,32 @@ def attribute_selection_tweak_and_find_goal_time(formattable_call_str, goal_time
     while (num_runs_in_time_threshold < runs_per_goal_time):
         call_str = formattable_call_str.format(rand_percent)
         start_time = timer()
-        check_output(call_str)
+        result_binary = check_output(call_str)
         end_time = timer()
         total_time = end_time - start_time
 
+        result_str = str(result_binary, "utf-8")
+        selected_attribute_list = re.findall(regex_pattern_attr_sel_output_attribute, result_str)
+
         if time_threshold_low < total_time < time_threshold_high:
-            print_with_timestamp("ran attribute selection in threshold: time {0}, goal {1}".format(total_time, goal_time))
-            this_goal_time_result[json_key_output_times].append(total_time)
+            print_with_timestamp(
+                "ran attribute selection in threshold: time {0}, goal {1}".format(total_time, goal_time))
+            result_dict = {json_key_total_time: total_time, json_key_selected_attributes: selected_attribute_list}
+            this_goal_time_result[json_key_output_times].append(result_dict)
             num_runs_in_time_threshold += 1
         else:
             if rand_percent <= minimum_allowable_rand_percentage and total_time > time_threshold_high:
                 this_goal_time_result[json_key_run_success] = "failure: goal time too high"
-                print_with_timestamp("could not create run long enough to match time threshold of {0}".format(time_threshold_low))
-                return this_goal_time_result
+                print_with_timestamp(
+                    "could not create run long enough to match time threshold of {0}".format(time_threshold_low))
+                print_with_timestamp("at {0}%, time taken {1}.".format(rand_percent, total_time))
+                return this_goal_time_result, None
             elif rand_percent >= maximum_allowable_rand_percentage and total_time < time_threshold_low:
                 this_goal_time_result[json_key_run_success] = "failure: goal time too low"
-                print_with_timestamp("could not create run short enough to match time threshold of {0}".format(time_threshold_high))
-                return this_goal_time_result
+                print_with_timestamp(
+                    "could not create run short enough to match time threshold of {0}".format(time_threshold_high))
+                print_with_timestamp("at {0}%, time taken {1}.".format(rand_percent, total_time))
+                return this_goal_time_result, (rand_percent, goal_time)
 
             else:
                 # tweak the search percent by a factor relating to the previous time taken
@@ -390,7 +413,7 @@ def attribute_selection_tweak_and_find_goal_time(formattable_call_str, goal_time
                 rand_percent = min(rand_percent, maximum_allowable_rand_percentage)
                 rand_percent = max(rand_percent, minimum_allowable_rand_percentage)
                 print_with_timestamp("{0} not in tolerance around goal of {1}, "
-                      "trying new random search percent {2}".format(total_time, goal_time, rand_percent))
+                                     "trying new random search percent {2}".format(total_time, goal_time, rand_percent))
 
     print_with_timestamp("finished run list for algorithm {0}, timing {1}.".format(run_name, goal_time))
     this_goal_time_result[json_key_run_success] = "success"
@@ -446,6 +469,5 @@ json_data_obj = load_json(json_input_file_src)
 run_attribute_selection(json_data_obj)
 
 run_classification(json_data_obj)
-
 
 print_with_timestamp("All computation now finished.")
