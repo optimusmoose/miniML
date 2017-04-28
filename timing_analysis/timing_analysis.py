@@ -17,14 +17,15 @@ json_key_jre_max_memory = "jre_maximum_memory"
 json_key_tolerance_ratio = "tolerance_ratio"
 json_key_runs_per_algorithm = "runs_per_algorithm"
 json_key_attribute_selection = "attribute_selection_algorithms"
-json_key_parameter_search_schemes = "classification_algorithms"
-json_key_datasets = "datasets"
+json_key_parameter_search_algorithms = "classification_algorithms"
+json_key_schemes = "schemes"
+json_key_dataset_directory = "dataset_directory"
 
 json_key_scheme_name = "scheme_name"
 json_key_dataset_src = "dataset_src"
-json_key_algorithm_scheme = "algorithm_scheme"
+json_key_algorithm_scheme = "scheme"
 json_key_goal_times = "goal_times"
-json_key_dataset_dir = "dataset_director"
+json_key_datasets = "datasets"
 
 # for output
 json_key_regression_list = "regression_list"
@@ -143,22 +144,18 @@ def load_json(json_file_src):
 
 def run_classification(json_data_obj):
     # make sure the goal times are sorted
-    json_data_obj[json_key_parameter_search_schemes][json_key_goal_times].sort()
-    goal_time_list = json_data_obj[json_key_parameter_search_schemes][json_key_goal_times]
-    datasets = json_data_obj[json_key_parameter_search_schemes][json_key_datasets]
-    for scheme in json_data_obj[json_key_parameter_search_schemes][json_key_parameter_search_schemes]:
+    json_data_obj[json_key_parameter_search_algorithms][json_key_goal_times].sort()
+    goal_time_list = json_data_obj[json_key_parameter_search_algorithms][json_key_goal_times]
+    datasets = json_data_obj[json_key_parameter_search_algorithms][json_key_datasets]
+    for scheme in json_data_obj[json_key_parameter_search_algorithms][json_key_schemes]:
         # create scheme output directory if it's missing
         scheme_output_dir = os.path.join(this_dir_path, scheme[json_key_scheme_name])
         if not os.path.exists(scheme_output_dir):
             os.makedirs(scheme_output_dir)
 
-        algorithm_timings = classification_create_timings(json_data_obj[json_key_weka_src],
-                                                          json_data_obj[json_key_dataset_dir],
-                                                          scheme_output_dir,
-                                                          json_data_obj[json_key_jre_max_memory],
-                                                          goal_time_list,
-                                                          datasets,
-                                                          scheme)
+        classification_create_timings(json_data_obj[json_key_weka_src], json_data_obj[json_key_dataset_directory],
+                                      scheme_output_dir, json_data_obj[json_key_jre_max_memory], goal_time_list,
+                                      datasets, scheme)
 
     print("all parameter selection algorithms dumped to corresponding json files")
 
@@ -189,12 +186,16 @@ def classification_create_timings(weka_src, dataset_dir, output_dir, max_jre_mem
             output_timing_dict[json_key_goal_times].append(
                 {json_key_time: goal_time, json_key_classification_list: classification_list})
 
+        print("all goal times completed for run {0}".format(scheme_data[json_key_scheme_name]))
+
         # output this dataset/scheme's goal time list to file
-        output_file = os.path.join(output_dir, scheme_data[json_key_scheme_name] + ".json")
-        with open(output_file, "w+") as output_file:
+        dataset_without_extension = os.path.splitext(dataset)[0]
+        output_file_src = os.path.join(output_dir, "{0}_{1}.json".format(scheme_data[json_key_scheme_name],
+                                                                         dataset_without_extension))
+        with open(output_file_src, "w+") as output_file:
             json.dump(output_timing_dict, output_file, indent=1)
 
-        print("{0} written to file {1}".format(scheme_data[json_key_scheme_name], output_file))
+        print("{0} written to file {1}".format(scheme_data[json_key_scheme_name], output_file_src))
 
 
 def format_scheme_for_flags(scheme_flags, scheme_str):
@@ -235,10 +236,6 @@ def classification_randomize_until_goal_time(formattable_call_str, scheme_flags,
     classification_results = []
     while total_time_taken < goal_time:
         random_flags = randomize_flags(scheme_flags)
-        call_str = ""
-        # for flag in random_flags:
-        #     flag_value = random_flags[flag]
-        #     call_str = formattable_call_str.format(flag, flag_value)
         call_str = formattable_call_str.format(**random_flags)
 
         start_time = timer()
@@ -258,13 +255,14 @@ def classification_randomize_until_goal_time(formattable_call_str, scheme_flags,
                                        json_key_flags: random_flags,
                                        json_key_correctly_classified: algorithm_output_quality})
         print("ran classification/regression, total time taken: {0}".format(total_time_taken))
-    print("reached goal time with {0} algorithm runs".format(len(classification_results)))
+    print("reached goal time of {0} with {1} algorithm runs".format(goal_time, len(classification_results)))
     return classification_results
 
 
 def randomize_flags(scheme_flags):
     flag_value_dict = {}
     for flag in scheme_flags:
+        flag_min, flag_max = flag[json_key_flag_min], flag[json_key_flag_max]
         if json_key_flag_type in flag and flag[json_key_flag_type] == "int":
             rand_flag_value = random.randrange(flag[json_key_flag_min], flag[json_key_flag_max])
             flag_value_dict[flag[json_key_flag_format_string]] = "-{0} {1}".format(flag[json_key_flag_character],
@@ -294,7 +292,7 @@ def run_attribute_selection(json_data_obj):
 
         output_file_src = os.path.join(this_dir_path, attr_sel_algorithm[json_key_scheme_name])
         with open(output_file_src, "w+") as output_file:
-            json.dump(attr_sel_algorithm, output_file, indent=1)
+            json.dump(algorithm_timings, output_file, indent=1)
         print("{0} written to file {1}".format(attr_sel_algorithm[json_key_scheme_name]), output_file_src)
 
     print("all attribute selection algorithm dumped to corresponding json files")
@@ -373,6 +371,7 @@ def attribute_selection_tweak_and_find_goal_time(formattable_call_str, goal_time
     return this_goal_time_result
 
 
+# TODO: update and renable this test
 def test_config_json_validity(json_obj):
     '''
     Runs simple tests on the validity of the json object, and will alert the user if expected keys are missing.
@@ -380,7 +379,8 @@ def test_config_json_validity(json_obj):
     '''
 
     top_level_json_keys = [json_key_weka_src, json_key_tolerance_ratio, json_key_jre_max_memory,
-                           json_key_runs_per_algorithm, json_key_attribute_selection, json_key_parameter_search_schemes]
+                           json_key_runs_per_algorithm, json_key_attribute_selection,
+                           json_key_parameter_search_algorithms]
     attribute_selection_subkeys = [json_key_scheme_name, json_key_dataset_src, json_key_algorithm_scheme,
                                    json_key_goal_times]
     parameter_search_classification_subkeys = [json_key_scheme_name, json_key_dataset_src, json_key_algorithm_scheme,
@@ -400,7 +400,7 @@ def test_config_json_validity(json_obj):
                       "Please check configuration for correctness.".format(attr_sel_subkey))
                 return False
 
-    for param_search_instance in json_obj[json_key_parameter_search_schemes]:
+    for param_search_instance in json_obj[json_key_parameter_search_algorithms]:
         for param_search_subkey in parameter_search_classification_subkeys:
             if not param_search_subkey in param_search_instance:
                 print("key {0} not found in an instance of attribute selection test. "
@@ -414,8 +414,8 @@ random.seed(random_seed)  # for future use
 check_args()
 json_input_file_src = cmd_args[1]
 json_data_obj = load_json(json_input_file_src)
-if not test_config_json_validity(json_data_obj):
-    exit()
+# if not test_config_json_validity(json_data_obj):
+#    exit()
 
 run_attribute_selection(json_data_obj)
 
