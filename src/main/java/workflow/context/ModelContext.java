@@ -1,18 +1,17 @@
 package workflow.context;
 
-import workflow.Keys;
 import workflow.state.StateFactory;
 
 /**
  * The Context of the algorithm models configuration
  */
-class ModelContext extends AbstractCompositeContext {
+public class ModelContext extends AbstractCompositeContext {
 
     /**
      * dataset has not been set by user at start, state will be error
      */
-    ModelContext(ContextInterface parentContext) {
-        super(StateFactory.INSTANCE.error(), parentContext, Keys.ModelConfig);
+    public ModelContext(ContextInterface parentContext, String key) {
+        super(StateFactory.INSTANCE.error(), parentContext, key);
     }
 
 }
