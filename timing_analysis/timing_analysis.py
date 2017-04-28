@@ -384,7 +384,7 @@ def attribute_selection_tweak_and_find_goal_time(formattable_call_str, goal_time
 
             else:
                 # tweak the search percent by a factor relating to the previous time taken
-                rand_percent_change_ratio = (goal_time / total_time) * .99
+                rand_percent_change_ratio = (goal_time / total_time)
                 rand_percent *= rand_percent_change_ratio
                 # keep in maximum and minimums
                 rand_percent = min(rand_percent, maximum_allowable_rand_percentage)
