@@ -41,7 +41,7 @@ public class Keys {
 
     public static final String PruningConfidence = "MM_MD_PRU_CON";
     public static final String PruningFolds = "MM_MD_PRU_FLD";
-    public static final String Instances = "MM_MD_INST";
+    public static final String DecisionTreeInstances = "MM_MD_INST";
 
 
     public static final String PreprocessConfig = "MML_PP_CFG";
