@@ -63,7 +63,8 @@ classification_formattable_call_str = "java -Xmx{max_jre_mem}m -classpath {wekaJ
 float_regex = "([0-9]*.[0-9]"
 correctly_classified_regex_string = "Correctly Classified Instances:? *[(]?[0-9]*[)]? *[(]?[0-9]*[.]?[0-9]*[)]? *%"
 correlation_coefficient_regex_string = "Correlation coefficient:? *[(]?[0-9]*[)]? *[(]?[0-9]*[.]?[0-9]*[)]?"
-regex_pattern_attr_sel_output_attribute = "@attribute(.*)\\{"
+#TODO: make this regex match { or newline
+regex_pattern_attr_sel_output_attribute = "@attribute.*"
 algorithm_quality_regex_string = "({0})|({1})".format(correctly_classified_regex_string,
                                                       correlation_coefficient_regex_string)
 
@@ -352,10 +353,10 @@ def attribute_selection_create_timings(weka_executable_src, jre_maximum_memory, 
 
         with open(output_file_src, "w") as output_file:
             json.dump(output_timing_dict, output_file, indent=1)
-        print_with_timestamp("{0} for dataset {1} written to file {2}".format(attr_sel_algorithm[json_key_scheme_name]),
-                             dataset_filename, output_file_src)
+        print_with_timestamp("{0} for dataset {1} written to file {2}".format(attr_sel_algorithm[json_key_scheme_name],
+                             dataset_filename, output_file_src))
 
-        print_with_timestamp("all attribute selection algorithm dumped to corresponding json files")
+    print_with_timestamp("all attribute selection algorithm dumped to corresponding json files")
 
 
 def attribute_selection_tweak_and_find_goal_time(formattable_call_str, goal_time, tolerance_ratio,
