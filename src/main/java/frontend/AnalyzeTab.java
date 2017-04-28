@@ -1,12 +1,24 @@
 package frontend;
 
+import workflow.Keys;
+import workflow.WorkflowManager;
+import workflow.context.AbstractCompositeContext;
+import workflow.context.AnalyzeContext;
+import workflow.context.ImperativeContext;
+
 import javax.swing.*;
 import java.awt.*;
 
 class AnalyzeTab extends JComponent{
+    private AbstractCompositeContext parentContext;
+    private AnalyzeContext context;
+    private ImperativeContext startAnalysisButton;
 
     AnalyzeTab() {
         super();
+
+        this.parentContext = WorkflowManager.INSTANCE.getContextByKey(Keys.App);
+        this.context = new AnalyzeContext(parentContext, Keys.AnalyzeConfig);
 
         this.setLayout(new BorderLayout());
         this.add(consolePanel(), BorderLayout.PAGE_START);
@@ -38,7 +50,9 @@ class AnalyzeTab extends JComponent{
     }
 
     private JPanel modelPanel() {
-        JPanel panel = new JPanel(new GridLayout(1, 2));
+        this.startAnalysisButton = new ImperativeContext(this.context, Keys.StartAnalysisButton);
+
+        JPanel panel = new JPanel(new GridLayout(1, 3));
 
         JLabel bestGraph = new JLabel("Some Graph Here", SwingConstants.CENTER);
         JLabel graphInfoAndSave = new JLabel("Important graph info goes here and so does the save button", SwingConstants.CENTER);
