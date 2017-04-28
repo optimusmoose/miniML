@@ -1,8 +1,11 @@
 {
+  "_comment_timings":"all time numbers are in seconds",
   "weka_executable_src": "C:/\"Program Files\"/Weka-3-6/weka.jar",
   "tolerance_ratio": 0.05,
+  "_comment_tolerance":"tolerance is as a percent of runtime for attribute selection",
   "runs_per_algorithm": 3,
   "jre_maximum_memory": 1024,
+  "_comment_jre_max_mem":"maximum memory is an integer number of megabytes",
   "dataset_directory": "C:/\"Program Files\"/Weka-3-6/data",
   "attribute_selection_algorithms": [
     {
@@ -16,20 +19,13 @@
       ],
       "scheme": "weka.filters.supervised.attribute.AttributeSelection -E \"weka.attributeSelection.CfsSubsetEval \" -S \"weka.attributeSelection.RandomSearch -F 25.0 -seed 1\"",
       "goal_times": [
-        3,5
+        5,15,30,60,120,180,240,300,360,420,480,540,600,1200,1800,3600,5400,7200
       ]
     }
   ],
   "classification_algorithms": {
     "goal_times": [
-      5,
-      15,
-      30,
-      60,
-      300,
-      600,
-      120,
-      1800
+         5,15,30,60,120,180,240,300,360,420,480,540,600,1200,1800,3600,5400,7200
     ],
     "datasets": [
       "soybean.arff",
