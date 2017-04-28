@@ -19,10 +19,12 @@ public class NoUserParameterDispatcherBuilder extends AbstractDispatcherBuilder 
             e.printStackTrace();
         }
         this.searchType = new randomSearch();
+        this.data.setClassIndex(this.data.numAttributes() - 1);
         this.linearRegressionParameters = new LinearRegressionParameters();
         this.neuralNetworkParameters = new NeuralNetworkParameters();
         this.decisionTreeParameters = new DecisionTreeParameters();
-        this.dispatcher = new Dispatcher(maxThreads,
+        this.dispatcher = new Dispatcher(data,
+                                         maxThreads,
                                          neuralNetworkParameters,
                                          linearRegressionParameters,
                                          decisionTreeParameters,

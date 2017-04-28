@@ -28,7 +28,7 @@ public class NeuralNetworkParameters implements ParameterIFace {
         parameters.add(seed);
         //nodes each layer
         WrappedParam layer = new WrappedParamString("string","layer width","-H","aiot");
-        parameters.add(layer);
+        //parameters.add(layer);
         this.parameters = parameters;
     }
 

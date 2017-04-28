@@ -28,11 +28,13 @@ public class Dispatcher {
     /**
      * Construct the major parts of the backend so that the dispatcher can use them.
      */
-    public Dispatcher(int maxThreads,
+    public Dispatcher(Instances data,
+                      int maxThreads,
                       ParameterIFace neuralNetworkParameters,
                       ParameterIFace linearRegressionParameters,
                       ParameterIFace decisionTreeParameters,
                       SearchAlgorithmInterface searchType){
+        this.data = data;
         this.neuralNetworkParameters = neuralNetworkParameters;
         this.linearRegressionParameters = linearRegressionParameters;
         this.decisionTreeParameters = decisionTreeParameters;
