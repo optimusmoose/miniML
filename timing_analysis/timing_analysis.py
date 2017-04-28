@@ -284,54 +284,72 @@ def run_attribute_selection(json_data_obj):
     '''
 
     for attr_sel_algorithm in json_data_obj[json_key_attribute_selection]:
-        algorithm_timings = attribute_selection_create_timings(json_data_obj[json_key_weka_src],
-                                                               json_data_obj[json_key_jre_max_memory],
-                                                               attr_sel_algorithm,
-                                                               json_data_obj[json_key_tolerance_ratio],
-                                                               json_data_obj[json_key_runs_per_algorithm])
-
-        output_file_src = os.path.join(this_dir_path, attr_sel_algorithm[json_key_scheme_name])
-        with open(output_file_src, "w+") as output_file:
-            json.dump(algorithm_timings, output_file, indent=1)
-        print("{0} written to file {1}".format(attr_sel_algorithm[json_key_scheme_name]), output_file_src)
-
-    print("all attribute selection algorithm dumped to corresponding json files")
+        attribute_selection_create_timings(json_data_obj[json_key_weka_src],
+                                           json_data_obj[json_key_jre_max_memory],
+                                           attr_sel_algorithm,
+                                           json_data_obj[json_key_tolerance_ratio],
+                                           json_data_obj[json_key_runs_per_algorithm],
+                                           json_data_obj[json_key_dataset_directory])
 
 
 def attribute_selection_create_timings(weka_executable_src, jre_maximum_memory, attr_sel_algorithm, tolerance_ratio,
-                                       runs_per_goal_time):
+                                       runs_per_goal_time, dataset_directory):
     rand_search_value_regex = flag_value_regex('F')
     formattable_scheme = re.sub(rand_search_value_regex, "-F {0}", attr_sel_algorithm[json_key_algorithm_scheme])
-    formattable_call_str = attribute_selection_formattable_call_str.format(max_jre_mem=jre_maximum_memory,
-                                                                           wekaJarSrc=weka_executable_src,
-                                                                           scheme=formattable_scheme,
-                                                                           input=attr_sel_algorithm[
-                                                                               json_key_dataset_src],
-                                                                           output=temp_file_src)
 
-    output_timing_dict = {json_key_scheme_name: attr_sel_algorithm[json_key_scheme_name], json_key_goal_times: []}
+    for dataset_filename in attr_sel_algorithm[json_key_datasets]:
+        dataset_src = os.path.join(dataset_directory, dataset_filename)
+        formattable_call_str = attribute_selection_formattable_call_str.format(max_jre_mem=jre_maximum_memory,
+                                                                               wekaJarSrc=weka_executable_src,
+                                                                               scheme=formattable_scheme,
+                                                                               input=dataset_src,
+                                                                               output=temp_file_src)
 
-    goal_time_list = attr_sel_algorithm[json_key_goal_times]
-    goal_time_list.sort()
+        output_timing_dict = {json_key_scheme_name: attr_sel_algorithm[json_key_scheme_name], json_key_goal_times: []}
 
-    print("beginning runs for attribute selection {0}.".format(attr_sel_algorithm[json_key_scheme_name]))
-    for goal_time in goal_time_list:
-        print("beginning timing for {0} seconds".format(goal_time))
-        output_timing_dict[json_key_goal_times].append(
-            attribute_selection_tweak_and_find_goal_time(formattable_call_str, goal_time, tolerance_ratio,
-                                                         runs_per_goal_time, attr_sel_algorithm[json_key_scheme_name]))
-    print("completed run {0}.".format(attr_sel_algorithm[json_key_scheme_name]))
+        goal_time_list = attr_sel_algorithm[json_key_goal_times]
+        goal_time_list.sort()
 
-    return output_timing_dict
+        print(
+            "beginning runs for attribute selection {0}, dataset {1}.".format(attr_sel_algorithm[json_key_scheme_name],
+                                                                              dataset_filename))
+        previous_percent = None
+        for goal_time in goal_time_list:
+            print("beginning timing for {0} seconds".format(goal_time))
+
+            goal_results, previous_percent = attribute_selection_tweak_and_find_goal_time(formattable_call_str,
+                                                                                          goal_time, tolerance_ratio,
+                                                                                          runs_per_goal_time,
+                                                                                          attr_sel_algorithm[
+                                                                                              json_key_scheme_name],
+                                                                                          previous_percent)
+            output_timing_dict[json_key_goal_times].append(goal_results)
+
+        print("completed run {0}.".format(attr_sel_algorithm[json_key_scheme_name]))
+
+        dataset_without_extension = os.path.splitext(dataset_filename)[0]
+        output_file_src = os.path.join(this_dir_path, attr_sel_algorithm[json_key_scheme_name],
+                                       "{0}_{1}.json".format(attr_sel_algorithm[json_key_scheme_name],
+                                                             dataset_without_extension))
+        with open(output_file_src, "w+") as output_file:
+            json.dump(output_timing_dict, output_file, indent=1)
+        print("{0} for dataset {1} written to file {2}".format(attr_sel_algorithm[json_key_scheme_name]),
+              dataset_filename, output_file_src)
+
+        print("all attribute selection algorithm dumped to corresponding json files")
 
 
 def attribute_selection_tweak_and_find_goal_time(formattable_call_str, goal_time, tolerance_ratio,
-                                                 runs_per_goal_time, run_name):
+                                                 runs_per_goal_time, run_name, previous_percent_and_timing):
     rand_percent_step_initial = sys.float_info.epsilon
     rand_percent = rand_percent_step_initial
     time_threshold_low = goal_time - (goal_time * tolerance_ratio)
     time_threshold_high = goal_time + (goal_time * tolerance_ratio)
     num_runs_in_time_threshold = 0
+
+    # if we had a previous percentage, use it to inform next percentage choice
+    if previous_percent_and_timing:
+        rand_percent = previous_percent_and_timing[0] * (goal_time / previous_percent_and_timing[1])
 
     # create output dictionary
     this_goal_time_result = {json_key_time: goal_time, json_key_output_times: []}
@@ -368,7 +386,7 @@ def attribute_selection_tweak_and_find_goal_time(formattable_call_str, goal_time
 
     print("finished run list for algorithm {0}, timing {1}.".format(run_name, goal_time))
     this_goal_time_result[json_key_run_success] = "success"
-    return this_goal_time_result
+    return this_goal_time_result, (rand_percent, goal_time)
 
 
 # TODO: update and renable this test
