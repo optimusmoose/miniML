@@ -1,5 +1,7 @@
 package workflow.context;
 
+import workflow.builder.NoUserParameterDispatcherBuilder;
+
 import static workflow.state.StateFactory.*;
 
 /**
@@ -34,6 +36,8 @@ public class ImperativeContext extends AbstractCompositeContext {
         if(this.verifyParentIsReady()){
             //TODO do something.
             this.log("Parent Ready. Executing workflow.");
+            NoUserParameterDispatcherBuilder run = new NoUserParameterDispatcherBuilder();
+            run.launch();
         } else {
             this.log("Parent not ready. Check settings.");
         }

@@ -21,23 +21,27 @@ public class Dispatcher {
     LR_Task lr;
     NN_Task nn;
     //TODO ParameterIFaces are hardcoded until we can generalize parameter selection
-    ParameterIFace param_iface_nn;
-    ParameterIFace param_iface_lr;
-    ParameterIFace param_iface_dt;
+    ParameterIFace neuralNetworkParameters;
+    ParameterIFace linearRegressionParameters;
+    ParameterIFace decisionTreeParameters;
 
     /**
      * Construct the major parts of the backend so that the dispatcher can use them.
      */
-    public Dispatcher(int maxThreads){
+    public Dispatcher(int maxThreads,
+                      ParameterIFace neuralNetworkParameters,
+                      ParameterIFace linearRegressionParameters,
+                      ParameterIFace decisionTreeParameters,
+                      SearchAlgorithmInterface searchType){
+        this.neuralNetworkParameters = neuralNetworkParameters;
+        this.linearRegressionParameters = linearRegressionParameters;
+        this.decisionTreeParameters = decisionTreeParameters;
+        this.searchType = searchType;
         this.maxThreads = maxThreads;
         mgr = new WekaTaskManager(this.maxThreads);
         taskList = new WekaInvoker();
         lr = new LR_Task(mgr);
         nn = new NN_Task(mgr);
-        searchType = new randomSearch(this);
-        param_iface_lr = new LinearRegressionParameters();
-        param_iface_nn = new NeuralNetworkParameters();
-        param_iface_dt = new DecisionTreeParameters();
     }
 
     /**
@@ -55,15 +59,15 @@ public class Dispatcher {
         long endTime = this.calculateTimer();
         while(System.currentTimeMillis() < endTime) {
             //LR
-            ArrayList<WrappedParamFinal> LR_params = searchType.getNextParamSet(param_iface_lr);
+            ArrayList<WrappedParamFinal> LR_params = searchType.getNextParamSet(linearRegressionParameters);
             String[] lr_array = unpackWrappedParams(LR_params,"lr");
             mgr.addModel(lr_array);
             //NN
-            ArrayList<WrappedParamFinal> NN_params = searchType.getNextParamSet(param_iface_nn);
+            ArrayList<WrappedParamFinal> NN_params = searchType.getNextParamSet(neuralNetworkParameters);
             String[] nn_array = unpackWrappedParams(NN_params, "nn");
             mgr.addModel(nn_array);
             //DT
-            ArrayList<WrappedParamFinal> DT_params = searchType.getNextParamSet(param_iface_dt);
+            ArrayList<WrappedParamFinal> DT_params = searchType.getNextParamSet(decisionTreeParameters);
             String[] dt_array = unpackWrappedParams(DT_params, "dt");
             mgr.addModel(dt_array);
             //TODO: SVM

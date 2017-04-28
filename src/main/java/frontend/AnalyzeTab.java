@@ -4,6 +4,7 @@ import utils.Logging.MiniMLLogger;
 import utils.TypeFactory;
 import workflow.Keys;
 import workflow.WorkflowManager;
+import workflow.builder.NoUserParameterDispatcherBuilder;
 import workflow.context.AbstractCompositeContext;
 import workflow.context.AnalyzeContext;
 import workflow.context.ImperativeContext;
