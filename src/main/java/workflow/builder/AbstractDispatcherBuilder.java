@@ -3,6 +3,7 @@ package workflow.builder;
 import backend.Dispatcher;
 import backend.ParameterIFace;
 import backend.SearchAlgorithmInterface;
+import utils.Logging.MiniMLLogger;
 import weka.core.Instances;
 
 import java.io.BufferedReader;
@@ -36,6 +37,8 @@ abstract class AbstractDispatcherBuilder {
         BufferedReader reader = new BufferedReader(new FileReader(path));
         //create a weka data Instance
         Instances data = new Instances(reader);
+        //TODO: this is just an enumeration; need to get strings out of it
+        System.out.println(data.enumerateAttributes());
         reader.close();
         return (data);
     }
