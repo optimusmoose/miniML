@@ -5,10 +5,12 @@ import backend.ParameterIFace;
 import backend.SearchAlgorithmInterface;
 import utils.Logging.MiniMLLogger;
 import weka.core.Instances;
+import weka.core.WekaEnumeration;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Enumeration;
 
 /**
  * what fresh hell is this
@@ -37,8 +39,14 @@ abstract class AbstractDispatcherBuilder {
         BufferedReader reader = new BufferedReader(new FileReader(path));
         //create a weka data Instance
         Instances data = new Instances(reader);
-        //TODO: this is just an enumeration; need to get strings out of it
-        System.out.println(data.enumerateAttributes());
+        //TODO: this is the basic approach to getting column names-- use it to populate a selector for the dataset
+        //TODO: tab. FWIW it probably doesn't even belong here. sorry zach.
+        /*
+        Enumeration atts = data.enumerateAttributes();
+        while (atts.hasMoreElements()){
+            System.out.println(atts.nextElement());
+        }
+        */
         reader.close();
         return (data);
     }
