@@ -16,7 +16,6 @@ public class JTextAreaAppender extends WriterAppender {
 
     public void append(LoggingEvent loggingEvent) {
         final String logMessage = this.layout.format(loggingEvent);
-        System.out.println("test append!");
         this.jTextArea.append(logMessage);
     }
 }

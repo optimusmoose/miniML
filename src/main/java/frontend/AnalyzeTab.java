@@ -42,9 +42,7 @@ class AnalyzeTab extends JComponent{
         JPanel panel = new JPanel(new BorderLayout());
 
         JLabel title = new JLabel("Console Output");
-        JTextArea consoleText = new JTextArea(
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut faucibus consectetur accumsan. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus rutrum metus eget quam ornare, quis laoreet urna bibendum. Aliquam ut enim ut purus convallis blandit. Integer tellus est, consectetur sed leo at, fermentum viverra quam. Pellentesque fringilla neque eu arcu malesuada, at dictum neque sagittis. Praesent et efficitur nulla. Sed faucibus ornare quam, in blandit dolor. Donec quis erat sed neque ullamcorper pellentesque at ut ex. Nulla nulla turpis, iaculis in rutrum non, facilisis at erat. Nullam tempor nunc at vulputate congue. Vivamus vel porta nibh. Donec facilisis posuere turpis a scelerisque. Fusce pellentesque velit in ligula laoreet rhoncus. Aliquam condimentum id metus vitae sollicitudin.\n"
-        );
+        JTextArea consoleText = new JTextArea();
         consoleText.setLineWrap(true);
 
         JScrollPane consolePane = new JScrollPane(consoleText);
