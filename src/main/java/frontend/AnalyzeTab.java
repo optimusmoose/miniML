@@ -1,5 +1,7 @@
 package frontend;
 
+import org.apache.log4j.PatternLayout;
+import utils.Logging.JTextAreaAppender;
 import utils.Logging.MiniMLLogger;
 import utils.TypeFactory;
 import workflow.Keys;
@@ -8,8 +10,6 @@ import workflow.builder.NoUserParameterDispatcherBuilder;
 import workflow.context.*;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,6 +18,8 @@ class AnalyzeTab extends JComponent{
     private AbstractCompositeContext parentContext;
     private AnalyzeContext context;
     private AnalyzeLaunchContext startAnalysisButton;
+
+    private JTextAreaAppender outputAppender;
 
     AnalyzeTab() {
         super();
@@ -50,6 +52,15 @@ class AnalyzeTab extends JComponent{
 
         panel.add(title, BorderLayout.PAGE_START);
         panel.add(new JScrollPane(consoleText));
+
+        try {
+            this.outputAppender = new JTextAreaAppender(consoleText);
+            this.outputAppender.setLayout(new PatternLayout("%d{ISO8601} %-5p [%t] %c{2} %x - %m%n")); //TODO: use the config file
+            MiniMLLogger.INSTANCE.registerAppender(this.outputAppender);
+        } catch(Exception e) {
+            MiniMLLogger.INSTANCE.exception(e);
+        }
+
 
         return panel;
     }

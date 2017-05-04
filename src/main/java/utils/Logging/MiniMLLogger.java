@@ -1,6 +1,7 @@
 package utils.Logging;
 
 import org.apache.log4j.Logger;
+import org.apache.log4j.WriterAppender;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -40,5 +41,9 @@ public enum MiniMLLogger {
         PrintWriter pw = new PrintWriter(sw);
         exception.printStackTrace(pw);
         this.logger.error(sw.toString());
+    }
+
+    public void registerAppender(WriterAppender appender) {
+        this.logger.addAppender(appender);
     }
 }
