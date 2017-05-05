@@ -22,13 +22,12 @@ public class DatasetTab extends JComponent {
 
     private AbstractCompositeContext parentContext;
     private DatasetContext context;
-    private FileContext fileSelectContext;
 
     private String dataset;
     private String content;
 
-    GridBagConstraints constraints;
-    JPanel panel;
+    private GridBagConstraints constraints;
+    private JPanel panel;
 
     private JTextPane previewDataset = new JTextPane();
     private JTextPane previewContent = new JTextPane();
@@ -36,20 +35,22 @@ public class DatasetTab extends JComponent {
     public DatasetTab() {
         super();
 
-        parentContext = WorkflowManager.INSTANCE.getContextByKey(Keys.App);
-        context = new DatasetContext(parentContext, Keys.DatasetConfig);
+        this.parentContext = WorkflowManager.INSTANCE.getContextByKey(Keys.App);
+        this.context = new DatasetContext(parentContext, Keys.DatasetConfig);
 
         this.setLayout(new GridLayout());
         this.constraints = new GridBagConstraints();
 
         this.panel = new JPanel(false);
         this.panel.setLayout(new GridBagLayout());
-        fileSelectPanel();
+
+        this.fileSelectPanel();
+
         this.add(this.panel);
     }
 
     private void fileSelectPanel(){
-        fileSelectContext = new FileContext(this.context, Keys.DatasetFile);
+        FileContext fileSelectContext = new FileContext(this.context, Keys.DatasetFile);
 
         JScrollPane datasetScrollPane = new JScrollPane(previewDataset);
         JScrollPane contentScrollPane = new JScrollPane(previewContent);
@@ -71,14 +72,14 @@ public class DatasetTab extends JComponent {
             }
         });
 
-        constraints.gridx = 0;
-        constraints.gridy = 0;
-        constraints.weightx = 0.33;
-        constraints.weighty = 0.1;
+        this.constraints.gridx = 0;
+        this.constraints.gridy = 0;
+        this.constraints.weightx = 0.33;
+        this.constraints.weighty = 0.1;
         this.panel.add(browsLabel, this.constraints);
 
         this.constraints.gridx = 1;
-        constraints.weightx = 0.4;
+        this.constraints.weightx = 0.4;
         this.panel.add(browseButton, this.constraints);
 
         this.constraints.fill = GridBagConstraints.HORIZONTAL;

@@ -12,12 +12,12 @@ import java.net.URL;
 
 public class MiniMLContainerPanel extends JPanel {
 
-    private static final int APP_WIDTH = 1200;
-    private static final int APP_HEIGHT = 600;
+    public static final int APP_WIDTH = 1200;
+    public static final int APP_HEIGHT = 600;
 
-    private static final int ICON_SIZE = 32;
-    private static final String ICON_PATH = "img/miniml_icon.png";
-    private static final String SETTINGS_ICON_PATH = "img/settings_icon.png";
+    public static final int ICON_SIZE = 32;
+    public static final String ICON_PATH = "img/miniml_icon.png";
+    public static final String SETTINGS_ICON_PATH = "img/settings_icon.png";
 
     public MiniMLContainerPanel() {
         super(new GridLayout());
