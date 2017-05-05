@@ -1,7 +1,5 @@
 package workflow.context;
 
-import workflow.builder.NoUserParameterDispatcherBuilder;
-
 import static workflow.state.StateFactory.*;
 
 /**
@@ -10,7 +8,7 @@ import static workflow.state.StateFactory.*;
  *
  * THIS CONTEXT IS ALWAYS A CHILD OF ANOTHER CONTEXT.
  */
-public class ImperativeContext extends AbstractCompositeContext {
+abstract class ImperativeContext extends AbstractCompositeContext {
     protected AbstractCompositeContext parentContext;
 
     public ImperativeContext(AbstractCompositeContext parentContext, String key) {
@@ -32,15 +30,5 @@ public class ImperativeContext extends AbstractCompositeContext {
     /**
      * Perform whatever imperative this context handles.
      */
-    public void execute(){
-        if(this.verifyParentIsReady()){
-            //TODO do something.
-            this.log("Parent Ready. Executing workflow.");
-            NoUserParameterDispatcherBuilder run = new NoUserParameterDispatcherBuilder();
-            run.launch();
-        } else {
-            this.log("Parent not ready. Check settings.");
-        }
-
-    }
+    abstract void execute();
 }

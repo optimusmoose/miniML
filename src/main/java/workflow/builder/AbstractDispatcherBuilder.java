@@ -13,7 +13,14 @@ import java.io.IOException;
 import java.util.Enumeration;
 
 /**
- * what fresh hell is this
+ * A DispatcherBuilder is an object that pulls in all of the required parameters/defaults/whatever
+ * to prepare the Dispatcher, which in turn barks out orders to the thread pool.
+ *
+ * This is kind of a hack (and kind of has to be a hack) because we need a way to pull in all of
+ * the ParameterContexts and other little details of the run.
+ *
+ * Currently, only the NoUserParameterDispatcherBuilder is supported but with a little suffering
+ * it should be possible to make other builders.
  */
 abstract class AbstractDispatcherBuilder {
     public Dispatcher dispatcher;
@@ -28,6 +35,7 @@ abstract class AbstractDispatcherBuilder {
     }
 
     /**
+     * TODO: this obviously doesn't belong here and it won't be here long. Leave it alone, Zach.
      * Returns a Weka Instance of the data for testing.
      * This will not be used in the finished product, but may be adapted to that end.
      *

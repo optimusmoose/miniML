@@ -5,10 +5,7 @@ import utils.TypeFactory;
 import workflow.Keys;
 import workflow.WorkflowManager;
 import workflow.builder.NoUserParameterDispatcherBuilder;
-import workflow.context.AbstractCompositeContext;
-import workflow.context.AnalyzeContext;
-import workflow.context.ImperativeContext;
-import workflow.context.ParameterContext;
+import workflow.context.*;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -20,7 +17,7 @@ import java.awt.event.ActionListener;
 class AnalyzeTab extends JComponent{
     private AbstractCompositeContext parentContext;
     private AnalyzeContext context;
-    private ImperativeContext startAnalysisButton;
+    private AnalyzeLaunchContext startAnalysisButton;
 
     AnalyzeTab() {
         super();
@@ -59,7 +56,7 @@ class AnalyzeTab extends JComponent{
 
     //TODO this cannot possibly be the correct name for this object.
     private JPanel modelPanel() {
-        this.startAnalysisButton = new ImperativeContext(this.context, Keys.StartAnalysisButton);
+        this.startAnalysisButton = new AnalyzeLaunchContext(this.context, Keys.StartAnalysisButton);
 
         JPanel panel = new JPanel(new GridLayout(1, 3));
 
@@ -74,7 +71,7 @@ class AnalyzeTab extends JComponent{
             public void actionPerformed(ActionEvent e) {
                 try {
                     context = WorkflowManager.INSTANCE.getContextByKey(Keys.StartAnalysisButton);
-                    handleStartAnalysisButtonContext((ImperativeContext) context);
+                    handleStartAnalysisButtonContext((AnalyzeLaunchContext) context);
                 } catch(Exception exception) {
                     MiniMLLogger.INSTANCE.exception(exception);
                 }
@@ -88,9 +85,8 @@ class AnalyzeTab extends JComponent{
         return panel;
     }
 
-    public void handleStartAnalysisButtonContext(ImperativeContext context) {
+    public void handleStartAnalysisButtonContext(AnalyzeLaunchContext context) {
         context.execute();
-        //context.updateState();
     }
 
     private JPanel timeRemainingPanel() {
