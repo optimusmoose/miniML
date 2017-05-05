@@ -10,7 +10,7 @@ import workflow.state.StateFactory;
  */
 public class ParameterContext extends AbstractCompositeContext {
 
-    protected Object value; //object form of a primative or other type such as range
+    protected Object value; //object form of a primitive or other type such as range
 
     /**
      * Instantiate context with a null state
@@ -44,7 +44,7 @@ public class ParameterContext extends AbstractCompositeContext {
     }
 
     /**
-     * getter fot the value object
+     * getter for the value object
      * @return Object
      */
     public Object getValue() {

@@ -13,6 +13,7 @@ import java.util.Arrays;
 public class Dispatcher {
     int maxThreads;
     int minutesToRun;
+    long endTime;
     Instances data;
     SearchAlgorithmInterface searchType;
     WekaTaskManager mgr;
@@ -22,6 +23,11 @@ public class Dispatcher {
     ParameterIFace linearRegressionParameters;
     ParameterIFace decisionTreeParameters;
     ParameterIFace smoParameters;
+    //Parameter values stored here
+    boolean useLR;
+    boolean useNN;
+    boolean useDT;
+    boolean useSMO;
 
     /**
      * Construct the major parts of the backend so that the dispatcher can use them.
@@ -58,23 +64,8 @@ public class Dispatcher {
         mgr.setData(data);
         long endTime = this.calculateTimer();
         while(System.currentTimeMillis() < endTime) {
-            //LR
-            ArrayList<WrappedParamFinal> LR_params = searchType.getNextParamSet(linearRegressionParameters);
-            String[] lr_array = unpackWrappedParams(LR_params,"lr");
-            mgr.addModel(lr_array);
-            //NN
-            ArrayList<WrappedParamFinal> NN_params = searchType.getNextParamSet(neuralNetworkParameters);
-            String[] nn_array = unpackWrappedParams(NN_params, "nn");
-            mgr.addModel(nn_array);
-            //DT
-            ArrayList<WrappedParamFinal> DT_params = searchType.getNextParamSet(decisionTreeParameters);
-            String[] dt_array = unpackWrappedParams(DT_params, "dt");
-            mgr.addModel(dt_array);
-            //SMO
-            ArrayList<WrappedParamFinal> SMO_params = searchType.getNextParamSet(smoParameters);
-            String[] smo_array = unpackWrappedParams(SMO_params, "smo");
-            mgr.addModel(smo_array);
-            try { //
+            this.giveWorkToManager(); //make new jobs in mgr
+            try { //give mgr jobs to threadpool
                 mgr.runModel();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -133,8 +124,47 @@ public class Dispatcher {
      * @return the end time (a long)
      */
     private long calculateTimer(){
-        long endTime = System.currentTimeMillis() + (this.minutesToRun * 60 * 1000);
-        return(endTime);
+        this.endTime = System.currentTimeMillis() + (this.minutesToRun * 60 * 1000);
+        return(this.endTime);
+    }
+
+    /**
+     * Tell the Dispatcher which algorithms it should use.
+     */
+    public void setAlgorithmUsage(String useLinearRegression,
+                                  String useNeuralNet,
+                                  String useDecisionTree,
+                                  String useSMO){
+        this.useLR = Boolean.parseBoolean(useLinearRegression);
+        this.useNN = Boolean.parseBoolean(useNeuralNet);
+        this.useDT = Boolean.parseBoolean(useDecisionTree);
+        this.useSMO = Boolean.parseBoolean(useSMO);
+    }
+
+    /**
+     * Main loop for Dispatcher when choosing algorithms.
+     */
+    protected void giveWorkToManager(){
+        if(this.useLR) {
+            ArrayList<WrappedParamFinal> LR_params = searchType.getNextParamSet(linearRegressionParameters);
+            String[] lr_array = unpackWrappedParams(LR_params, "lr");
+            mgr.addModel(lr_array);
+        }
+        if(this.useNN) {
+            ArrayList<WrappedParamFinal> NN_params = searchType.getNextParamSet(neuralNetworkParameters);
+            String[] nn_array = unpackWrappedParams(NN_params, "nn");
+            mgr.addModel(nn_array);
+        }
+        if(this.useDT) {
+            ArrayList<WrappedParamFinal> DT_params = searchType.getNextParamSet(decisionTreeParameters);
+            String[] dt_array = unpackWrappedParams(DT_params, "dt");
+            mgr.addModel(dt_array);
+        }
+        if(this.useSMO) {
+            ArrayList<WrappedParamFinal> SMO_params = searchType.getNextParamSet(smoParameters);
+            String[] smo_array = unpackWrappedParams(SMO_params, "smo");
+            mgr.addModel(smo_array);
+        }
     }
 
 }
