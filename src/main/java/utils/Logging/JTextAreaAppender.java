@@ -15,7 +15,7 @@ public class JTextAreaAppender extends WriterAppender {
         super();
         this.jTextArea = jTextArea;
         this.setThreshold(Level.INFO);
-        this.setLayout(new PatternLayout("%d{ISO8601} %-5p %c{2} %x - %m%n"));
+        this.setLayout(new PatternLayout("%d{ISO8601} - %m%n"));
         MiniMLLogger.INSTANCE.getLogger().addAppender(this);
     }
 
