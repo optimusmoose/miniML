@@ -1,6 +1,7 @@
 package utils.Logging;
 
 import org.apache.log4j.Logger;
+import org.apache.log4j.WriterAppender;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
