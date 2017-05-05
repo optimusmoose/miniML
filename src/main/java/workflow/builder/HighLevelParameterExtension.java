@@ -42,11 +42,15 @@ public class HighLevelParameterExtension extends AbstractParameterExtension {
     }
 
     public void extend(){
-        MiniMLLogger.INSTANCE.info("Here is some extension data:");
-        MiniMLLogger.INSTANCE.info(this.useLinearRegression);
-        MiniMLLogger.INSTANCE.info(this.useNeuralNetwork);
-        MiniMLLogger.INSTANCE.info(this.useSMO);
-        MiniMLLogger.INSTANCE.info(this.useDecisionTree);
-        MiniMLLogger.INSTANCE.info(this.useETA);
+        MiniMLLogger.INSTANCE.info("Use Linear Regressions: " + this.useLinearRegression);
+        MiniMLLogger.INSTANCE.info("Use Neural Network: " +this.useNeuralNetwork);
+        MiniMLLogger.INSTANCE.info("Use SMO: " +this.useSMO);
+        MiniMLLogger.INSTANCE.info("Use Decision Tree: " +this.useDecisionTree);
+        MiniMLLogger.INSTANCE.info("Time for run: " +this.useETA);
+        this.builder.dispatcher.setTimeLimit(Integer.parseInt(this.useETA));
+        this.builder.dispatcher.setAlgorithmUsage(this.useLinearRegression,
+                                                  this.useNeuralNetwork,
+                                                  this.useDecisionTree,
+                                                  this.useSMO);
     }
 }

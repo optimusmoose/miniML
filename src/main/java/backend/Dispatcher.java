@@ -23,6 +23,11 @@ public class Dispatcher {
     ParameterIFace linearRegressionParameters;
     ParameterIFace decisionTreeParameters;
     ParameterIFace smoParameters;
+    //Parameter values stored here
+    boolean useLR;
+    boolean useNN;
+    boolean useDT;
+    boolean useSMO;
 
     /**
      * Construct the major parts of the backend so that the dispatcher can use them.
@@ -141,7 +146,20 @@ public class Dispatcher {
     /**
      * Tell the Dispatcher which algorithms it should use.
      */
-    public void setAlgorithmUsage(){
+    public void setAlgorithmUsage(String useLinearRegression,
+                                  String useNeuralNet,
+                                  String useDecisionTree,
+                                  String useSMO){
+        this.useLR = Boolean.parseBoolean(useLinearRegression);
+        this.useNN = Boolean.parseBoolean(useNeuralNet);
+        this.useDT = Boolean.parseBoolean(useDecisionTree);
+        this.useSMO = Boolean.parseBoolean(useSMO);
+    }
+
+    /**
+     * Main loop for Dispatcher when choosing algorithms.
+     */
+    protected void giveWorkToManager(){
 
     }
 
