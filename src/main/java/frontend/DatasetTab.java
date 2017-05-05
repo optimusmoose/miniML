@@ -8,6 +8,8 @@ import workflow.WorkflowManager;
 import workflow.context.*;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,7 +21,7 @@ import java.io.IOException;
 public class DatasetTab extends JPanel {
     private AbstractCompositeContext parentContext;
     private DatasetContext context;
-    private InstanceContext wekaInstance;
+    InstanceContext wekaInstance;
 
     private GridBagConstraints constraints;
 
@@ -29,6 +31,8 @@ public class DatasetTab extends JPanel {
     private JTextPane previewDataset = new JTextPane();
     private JTextPane previewContent = new JTextPane();
     private DefaultListModel<String> attributes = new DefaultListModel<String>();
+    JList<String> attributesList;
+    JComboBox<String> classifierSelect;
 
     public DatasetTab() {
         super();
@@ -38,20 +42,23 @@ public class DatasetTab extends JPanel {
         this.wekaInstance = new InstanceContext(parentContext, Keys.RootWekaInstnace);
 
         this.constraints = new GridBagConstraints();
-
         this.setLayout(new GridBagLayout());
 
-        this.fileSelectPanel();
+        this.fileSelect();
     }
 
-    private void fileSelectPanel(){
+    private void fileSelect(){
         FileContext fileSelectContext = new FileContext(this.context, Keys.DatasetFile);
+
+        ParameterContext selectedAttributes = new ParameterContext(this.context, Keys.SelectedAttributes);
+        ParameterContext classifier = new ParameterContext(this.context, Keys.SelectedClassifier);
 
         JScrollPane datasetScrollPane = new JScrollPane(previewDataset);
         JScrollPane contentScrollPane = new JScrollPane(previewContent);
         JLabel browsLabel = new JLabel("Select a Dataset: ");
         JButton browseButton = new JButton("Browse...");
-        JList<String> attributesList = new JList<String>(this.attributes);
+        this.attributesList = new JList<String>(this.attributes);
+        this.classifierSelect = new JComboBox<String>();
 
         browseButton.addActionListener(new ActionListener() {
             private AbstractCompositeContext context;
@@ -68,6 +75,31 @@ public class DatasetTab extends JPanel {
             }
         });
 
+        attributesList.addListSelectionListener(new ListSelectionListener() {
+            private AbstractCompositeContext context;
+
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                context = WorkflowManager.INSTANCE.getContextByKey(Keys.SelectedAttributes);
+                JList<String> source = (JList<String>) e.getSource();
+                int[] selected = source.getSelectedIndices();
+                handleAttributeSelectContext((ParameterContext) context, selected);
+            }
+        });
+
+        classifierSelect.addActionListener(new ActionListener() {
+            private AbstractCompositeContext context;
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                context = WorkflowManager.INSTANCE.getContextByKey(Keys.SelectedClassifier);
+                JComboBox<String> source = (JComboBox<String>) e.getSource();
+                int selected = source.getSelectedIndex();
+                handleClassSelectContext((ParameterContext) context, selected);
+            }
+        });
+
+        //TODO: all GBC's need to be made unique to prevent recycling
         this.constraints.anchor = GridBagConstraints.WEST;
         this.constraints.gridy = 0;
         this.constraints.weightx = 1.0;
@@ -81,16 +113,32 @@ public class DatasetTab extends JPanel {
         this.constraints.gridy++;
         this.constraints.gridwidth = GridBagConstraints.REMAINDER-1;
         this.constraints.anchor = GridBagConstraints.WEST;
-        this.constraints.weighty = 0.75;
+        this.constraints.weighty = 0.85;
         this.add(contentScrollPane, this.constraints);
 
-        this.constraints.gridwidth = GridBagConstraints.REMAINDER;
+        this.constraints.gridwidth = 0;
         this.constraints.anchor = GridBagConstraints.EAST;
         this.add(attributesList, this.constraints);
+
+        this.constraints.gridy++;
+        this.constraints.fill = GridBagConstraints.NONE;
+        this.constraints.weighty = 0.05;
+        this.constraints.anchor = GridBagConstraints.SOUTHEAST;
+        this.add(classifierSelect, this.constraints);
     }
 
     private void handleFileSelectContext(ParameterContext context) {
         context.setValue(this.dataset, TypeFactory.STRING);
+        context.updateState();
+    }
+
+    private void handleAttributeSelectContext(ParameterContext context, int[] selected) {
+        context.setValue(selected);
+        context.updateState();
+    }
+
+    private void handleClassSelectContext(ParameterContext context, int id) {
+        context.setValue(id);
         context.updateState();
     }
 
@@ -118,13 +166,14 @@ public class DatasetTab extends JPanel {
         }
 
         Instances data = (Instances) this.wekaInstance.getValue();
-
         for (int i = 0; i < data.numAttributes(); i++)
         {
             Object attribute = data.attribute(i);
             String name = attribute.toString();
-            this.attributes.addElement(name);
+            this.attributes.add(i, name);
+            this.classifierSelect.addItem(name);
         }
+
 
     }
 
@@ -147,6 +196,8 @@ public class DatasetTab extends JPanel {
 
         previewContent.setText(this.content);
     }
+
+
 
 
 }
