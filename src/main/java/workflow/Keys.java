@@ -15,6 +15,7 @@ public class Keys {
 
     // Preprocess Tab
     // TODO: Preprocess Tab
+    public static final String PreprocessConfig = "MML_PP_CFG";
 
     // Model Tab
     public static final String ModelConfig = "MML_MD_CFG";
@@ -43,8 +44,10 @@ public class Keys {
     public static final String PruningFolds = "MM_MD_PRU_FLD";
     public static final String DecisionTreeInstances = "MM_MD_INST";
 
+    // Analyze Tab
+    public static final String AnalyzeConfig = "MML_AZ_CFG";
+    public static final String StartAnalysisButton = "MML_AZ_IMP";
 
-    public static final String PreprocessConfig = "MML_PP_CFG";
 
     /**
      The caller references the constants using <tt>Keys.EMPTY_STRING</tt>,

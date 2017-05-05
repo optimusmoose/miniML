@@ -1,12 +1,29 @@
 package frontend;
 
+import utils.Logging.MiniMLLogger;
+import utils.TypeFactory;
+import workflow.Keys;
+import workflow.WorkflowManager;
+import workflow.builder.NoUserParameterDispatcherBuilder;
+import workflow.context.*;
+
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 class AnalyzeTab extends JComponent{
+    private AbstractCompositeContext parentContext;
+    private AnalyzeContext context;
+    private AnalyzeLaunchContext startAnalysisButton;
 
     AnalyzeTab() {
         super();
+
+        this.parentContext = WorkflowManager.INSTANCE.getContextByKey(Keys.App);
+        this.context = new AnalyzeContext(parentContext, Keys.AnalyzeConfig);
 
         this.setLayout(new BorderLayout());
         this.add(consolePanel(), BorderLayout.PAGE_START);
@@ -37,16 +54,39 @@ class AnalyzeTab extends JComponent{
         return panel;
     }
 
+    //TODO this cannot possibly be the correct name for this object.
     private JPanel modelPanel() {
-        JPanel panel = new JPanel(new GridLayout(1, 2));
+        this.startAnalysisButton = new AnalyzeLaunchContext(this.context, Keys.StartAnalysisButton);
+
+        JPanel panel = new JPanel(new GridLayout(1, 3));
 
         JLabel bestGraph = new JLabel("Some Graph Here", SwingConstants.CENTER);
         JLabel graphInfoAndSave = new JLabel("Important graph info goes here and so does the save button", SwingConstants.CENTER);
+        JButton button = new JButton();
+
+        button.addActionListener(new ActionListener() {
+            private AbstractCompositeContext context;
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    context = WorkflowManager.INSTANCE.getContextByKey(Keys.StartAnalysisButton);
+                    handleStartAnalysisButtonContext((AnalyzeLaunchContext) context);
+                } catch(Exception exception) {
+                    MiniMLLogger.INSTANCE.exception(exception);
+                }
+            }
+        });
 
         panel.add(bestGraph);
         panel.add(graphInfoAndSave);
+        panel.add(button);
 
         return panel;
+    }
+
+    public void handleStartAnalysisButtonContext(AnalyzeLaunchContext context) {
+        context.execute();
     }
 
     private JPanel timeRemainingPanel() {

@@ -8,6 +8,8 @@ import junit.framework.TestCase;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import workflow.builder.NoUserParameterDispatcherBuilder;
+
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
@@ -50,7 +52,8 @@ public class backendTest extends TestCase{
      */
     public static void main(String[] args) {
         int maxThreads = 8;
-        Dispatcher dispatch = new Dispatcher(maxThreads);
+        //Dispatcher dispatch = new Dispatcher(maxThreads);
+        NoUserParameterDispatcherBuilder handler = new NoUserParameterDispatcherBuilder();
 
         //load some data
         String path = "src/test/resources/data/cpu.arff";
@@ -68,9 +71,9 @@ public class backendTest extends TestCase{
         data.setClassIndex(data.numAttributes() - 1);
 
         //give data to the WekaTaskManager
-        dispatch.setData(data);
-        dispatch.setTimeLimit(1);
-        dispatch.launch();
+        handler.dispatcher.setData(data);
+        handler.dispatcher.setTimeLimit(1);
+        handler.dispatcher.launch();
     }
 
     /**
