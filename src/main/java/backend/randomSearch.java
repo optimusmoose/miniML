@@ -45,6 +45,12 @@ public class randomSearch implements SearchAlgorithmInterface {
                     outParams.add(new WrappedParamFinal("float", q.getName(), q.getFlag(), String.valueOf(val)));
                     break;
                 }
+                case "double": { //generate a random ranged double for this parameter
+                    WrappedParamDouble q = (WrappedParamDouble) p;
+                    double val = q.getMinValue() + random.nextDouble() * (q.getMaxValue() - q.getMinValue());
+                    outParams.add(new WrappedParamFinal("double", q.getName(), q.getFlag(), String.valueOf(val)));
+                    break;
+                }
                 case "long": { //generate a random ranged long for this parameter
                     WrappedParamLong q = (WrappedParamLong) p;
                     boolean search = true;

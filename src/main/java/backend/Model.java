@@ -6,6 +6,8 @@ import java.util.Random;
 
 import utils.Logging.MiniMLLogger;
 import weka.classifiers.AbstractClassifier;
+import weka.classifiers.functions.SMO;
+import weka.classifiers.functions.SMOreg;
 import weka.core.Instances;
 import weka.core.Option;
 import weka.classifiers.functions.LinearRegression;
@@ -181,6 +183,37 @@ class DT_Model extends Model implements Runnable {
     public void run() {
         try {
             MiniMLLogger.INSTANCE.info("Running a DT_Model");
+            eval.crossValidateModel(classifier, data, 10, new Random(1));
+        } catch (Exception e) {
+            MiniMLLogger.INSTANCE.exception(e);
+        }
+        summarize();
+    }
+}
+
+class SMO_Model extends Model implements Runnable {
+    /**
+     * Generates a Weka SMO Model acting on our data instance with our parameters.
+     */
+    public SMO_Model(Instances d, String[] params) throws ModelConstructException,Exception {
+        super(d,params);
+        if(this.data.classAttribute().isNumeric()){
+            classifier = new SMOreg();
+        } else {
+            classifier = new SMO();
+        }
+        prepare();
+        run();
+    }
+
+    /**
+     * Configure crossfold validation and run the SMO model
+     * @throws Exception
+     */
+    @Override
+    public void run() {
+        try {
+            MiniMLLogger.INSTANCE.info("Running a SMO_Model");
             eval.crossValidateModel(classifier, data, 10, new Random(1));
         } catch (Exception e) {
             MiniMLLogger.INSTANCE.exception(e);
