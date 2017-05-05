@@ -63,9 +63,6 @@ class AnalyzeTab extends JPanel {
     private void addAppender(JTextArea jTextArea) {
         try {
             this.outputAppender = new JTextAreaAppender(jTextArea);
-            this.outputAppender.setLayout(new PatternLayout("%d{ISO8601} %-5p [%t] %c{2} %x - %m%n")); //TODO: magic string
-            this.outputAppender.setThreshold(Level.INFO);
-            MiniMLLogger.INSTANCE.getLogger().addAppender(this.outputAppender);
         } catch(Exception e) {
             MiniMLLogger.INSTANCE.exception(e);
         }
