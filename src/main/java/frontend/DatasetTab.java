@@ -18,16 +18,14 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class DatasetTab extends JComponent {
-
+public class DatasetTab extends JPanel {
     private AbstractCompositeContext parentContext;
     private DatasetContext context;
 
+    private GridBagConstraints constraints;
+
     private String dataset;
     private String content;
-
-    private GridBagConstraints constraints;
-    private JPanel panel;
 
     private JTextPane previewDataset = new JTextPane();
     private JTextPane previewContent = new JTextPane();
@@ -38,15 +36,11 @@ public class DatasetTab extends JComponent {
         this.parentContext = WorkflowManager.INSTANCE.getContextByKey(Keys.App);
         this.context = new DatasetContext(parentContext, Keys.DatasetConfig);
 
-        this.setLayout(new GridLayout());
         this.constraints = new GridBagConstraints();
 
-        this.panel = new JPanel(false);
-        this.panel.setLayout(new GridBagLayout());
+        this.setLayout(new GridBagLayout());
 
         this.fileSelectPanel();
-
-        this.add(this.panel);
     }
 
     private void fileSelectPanel(){
@@ -72,36 +66,29 @@ public class DatasetTab extends JComponent {
             }
         });
 
-        this.constraints.gridx = 0;
+//        this.constraints.fill = GridBagConstraints.BOTH;
+        this.constraints.anchor = GridBagConstraints.WEST;
         this.constraints.gridy = 0;
-        this.constraints.weightx = 0.33;
-        this.constraints.weighty = 0.1;
-        this.panel.add(browsLabel, this.constraints);
-
-        this.constraints.gridx = 1;
-        this.constraints.weightx = 0.4;
-        this.panel.add(browseButton, this.constraints);
-
-        this.constraints.fill = GridBagConstraints.HORIZONTAL;
-        this.constraints.gridx = 2;
-        this.panel.add(datasetScrollPane, this.constraints);
+        this.constraints.weightx = 1.0;
+        this.add(browsLabel, this.constraints);
+        this.add(browseButton, this.constraints);
 
         this.constraints.fill = GridBagConstraints.BOTH;
-        this.constraints.gridx = 0;
-        this.constraints.gridy = 1;
-        this.constraints.gridwidth = 3;
-        this.constraints.weightx = 1;
-        this.constraints.weighty = 0.9;
+        this.constraints.anchor = GridBagConstraints.EAST;
+        this.add(datasetScrollPane, this.constraints);
 
-        this.panel.add(contentScrollPane, this.constraints);
+        this.constraints.gridy++;
+        this.constraints.gridwidth = GridBagConstraints.REMAINDER;
+        this.constraints.weighty = 1.0;
+        this.add(contentScrollPane, this.constraints);
     }
 
-    public void handleFileSelectContext(ParameterContext context) {
+    private void handleFileSelectContext(ParameterContext context) {
         context.setValue(this.dataset, TypeFactory.STRING);
         context.updateState();
     }
 
-    public void selectFile() throws IOException {
+    private void selectFile() throws IOException {
         JFileChooser fileChooser = new JFileChooser();
         File selectedFile;
         fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
@@ -116,7 +103,7 @@ public class DatasetTab extends JComponent {
         }
     }
 
-    public void previewData(File file) {
+    private void previewData(File file) {
         String line;
         int lines = 0;
         int linesToRead = 250; //TODO: extract to a config

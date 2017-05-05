@@ -18,9 +18,9 @@ class AnalyzeTab extends JPanel {
     private AbstractCompositeContext parentContext;
     private AnalyzeContext context;
 
-    private JTextAreaAppender outputAppender;
-
     private GridBagConstraints constraints;
+
+    private JTextAreaAppender outputAppender;
 
     public AnalyzeTab() {
         super();
