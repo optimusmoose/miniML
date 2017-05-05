@@ -35,7 +35,6 @@ class AnalyzeTab extends JPanel {
         this.console();
         this.models();
         this.timeRemaining();
-
     }
 
     /**
@@ -132,7 +131,5 @@ class AnalyzeTab extends JPanel {
         this.add(title, this.constraints);
         this.constraints.anchor = GridBagConstraints.SOUTH;
         this.add(timeRemaining, this.constraints);
-
-//        panel.setBorder(BorderFactory.createLineBorder(Color.black));
     }
 }
