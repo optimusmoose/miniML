@@ -18,6 +18,7 @@ public class Dispatcher {
     SearchAlgorithmInterface searchType;
     WekaTaskManager mgr;
     WekaInvoker taskList;
+    DatasetBuilder datasetBuilder;
     //TODO ParameterIFaces are hardcoded until we can generalize parameter selection
     ParameterIFace neuralNetworkParameters;
     ParameterIFace linearRegressionParameters;
@@ -32,22 +33,26 @@ public class Dispatcher {
     /**
      * Construct the major parts of the backend so that the dispatcher can use them.
      */
-    public Dispatcher(Instances data,
-                      int maxThreads,
+    public Dispatcher(int maxThreads,
                       ParameterIFace neuralNetworkParameters,
                       ParameterIFace linearRegressionParameters,
                       ParameterIFace decisionTreeParameters,
                       ParameterIFace smoParameters,
                       SearchAlgorithmInterface searchType){
-        this.data = data;
+        MiniMLLogger.INSTANCE.info("1");
         this.neuralNetworkParameters = neuralNetworkParameters;
         this.linearRegressionParameters = linearRegressionParameters;
         this.decisionTreeParameters = decisionTreeParameters;
+        MiniMLLogger.INSTANCE.info("2");
         this.smoParameters = smoParameters;
         this.searchType = searchType;
         this.maxThreads = maxThreads;
+        MiniMLLogger.INSTANCE.info("3");
+        this.datasetBuilder = new DatasetBuilder();
         mgr = new WekaTaskManager(this.maxThreads);
         taskList = new WekaInvoker();
+        MiniMLLogger.INSTANCE.info("4");
+        this.data = datasetBuilder.getUserSpecifiedDataset();
     }
 
     /**
