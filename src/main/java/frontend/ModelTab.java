@@ -109,6 +109,11 @@ public class ModelTab extends JComponent {
         this.toggleNeuralNetContext = new ParameterContext(this.context, Keys.ToggleNeuralNet);
         this.toggleSuppVecContext = new ParameterContext(this.context, Keys.ToggleSuppVec);
         this.toggleDecTreeContext = new ParameterContext(this.context, Keys.ToggleDecTree);
+        // :(
+        this.toggleLinRegContext.setValue(Boolean.toString(false), TypeFactory.BOOLEAN);
+        this.toggleNeuralNetContext.setValue(Boolean.toString(false), TypeFactory.BOOLEAN);
+        this.toggleDecTreeContext.setValue(Boolean.toString(false), TypeFactory.BOOLEAN);
+        this.toggleSuppVecContext.setValue(Boolean.toString(false), TypeFactory.BOOLEAN);
 
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout());

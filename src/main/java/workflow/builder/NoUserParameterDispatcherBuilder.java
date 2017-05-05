@@ -10,7 +10,8 @@ import workflow.context.ParameterContext;
 import java.io.IOException;
 
 public class NoUserParameterDispatcherBuilder extends AbstractDispatcherBuilder {
-    AbstractParameterExtension highLevelExtension;
+    HighLevelParameterExtension highLevelExtension;
+    Dispatcher dispatcher;
 
     public NoUserParameterDispatcherBuilder() {
         super();
@@ -37,13 +38,11 @@ public class NoUserParameterDispatcherBuilder extends AbstractDispatcherBuilder 
 
     public void launch(){
         this.getHighLevelExtension();
-        MiniMLLogger.INSTANCE.info("got here...");
-        //this.dispatcher.setTimeLimit(1); //TODO
         this.dispatcher.launch();
     }
 
     public void getHighLevelExtension(){
-        this.highLevelExtension = new HighLevelParameterExtension(this);
+        this.highLevelExtension = new HighLevelParameterExtension(this, dispatcher);
         this.highLevelExtension.collect();
         this.highLevelExtension.extend();
     }

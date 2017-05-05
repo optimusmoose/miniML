@@ -145,7 +145,6 @@ public class Dispatcher {
      * Main loop for Dispatcher when choosing algorithms.
      */
     protected void giveWorkToManager(){
-        MiniMLLogger.INSTANCE.info(this.useLR);
         if(this.useLR) {
             ArrayList<WrappedParamFinal> LR_params = searchType.getNextParamSet(linearRegressionParameters);
             String[] lr_array = unpackWrappedParams(LR_params, "lr");

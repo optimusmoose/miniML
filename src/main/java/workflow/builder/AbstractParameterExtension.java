@@ -5,7 +5,7 @@ package workflow.builder;
  * Dispatcher directly. Use these to get new parameters into new places!
  */
 abstract class AbstractParameterExtension {
-    protected AbstractDispatcherBuilder builder;
+    public AbstractDispatcherBuilder builder;
 
     public AbstractParameterExtension(AbstractDispatcherBuilder builder){
         this.builder = builder;
