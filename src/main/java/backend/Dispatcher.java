@@ -13,6 +13,7 @@ import java.util.Arrays;
 public class Dispatcher {
     int maxThreads;
     int minutesToRun;
+    long endTime;
     Instances data;
     SearchAlgorithmInterface searchType;
     WekaTaskManager mgr;
@@ -133,8 +134,15 @@ public class Dispatcher {
      * @return the end time (a long)
      */
     private long calculateTimer(){
-        long endTime = System.currentTimeMillis() + (this.minutesToRun * 60 * 1000);
-        return(endTime);
+        this.endTime = System.currentTimeMillis() + (this.minutesToRun * 60 * 1000);
+        return(this.endTime);
+    }
+
+    /**
+     * Tell the Dispatcher which algorithms it should use.
+     */
+    public void setAlgorithmUsage(){
+
     }
 
 }
