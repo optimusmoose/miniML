@@ -1,5 +1,7 @@
 package workflow.context;
 
+import frontend.MiniMLWorker;
+import utils.Logging.MiniMLLogger;
 import workflow.builder.NoUserParameterDispatcherBuilder;
 
 /**
@@ -24,10 +26,11 @@ public class AnalyzeLaunchContext extends ImperativeContext {
      */
     public void execute(){
         if(this.verifyParentIsReady()){
-            //TODO do something.
             this.log("Parent Ready. Executing workflow.");
-            NoUserParameterDispatcherBuilder run = new NoUserParameterDispatcherBuilder();
-            run.launch();
+//            NoUserParameterDispatcherBuilder run = new NoUserParameterDispatcherBuilder();
+//            run.launch();
+            MiniMLWorker worker = new MiniMLWorker();
+            worker.execute();
         } else {
             this.log("Parent not ready. Check settings.");
         }
