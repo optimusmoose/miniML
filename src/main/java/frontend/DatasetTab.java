@@ -4,10 +4,7 @@ import utils.Logging.MiniMLLogger;
 import utils.TypeFactory;
 import workflow.Keys;
 import workflow.WorkflowManager;
-import workflow.context.AbstractCompositeContext;
-import workflow.context.DatasetContext;
-import workflow.context.FileContext;
-import workflow.context.ParameterContext;
+import workflow.context.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,6 +18,7 @@ import java.io.IOException;
 public class DatasetTab extends JPanel {
     private AbstractCompositeContext parentContext;
     private DatasetContext context;
+    private InstanceContext wekaInstance;
 
     private GridBagConstraints constraints;
 
@@ -35,6 +33,7 @@ public class DatasetTab extends JPanel {
 
         this.parentContext = WorkflowManager.INSTANCE.getContextByKey(Keys.App);
         this.context = new DatasetContext(parentContext, Keys.DatasetConfig);
+        this.wekaInstance = new InstanceContext(parentContext, Keys.RootWekaInstnace);
 
         this.constraints = new GridBagConstraints();
 
@@ -66,7 +65,6 @@ public class DatasetTab extends JPanel {
             }
         });
 
-//        this.constraints.fill = GridBagConstraints.BOTH;
         this.constraints.anchor = GridBagConstraints.WEST;
         this.constraints.gridy = 0;
         this.constraints.weightx = 1.0;
@@ -98,8 +96,17 @@ public class DatasetTab extends JPanel {
             this.dataset = selectedFile.getAbsolutePath();
             this.previewDataset.setText(this.dataset);
             this.previewData(selectedFile);
+            this.loadWekaInstance(this.dataset);
 
             MiniMLLogger.INSTANCE.info("Selected file: " + selectedFile.getAbsolutePath());
+        }
+    }
+
+    private void loadWekaInstance(String path) {
+        try {
+            this.wekaInstance.loadInstanceFromPath(path);
+        } catch (Exception e) {
+            MiniMLLogger.INSTANCE.exception(e);
         }
     }
 
@@ -122,5 +129,6 @@ public class DatasetTab extends JPanel {
 
         previewContent.setText(this.content);
     }
+
 
 }
