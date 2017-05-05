@@ -12,6 +12,7 @@ public class Keys {
     // Dataset Tab
     public static final String DatasetConfig = "MML_DS_CFG";
     public static final String DatasetFile = "MML_DS_CFG_FILE";
+    public static final String RootWekaInstnace = "MML_DS_CFG_ROOT_WEKA_INSTANCE";
 
     // Preprocess Tab
     // TODO: Preprocess Tab
