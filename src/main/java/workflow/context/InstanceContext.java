@@ -28,5 +28,10 @@ public class InstanceContext extends ParameterContext {
             data.setClassIndex(data.numAttributes() - 1);
         }
         this.value = data;
+        MiniMLLogger.INSTANCE.info("Dataset loaded with these attributes");
+        for (int i = 0; i < data.numAttributes(); i++)
+        {
+            MiniMLLogger.INSTANCE.info(data.attribute(i));
+        }
     }
 }
