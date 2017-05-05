@@ -11,7 +11,7 @@ import java.io.IOException;
 
 public class NoUserParameterDispatcherBuilder extends AbstractDispatcherBuilder {
     HighLevelParameterExtension highLevelExtension;
-    Dispatcher dispatcher;
+    public Dispatcher dispatcher;
 
     public NoUserParameterDispatcherBuilder() {
         super();
