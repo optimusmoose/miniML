@@ -17,13 +17,11 @@ public class Dispatcher {
     SearchAlgorithmInterface searchType;
     WekaTaskManager mgr;
     WekaInvoker taskList;
-    //TODO tasks are hardcoded for now; fix it in future iterations so user can specify which to make
-    LR_Task lr;
-    NN_Task nn;
     //TODO ParameterIFaces are hardcoded until we can generalize parameter selection
     ParameterIFace neuralNetworkParameters;
     ParameterIFace linearRegressionParameters;
     ParameterIFace decisionTreeParameters;
+    ParameterIFace smoParameters;
 
     /**
      * Construct the major parts of the backend so that the dispatcher can use them.
@@ -33,17 +31,17 @@ public class Dispatcher {
                       ParameterIFace neuralNetworkParameters,
                       ParameterIFace linearRegressionParameters,
                       ParameterIFace decisionTreeParameters,
+                      ParameterIFace smoParameters,
                       SearchAlgorithmInterface searchType){
         this.data = data;
         this.neuralNetworkParameters = neuralNetworkParameters;
         this.linearRegressionParameters = linearRegressionParameters;
         this.decisionTreeParameters = decisionTreeParameters;
+        this.smoParameters = smoParameters;
         this.searchType = searchType;
         this.maxThreads = maxThreads;
         mgr = new WekaTaskManager(this.maxThreads);
         taskList = new WekaInvoker();
-        lr = new LR_Task(mgr);
-        nn = new NN_Task(mgr);
     }
 
     /**
@@ -72,7 +70,10 @@ public class Dispatcher {
             ArrayList<WrappedParamFinal> DT_params = searchType.getNextParamSet(decisionTreeParameters);
             String[] dt_array = unpackWrappedParams(DT_params, "dt");
             mgr.addModel(dt_array);
-            //TODO: SVM
+            //SMO
+            ArrayList<WrappedParamFinal> SMO_params = searchType.getNextParamSet(smoParameters);
+            String[] smo_array = unpackWrappedParams(SMO_params, "smo");
+            mgr.addModel(smo_array);
             try { //
                 mgr.runModel();
             } catch (Exception e) {

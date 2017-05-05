@@ -112,6 +112,11 @@ class WekaTaskManager{
                     executor.execute(dt_model);
                     finishedModels.add(dt_model);
                     break;
+                case ("smo"):
+                    SMO_Model smo_model = new SMO_Model(data, parameters);
+                    executor.execute(smo_model);
+                    finishedModels.add(smo_model);
+                    break;
                 default:
                     MiniMLLogger.INSTANCE.debug("Encountered unknown model type" + model_name);
             }

@@ -23,11 +23,13 @@ public class NoUserParameterDispatcherBuilder extends AbstractDispatcherBuilder 
         this.linearRegressionParameters = new LinearRegressionParameters();
         this.neuralNetworkParameters = new NeuralNetworkParameters();
         this.decisionTreeParameters = new DecisionTreeParameters();
+        this.smoParameters = new SmoParameters();
         this.dispatcher = new Dispatcher(data,
                                          maxThreads,
                                          neuralNetworkParameters,
                                          linearRegressionParameters,
                                          decisionTreeParameters,
+                                         smoParameters,
                                          searchType);
     }
 

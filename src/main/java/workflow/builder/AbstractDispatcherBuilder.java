@@ -30,6 +30,7 @@ abstract class AbstractDispatcherBuilder {
     ParameterIFace neuralNetworkParameters;
     ParameterIFace linearRegressionParameters;
     ParameterIFace decisionTreeParameters;
+    ParameterIFace smoParameters;
 
     public AbstractDispatcherBuilder(){
     }
