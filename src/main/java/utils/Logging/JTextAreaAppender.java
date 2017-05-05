@@ -17,5 +17,6 @@ public class JTextAreaAppender extends WriterAppender {
     public void append(LoggingEvent loggingEvent) {
         final String logMessage = this.layout.format(loggingEvent);
         this.jTextArea.append(logMessage);
+        this.jTextArea.setCaretPosition(this.jTextArea.getDocument().getLength());
     }
 }
