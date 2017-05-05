@@ -2,6 +2,7 @@ package frontend;
 
 import utils.Logging.MiniMLLogger;
 import utils.TypeFactory;
+import weka.core.Instances;
 import workflow.Keys;
 import workflow.WorkflowManager;
 import workflow.context.*;
@@ -27,6 +28,7 @@ public class DatasetTab extends JPanel {
 
     private JTextPane previewDataset = new JTextPane();
     private JTextPane previewContent = new JTextPane();
+    private DefaultListModel<String> attributes = new DefaultListModel<String>();
 
     public DatasetTab() {
         super();
@@ -49,6 +51,7 @@ public class DatasetTab extends JPanel {
         JScrollPane contentScrollPane = new JScrollPane(previewContent);
         JLabel browsLabel = new JLabel("Select a Dataset: ");
         JButton browseButton = new JButton("Browse...");
+        JList<String> attributesList = new JList<String>(this.attributes);
 
         browseButton.addActionListener(new ActionListener() {
             private AbstractCompositeContext context;
@@ -76,9 +79,14 @@ public class DatasetTab extends JPanel {
         this.add(datasetScrollPane, this.constraints);
 
         this.constraints.gridy++;
-        this.constraints.gridwidth = GridBagConstraints.REMAINDER;
-        this.constraints.weighty = 1.0;
+        this.constraints.gridwidth = GridBagConstraints.REMAINDER-1;
+        this.constraints.anchor = GridBagConstraints.WEST;
+        this.constraints.weighty = 0.75;
         this.add(contentScrollPane, this.constraints);
+
+        this.constraints.gridwidth = GridBagConstraints.REMAINDER;
+        this.constraints.anchor = GridBagConstraints.EAST;
+        this.add(attributesList, this.constraints);
     }
 
     private void handleFileSelectContext(ParameterContext context) {
@@ -108,6 +116,16 @@ public class DatasetTab extends JPanel {
         } catch (Exception e) {
             MiniMLLogger.INSTANCE.exception(e);
         }
+
+        Instances data = (Instances) this.wekaInstance.getValue();
+
+        for (int i = 0; i < data.numAttributes(); i++)
+        {
+            Object attribute = data.attribute(i);
+            String name = attribute.toString();
+            this.attributes.addElement(name);
+        }
+
     }
 
     private void previewData(File file) {
