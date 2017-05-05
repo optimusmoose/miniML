@@ -68,6 +68,7 @@ public class ModelTab extends JComponent {
     //TODO: refactor this name to show it as an initializer.
     private JPanel getETAPanel(){
         this.estimatedRuntimeContext = new ParameterContext(this.context, Keys.EstimatedTimeConfig);
+        this.estimatedRuntimeContext.setValue(Integer.toString(10), TypeFactory.STRING);
 
         JPanel e_panel = new JPanel();
         e_panel.setLayout(new GridLayout());
