@@ -22,6 +22,8 @@ class AnalyzeTab extends JPanel {
 
     private JTextAreaAppender outputAppender;
 
+    public TimeRemainingPanel timeRemaining;
+
     public AnalyzeTab() {
         super();
 
@@ -95,6 +97,7 @@ class AnalyzeTab extends JPanel {
                 try {
                     context = WorkflowManager.INSTANCE.getContextByKey(Keys.StartAnalysisButton);
                     handleStartAnalysisButtonContext((AnalyzeLaunchContext) context);
+                    timeRemaining.startTimer();
                 } catch(Exception exception) {
                     MiniMLLogger.INSTANCE.exception(exception);
                 }
@@ -125,7 +128,8 @@ class AnalyzeTab extends JPanel {
 
     private void timeRemaining() {
         JLabel title = new JLabel("Time Remaining: ");
-        JLabel timeRemaining = new JLabel("Elapsed time: ");
+        //JLabel timeRemaining = new JLabel("Elapsed time: ");
+        this.timeRemaining = new TimeRemainingPanel();
 
         this.constraints.anchor = GridBagConstraints.SOUTHWEST;
         this.add(title, this.constraints);
