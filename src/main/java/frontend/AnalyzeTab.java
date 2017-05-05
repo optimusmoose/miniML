@@ -53,8 +53,8 @@ class AnalyzeTab extends JComponent{
 
         try {
             this.outputAppender = new JTextAreaAppender(consoleText);
-            this.outputAppender.setLayout(new PatternLayout("%d{ISO8601} %-5p [%t] %c{2} %x - %m%n")); //TODO: use the config file
-            MiniMLLogger.INSTANCE.registerAppender(this.outputAppender);
+            this.outputAppender.setLayout(new PatternLayout("%d{ISO8601} %-5p [%t] %c{2} %x - %m%n")); //TODO: magic string
+            MiniMLLogger.INSTANCE.getLogger().addAppender(this.outputAppender);
         } catch(Exception e) {
             MiniMLLogger.INSTANCE.exception(e);
         }

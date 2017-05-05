@@ -42,8 +42,4 @@ public enum MiniMLLogger {
         exception.printStackTrace(pw);
         this.logger.error(sw.toString());
     }
-
-    public void registerAppender(WriterAppender appender) {
-        this.logger.addAppender(appender);
-    }
 }
