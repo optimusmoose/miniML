@@ -1,6 +1,7 @@
 package workflow.builder;
 
 import backend.*;
+import utils.Logging.MiniMLLogger;
 import weka.core.Instances;
 import workflow.Keys;
 import workflow.WorkflowManager;
@@ -36,7 +37,8 @@ public class NoUserParameterDispatcherBuilder extends AbstractDispatcherBuilder 
 
     public void launch(){
         this.getHighLevelExtension();
-        this.dispatcher.setTimeLimit(1); //TODO
+        MiniMLLogger.INSTANCE.info("got here...");
+        //this.dispatcher.setTimeLimit(1); //TODO
         this.dispatcher.launch();
     }
 

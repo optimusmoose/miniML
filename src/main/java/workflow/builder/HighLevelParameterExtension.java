@@ -19,9 +19,10 @@ public class HighLevelParameterExtension extends AbstractParameterExtension {
     String useETA;
 
 
-    public HighLevelParameterExtension(AbstractDispatcherBuilder builder){
+    public HighLevelParameterExtension(NoUserParameterDispatcherBuilder builder){
         super(builder);
         this.collect();
+        this.extend();
     }
 
     public void collect(){

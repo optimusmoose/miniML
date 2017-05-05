@@ -64,23 +64,8 @@ public class Dispatcher {
         mgr.setData(data);
         long endTime = this.calculateTimer();
         while(System.currentTimeMillis() < endTime) {
-            //LR
-            ArrayList<WrappedParamFinal> LR_params = searchType.getNextParamSet(linearRegressionParameters);
-            String[] lr_array = unpackWrappedParams(LR_params,"lr");
-            mgr.addModel(lr_array);
-            //NN
-            ArrayList<WrappedParamFinal> NN_params = searchType.getNextParamSet(neuralNetworkParameters);
-            String[] nn_array = unpackWrappedParams(NN_params, "nn");
-            mgr.addModel(nn_array);
-            //DT
-            ArrayList<WrappedParamFinal> DT_params = searchType.getNextParamSet(decisionTreeParameters);
-            String[] dt_array = unpackWrappedParams(DT_params, "dt");
-            mgr.addModel(dt_array);
-            //SMO
-            ArrayList<WrappedParamFinal> SMO_params = searchType.getNextParamSet(smoParameters);
-            String[] smo_array = unpackWrappedParams(SMO_params, "smo");
-            mgr.addModel(smo_array);
-            try { //
+            this.giveWorkToManager(); //make new jobs in mgr
+            try { //give mgr jobs to threadpool
                 mgr.runModel();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -160,7 +145,27 @@ public class Dispatcher {
      * Main loop for Dispatcher when choosing algorithms.
      */
     protected void giveWorkToManager(){
-
+        MiniMLLogger.INSTANCE.info(this.useLR);
+        if(this.useLR) {
+            ArrayList<WrappedParamFinal> LR_params = searchType.getNextParamSet(linearRegressionParameters);
+            String[] lr_array = unpackWrappedParams(LR_params, "lr");
+            mgr.addModel(lr_array);
+        }
+        if(this.useNN) {
+            ArrayList<WrappedParamFinal> NN_params = searchType.getNextParamSet(neuralNetworkParameters);
+            String[] nn_array = unpackWrappedParams(NN_params, "nn");
+            mgr.addModel(nn_array);
+        }
+        if(this.useDT) {
+            ArrayList<WrappedParamFinal> DT_params = searchType.getNextParamSet(decisionTreeParameters);
+            String[] dt_array = unpackWrappedParams(DT_params, "dt");
+            mgr.addModel(dt_array);
+        }
+        if(this.useSMO) {
+            ArrayList<WrappedParamFinal> SMO_params = searchType.getNextParamSet(smoParameters);
+            String[] smo_array = unpackWrappedParams(SMO_params, "smo");
+            mgr.addModel(smo_array);
+        }
     }
 
 }
