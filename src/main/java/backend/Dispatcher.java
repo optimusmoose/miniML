@@ -39,19 +39,15 @@ public class Dispatcher {
                       ParameterIFace decisionTreeParameters,
                       ParameterIFace smoParameters,
                       SearchAlgorithmInterface searchType){
-        MiniMLLogger.INSTANCE.info("1");
         this.neuralNetworkParameters = neuralNetworkParameters;
         this.linearRegressionParameters = linearRegressionParameters;
         this.decisionTreeParameters = decisionTreeParameters;
-        MiniMLLogger.INSTANCE.info("2");
         this.smoParameters = smoParameters;
         this.searchType = searchType;
         this.maxThreads = maxThreads;
-        MiniMLLogger.INSTANCE.info("3");
         this.datasetBuilder = new DatasetBuilder();
         mgr = new WekaTaskManager(this.maxThreads);
         taskList = new WekaInvoker();
-        MiniMLLogger.INSTANCE.info("4");
         this.data = datasetBuilder.getUserSpecifiedDataset();
     }
 
