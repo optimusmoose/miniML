@@ -16,19 +16,12 @@ public class NoUserParameterDispatcherBuilder extends AbstractDispatcherBuilder 
     public NoUserParameterDispatcherBuilder() {
         super();
         ParameterContext fileContext = (ParameterContext) WorkflowManager.INSTANCE.getContextByKey(Keys.DatasetFile);
-        try {
-            this.data = this.read_data((String) fileContext.getValue());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         this.searchType = new randomSearch();
-        this.data.setClassIndex(this.data.numAttributes() - 1);
         this.linearRegressionParameters = new LinearRegressionParameters();
         this.neuralNetworkParameters = new NeuralNetworkParameters();
         this.decisionTreeParameters = new DecisionTreeParameters();
         this.smoParameters = new SmoParameters();
-        this.dispatcher = new Dispatcher(data,
-                                         maxThreads,
+        this.dispatcher = new Dispatcher(maxThreads,
                                          neuralNetworkParameters,
                                          linearRegressionParameters,
                                          decisionTreeParameters,

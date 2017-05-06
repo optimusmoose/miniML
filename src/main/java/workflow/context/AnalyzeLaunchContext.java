@@ -27,6 +27,9 @@ public class AnalyzeLaunchContext extends ImperativeContext {
     public void execute(){
         if(this.verifyParentIsReady()){
             this.log("Parent Ready. Executing workflow.");
+            //TODO please leave these here so that backend threading can be turned off for debugging :(
+            //NoUserParameterDispatcherBuilder job = new NoUserParameterDispatcherBuilder();
+            //job.launch();
             MiniMLWorker worker = new MiniMLWorker();
             worker.execute();
         } else {

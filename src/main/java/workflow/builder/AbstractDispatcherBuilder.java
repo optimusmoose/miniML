@@ -34,30 +34,4 @@ abstract class AbstractDispatcherBuilder {
 
     public AbstractDispatcherBuilder(){
     }
-
-    /**
-     * TODO: this obviously doesn't belong here and it won't be here long. Leave it alone, Zach.
-     * Returns a Weka Instance of the data for testing.
-     * This will not be used in the finished product, but may be adapted to that end.
-     *
-     * @param  path     the local path to the data file (at this time, only .arff is supported)
-     * @return data     a Weka Instance of the data
-     */
-    public static Instances read_data(String path) throws IOException {
-        System.out.println("Opening file: " + path);
-        BufferedReader reader = new BufferedReader(new FileReader(path));
-        //create a weka data Instance
-        Instances data = new Instances(reader);
-        //TODO: this is the basic approach to getting column names-- use it to populate a selector for the dataset
-        //TODO: tab. FWIW it probably doesn't even belong here. sorry zach.
-        /*
-        Enumeration atts = data.enumerateAttributes();
-        while (atts.hasMoreElements()){
-            System.out.println(atts.nextElement());
-        }
-        */
-        reader.close();
-        return (data);
-    }
-
 }
