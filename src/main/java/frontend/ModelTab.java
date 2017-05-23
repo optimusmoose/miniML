@@ -1,8 +1,6 @@
 package frontend;
 
-import utils.TypeFactory;
 import utils.Logging.MiniMLLogger;
-import utils.TypeFactory;
 import workflow.Keys;
 import workflow.WorkflowManager;
 import workflow.context.AbstractCompositeContext;
@@ -68,7 +66,7 @@ public class ModelTab extends JComponent {
     //TODO: refactor this name to show it as an initializer.
     private JPanel getETAPanel(){
         this.estimatedRuntimeContext = new ParameterContext(this.context, Keys.EstimatedTimeConfig);
-        this.estimatedRuntimeContext.setValue(Integer.toString(10), TypeFactory.STRING);
+        this.estimatedRuntimeContext.setValue(10);
 
         JPanel e_panel = new JPanel();
         e_panel.setLayout(new GridLayout());
@@ -82,8 +80,8 @@ public class ModelTab extends JComponent {
             public void stateChanged(ChangeEvent e) {
                 try {
                     context = WorkflowManager.INSTANCE.getContextByKey(Keys.EstimatedTimeConfig);
-                    handleEstimatedTimeContext((ParameterContext) context, slider.getValue());
-                } catch(Exception exception) {
+                    handleContext((ParameterContext) context, slider.getValue());
+                } catch (Exception exception) {
                     MiniMLLogger.INSTANCE.exception(exception);
                 }
             }
@@ -95,14 +93,6 @@ public class ModelTab extends JComponent {
         return e_panel;
     }
 
-
-    public void handleEstimatedTimeContext(ParameterContext context, int value) {
-        //TODO: set the value on the context
-    	context.setValue(Integer.toString(value), TypeFactory.STRING);
-        context.updateState();
-    }
-
-
     //initializes the Algorithm panel. This should only be called in constructor.
     //TODO: refactor this name to show it as an initializer.
     private JPanel getAlgorithmPanel(){
@@ -111,10 +101,10 @@ public class ModelTab extends JComponent {
         this.toggleSuppVecContext = new ParameterContext(this.context, Keys.ToggleSuppVec);
         this.toggleDecTreeContext = new ParameterContext(this.context, Keys.ToggleDecTree);
         // :(
-        this.toggleLinRegContext.setValue(Boolean.toString(false), TypeFactory.BOOLEAN);
-        this.toggleNeuralNetContext.setValue(Boolean.toString(false), TypeFactory.BOOLEAN);
-        this.toggleDecTreeContext.setValue(Boolean.toString(false), TypeFactory.BOOLEAN);
-        this.toggleSuppVecContext.setValue(Boolean.toString(false), TypeFactory.BOOLEAN);
+        this.toggleLinRegContext.setValue(false);
+        this.toggleNeuralNetContext.setValue(false);
+        this.toggleDecTreeContext.setValue(false);
+        this.toggleSuppVecContext.setValue(false);
 
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout());
@@ -130,7 +120,7 @@ public class ModelTab extends JComponent {
             public void stateChanged(ChangeEvent e) {
                 try {
                     context = WorkflowManager.INSTANCE.getContextByKey(Keys.ToggleLinReg);
-                    handleLinearRegressionContext((ParameterContext) context, lr.isSelected());
+                    handleContext((ParameterContext) context, lr.isSelected());
                 } catch(Exception exception) {
                     MiniMLLogger.INSTANCE.exception(exception);
                 }
@@ -143,7 +133,7 @@ public class ModelTab extends JComponent {
             public void stateChanged(ChangeEvent e) {
                 try {
                     context = WorkflowManager.INSTANCE.getContextByKey(Keys.ToggleNeuralNet);
-                    handleNeuralNetworkContext((ParameterContext) context, nn.isSelected());
+                    handleContext((ParameterContext) context, nn.isSelected());
                 } catch(Exception exception) {
                     MiniMLLogger.INSTANCE.exception(exception);
                 }
@@ -156,7 +146,7 @@ public class ModelTab extends JComponent {
             public void stateChanged(ChangeEvent e) {
                 try {
                     context = WorkflowManager.INSTANCE.getContextByKey(Keys.ToggleSuppVec);
-                    handleSuppVectorContext((ParameterContext) context, svm.isSelected());
+                    handleContext((ParameterContext) context, svm.isSelected());
                 } catch(Exception exception) {
                     MiniMLLogger.INSTANCE.exception(exception);
                 }
@@ -169,7 +159,7 @@ public class ModelTab extends JComponent {
             public void stateChanged(ChangeEvent e) {
                 try {
                     context = WorkflowManager.INSTANCE.getContextByKey(Keys.ToggleDecTree);
-                    handleDecisionTreeContext((ParameterContext) context, dt.isSelected());
+                    handleContext((ParameterContext) context, dt.isSelected());
                 } catch(Exception exception) {
                     MiniMLLogger.INSTANCE.exception(exception);
                 }
@@ -182,25 +172,6 @@ public class ModelTab extends JComponent {
         panel.add(svm);
         panel.add(dt);
         return panel;
-    }
-    public void handleLinearRegressionContext(ParameterContext context, boolean isSelected) {
-    	context.setValue(Boolean.toString(isSelected), TypeFactory.BOOLEAN);
-        context.updateState();
-        }
-
-    public void handleNeuralNetworkContext(ParameterContext context, boolean isSelected) {
-    	context.setValue(Boolean.toString(isSelected), TypeFactory.BOOLEAN);
-        context.updateState();
-    }
-
-    public void handleSuppVectorContext(ParameterContext context, boolean isSelected) {
-    	context.setValue(Boolean.toString(isSelected), TypeFactory.BOOLEAN);
-    	context.updateState();
-    }
-
-    public void handleDecisionTreeContext(ParameterContext context, boolean isSelected) {
-    	context.setValue(Boolean.toString(isSelected), TypeFactory.BOOLEAN);
-        context.updateState();
     }
 
 
@@ -225,7 +196,7 @@ public class ModelTab extends JComponent {
             public void stateChanged(ChangeEvent e) {
                 try {
                     context = WorkflowManager.INSTANCE.getContextByKey(Keys.MethodSelect);
-                    handleMethodSelectContext((ParameterContext) context, slider1.getValue());
+                    handleContext((ParameterContext) context, slider1.getValue());
                 } catch(Exception exception) {
                     MiniMLLogger.INSTANCE.exception(exception);
                 }
@@ -238,7 +209,7 @@ public class ModelTab extends JComponent {
             public void stateChanged(ChangeEvent e) {
                 try {
                     context = WorkflowManager.INSTANCE.getContextByKey(Keys.Ridge);
-                    handleRidgeContext((ParameterContext) context, slider2.getValue());
+                    handleContext((ParameterContext) context, slider2.getValue());
                 } catch(Exception exception) {
                     MiniMLLogger.INSTANCE.exception(exception);
                 }
@@ -252,16 +223,6 @@ public class ModelTab extends JComponent {
         panel.add(par2);
         panel.add(slider2);
         return panel;
-    }
-
-    public void handleMethodSelectContext(ParameterContext context, int value) {
-    	context.setValue(Integer.toString(value), TypeFactory.INT);
-    	context.updateState();
-    }
-
-    public void handleRidgeContext(ParameterContext context, int value) {
-    	context.setValue(Integer.toString(value), TypeFactory.INT);
-    	context.updateState();
     }
 
     private JPanel getNeuralNetPanel(){
@@ -293,7 +254,7 @@ public class ModelTab extends JComponent {
             public void stateChanged(ChangeEvent e) {
                 try {
                     context = WorkflowManager.INSTANCE.getContextByKey(Keys.NumHiddenLayers);
-                    handleHiddenLayersContext((ParameterContext) context, slider1.getValue());
+                    handleContext((ParameterContext) context, slider1.getValue());
                 } catch(Exception exception) {
                     MiniMLLogger.INSTANCE.exception(exception);
                 }
@@ -306,7 +267,7 @@ public class ModelTab extends JComponent {
             public void stateChanged(ChangeEvent e) {
                 try {
                     context = WorkflowManager.INSTANCE.getContextByKey(Keys.NumHiddenNodes);
-                    handleHiddenNodesContext((ParameterContext) context, slider2.getValue());
+                    handleContext((ParameterContext) context, slider2.getValue());
                 } catch(Exception exception) {
                     MiniMLLogger.INSTANCE.exception(exception);
                 }
@@ -319,7 +280,7 @@ public class ModelTab extends JComponent {
             public void stateChanged(ChangeEvent e) {
                 try {
                     context = WorkflowManager.INSTANCE.getContextByKey(Keys.LearnRate);
-                    handleLearnRateContext((ParameterContext) context, slider3.getValue());
+                    handleContext((ParameterContext) context, slider3.getValue());
                 } catch(Exception exception) {
                     MiniMLLogger.INSTANCE.exception(exception);
                 }
@@ -332,7 +293,7 @@ public class ModelTab extends JComponent {
             public void stateChanged(ChangeEvent e) {
                 try {
                     context = WorkflowManager.INSTANCE.getContextByKey(Keys.NumEpochs);
-                    handleEpochsContext((ParameterContext) context, slider4.getValue());
+                    handleContext((ParameterContext) context, slider4.getValue());
                 } catch(Exception exception) {
                     MiniMLLogger.INSTANCE.exception(exception);
                 }
@@ -350,27 +311,6 @@ public class ModelTab extends JComponent {
         panel.add(slider4);
         return panel;
     }
-
-    public void handleHiddenLayersContext(ParameterContext context, int value) {
-    	context.setValue(Integer.toString(value), TypeFactory.INT);
-        context.updateState();
-    }
-
-    public void handleHiddenNodesContext(ParameterContext context, int value) {
-    	context.setValue(Integer.toString(value), TypeFactory.INT);
-        context.updateState();
-    }
-
-    public void handleLearnRateContext(ParameterContext context, int value) {
-    	context.setValue(Integer.toString(value), TypeFactory.INT);
-        context.updateState();
-    }
-
-    public void handleEpochsContext(ParameterContext context, int value) {
-    	context.setValue(Integer.toString(value), TypeFactory.INT);
-        context.updateState();
-    }
-
 
     public JPanel getSupportVectorMachinePanel(){
         this.gammaContext = new ParameterContext(this.context, Keys.Gamma);
@@ -401,7 +341,7 @@ public class ModelTab extends JComponent {
             public void stateChanged(ChangeEvent e) {
                 try {
                     context = WorkflowManager.INSTANCE.getContextByKey(Keys.Gamma);
-                    handleGammaContext((ParameterContext) context, slider1.getValue());
+                    handleContext((ParameterContext) context, slider1.getValue());
                 } catch(Exception exception) {
                     MiniMLLogger.INSTANCE.exception(exception);
                 }
@@ -414,7 +354,7 @@ public class ModelTab extends JComponent {
             public void stateChanged(ChangeEvent e) {
                 try {
                     context = WorkflowManager.INSTANCE.getContextByKey(Keys.Epsilon);
-                    handleEpsilonContext((ParameterContext) context, slider2.getValue());
+                    handleContext((ParameterContext) context, slider2.getValue());
                 } catch(Exception exception) {
                     MiniMLLogger.INSTANCE.exception(exception);
                 }
@@ -427,7 +367,7 @@ public class ModelTab extends JComponent {
             public void stateChanged(ChangeEvent e) {
                 try {
                     context = WorkflowManager.INSTANCE.getContextByKey(Keys.Degree);
-                    handleDegreeContext((ParameterContext) context, slider3.getValue());
+                    handleContext((ParameterContext) context, slider3.getValue());
                 } catch(Exception exception) {
                     MiniMLLogger.INSTANCE.exception(exception);
                 }
@@ -440,7 +380,7 @@ public class ModelTab extends JComponent {
             public void stateChanged(ChangeEvent e) {
                 try {
                     context = WorkflowManager.INSTANCE.getContextByKey(Keys.Nu);
-                    handleNuContext((ParameterContext) context, slider4.getValue());
+                    handleContext((ParameterContext) context, slider4.getValue());
                 } catch(Exception exception) {
                     MiniMLLogger.INSTANCE.exception(exception);
                 }
@@ -462,26 +402,6 @@ public class ModelTab extends JComponent {
         panel.add(par4);
         panel.add(slider4);
         return panel;
-    }
-
-    public void handleGammaContext(ParameterContext context, int value) {
-    	context.setValue(Integer.toString(value), TypeFactory.INT);
-        context.updateState();
-    }
-
-    public void handleEpsilonContext(ParameterContext context, int value) {
-    	context.setValue(Integer.toString(value), TypeFactory.INT);
-        context.updateState();
-    }
-
-    public void handleDegreeContext(ParameterContext context, int value) {
-    	context.setValue(Integer.toString(value), TypeFactory.INT);
-        context.updateState();
-    }
-
-    public void handleNuContext(ParameterContext context, int value) {
-    	context.setValue(Integer.toString(value), TypeFactory.INT);
-        context.updateState();
     }
 
     public JPanel getDecisionTreePanel(){
@@ -509,7 +429,7 @@ public class ModelTab extends JComponent {
             public void stateChanged(ChangeEvent e) {
                 try {
                     context = WorkflowManager.INSTANCE.getContextByKey(Keys.PruningConfidence);
-                    handlePruningConfidenceContext((ParameterContext) context, slider1.getValue());
+                    handleContext((ParameterContext) context, slider1.getValue());
                 } catch(Exception exception) {
                     MiniMLLogger.INSTANCE.exception(exception);
                 }
@@ -522,7 +442,7 @@ public class ModelTab extends JComponent {
             public void stateChanged(ChangeEvent e) {
                 try {
                     context = WorkflowManager.INSTANCE.getContextByKey(Keys.PruningFolds);
-                    handlePruningFoldsContext((ParameterContext) context, slider2.getValue());
+                    handleContext((ParameterContext) context, slider2.getValue());
                 } catch(Exception exception) {
                     MiniMLLogger.INSTANCE.exception(exception);
                 }
@@ -535,7 +455,7 @@ public class ModelTab extends JComponent {
             public void stateChanged(ChangeEvent e) {
                 try {
                     context = WorkflowManager.INSTANCE.getContextByKey(Keys.DecisionTreeInstances);
-                    handleDecisionTreeInstancesContext((ParameterContext) context, slider3.getValue());
+                    handleContext((ParameterContext) context, slider3.getValue());
                 } catch(Exception exception) {
                     MiniMLLogger.INSTANCE.exception(exception);
                 }
@@ -552,18 +472,8 @@ public class ModelTab extends JComponent {
         return panel;
     }
 
-    public void handlePruningConfidenceContext(ParameterContext context, int value) {
-        context.setValue(Integer.toString(value), TypeFactory.INT);
-        context.updateState();
-    }
-
-    public void handlePruningFoldsContext(ParameterContext context, int value) {
-        context.setValue(Integer.toString(value), TypeFactory.INT);
-        context.updateState();
-    }
-
-    public void handleDecisionTreeInstancesContext(ParameterContext context, int value) {
-        context.setValue(Integer.toString(value), TypeFactory.INT);
+    public void handleContext(ParameterContext context, Object value) {
+        context.setValue(value);
         context.updateState();
     }
 

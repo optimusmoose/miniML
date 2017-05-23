@@ -1,7 +1,6 @@
 package frontend;
 
 import utils.Logging.MiniMLLogger;
-import utils.TypeFactory;
 import weka.core.Instances;
 import workflow.Keys;
 import workflow.WorkflowManager;
@@ -128,7 +127,7 @@ public class DatasetTab extends JPanel {
     }
 
     private void handleFileSelectContext(ParameterContext context) {
-        context.setValue(this.dataset, TypeFactory.STRING);
+        context.setValue(this.dataset);
         context.updateState();
     }
 
