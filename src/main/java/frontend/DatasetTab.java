@@ -167,13 +167,10 @@ public class DatasetTab extends JPanel {
         Instances data = (Instances) this.wekaInstance.getValue();
         for (int i = 0; i < data.numAttributes(); i++)
         {
-            Object attribute = data.attribute(i);
-            String name = attribute.toString();
+            String name = data.attribute(i).name();
             this.attributes.add(i, name);
             this.classifierSelect.addItem(name);
         }
-
-
     }
 
     private void previewData(File file) {
@@ -195,8 +192,5 @@ public class DatasetTab extends JPanel {
 
         previewContent.setText(this.content);
     }
-
-
-
 
 }
