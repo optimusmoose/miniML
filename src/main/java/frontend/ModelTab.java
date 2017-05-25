@@ -387,10 +387,6 @@ public class ModelTab extends JComponent {
             }
         });
 
-        val1 = String.valueOf(slider1.getValue());
-        val2 = String.valueOf(slider2.getValue());
-        val3 = String.valueOf(slider3.getValue());
-        val4 = String.valueOf(slider4.getValue());
         panel.add(tip);
         //panel.add(pbar);
         panel.add(par1);
@@ -416,9 +412,9 @@ public class ModelTab extends JComponent {
         panel.setLayout(new GridLayout());
         JLabel tip = new JLabel("Decision Tree: ");
         JProgressBar pbar = new JProgressBar(0,0,100);
-        JLabel par1 = new JLabel("Pruning Confidence: " + val1);
-        JLabel par2 = new JLabel("Pruning Folds: " + val2);
-        JLabel par3 = new JLabel("Instances: " + val3);
+        JLabel par1 = new JLabel("Pruning Confidence: ");
+        JLabel par2 = new JLabel("Pruning Folds: ");
+        JLabel par3 = new JLabel("Instances: ");
         JSlider slider1 = new JSlider(1,9,1);
         JSlider slider2 = new JSlider(1, 100, 10);
         JSlider slider3 = new JSlider(0,100,20);

@@ -44,10 +44,10 @@ public class DatasetTab extends JPanel {
         this.constraints = new GridBagConstraints();
         this.setLayout(new GridBagLayout());
 
-        this.fileSelect();
+        this.initFileSelect();
     }
 
-    private void fileSelect(){
+    private void initFileSelect(){
         this.attributesList = new JList<String>(this.attributes);
         this.classifierSelect = new JComboBox<String>();
 
