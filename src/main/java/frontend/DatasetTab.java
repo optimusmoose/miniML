@@ -29,6 +29,7 @@ public class DatasetTab extends JPanel {
 
     private JTextPane previewDataset = new JTextPane();
     private JTextPane previewContent = new JTextPane();
+
     private DefaultListModel<String> attributes = new DefaultListModel<String>();
     JList<String> attributesList;
     JComboBox<String> classifierSelect;
@@ -47,6 +48,9 @@ public class DatasetTab extends JPanel {
     }
 
     private void fileSelect(){
+        this.attributesList = new JList<String>(this.attributes);
+        this.classifierSelect = new JComboBox<String>();
+
         FileContext fileSelectContext = new FileContext(this.context, Keys.DatasetFile);
 
         ParameterContext selectedAttributes = new ParameterContext(this.context, Keys.SelectedAttributes);
@@ -54,10 +58,17 @@ public class DatasetTab extends JPanel {
 
         JScrollPane datasetScrollPane = new JScrollPane(previewDataset);
         JScrollPane contentScrollPane = new JScrollPane(previewContent);
+        JScrollPane attributeScrollPane = new JScrollPane(attributesList);
+
+        datasetScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
+        contentScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        contentScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+
+        attributeScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+
         JLabel browsLabel = new JLabel("Select a Dataset: ");
         JButton browseButton = new JButton("Browse...");
-        this.attributesList = new JList<String>(this.attributes);
-        this.classifierSelect = new JComboBox<String>();
 
         browseButton.addActionListener(new ActionListener() {
             private AbstractCompositeContext context;
@@ -117,7 +128,7 @@ public class DatasetTab extends JPanel {
 
         this.constraints.gridwidth = 0;
         this.constraints.anchor = GridBagConstraints.EAST;
-        this.add(attributesList, this.constraints);
+        this.add(attributeScrollPane, this.constraints);
 
         this.constraints.gridy++;
         this.constraints.fill = GridBagConstraints.NONE;
