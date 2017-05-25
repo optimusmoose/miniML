@@ -67,7 +67,7 @@ public class DatasetTab extends JPanel {
                 try {
                     selectFile();
                     context = WorkflowManager.INSTANCE.getContextByKey(Keys.DatasetFile);
-                    handleFileSelectContext((ParameterContext) context);
+                    handleContext((ParameterContext) context, dataset);
                 } catch (Exception exception) {
                     MiniMLLogger.INSTANCE.exception(exception);
                 }
@@ -82,7 +82,7 @@ public class DatasetTab extends JPanel {
                 context = WorkflowManager.INSTANCE.getContextByKey(Keys.SelectedAttributes);
                 JList<String> source = (JList<String>) e.getSource();
                 int[] selected = source.getSelectedIndices();
-                handleAttributeSelectContext((ParameterContext) context, selected);
+                handleContext((ParameterContext) context, selected);
             }
         });
 
@@ -94,7 +94,7 @@ public class DatasetTab extends JPanel {
                 context = WorkflowManager.INSTANCE.getContextByKey(Keys.SelectedClassifier);
                 JComboBox<String> source = (JComboBox<String>) e.getSource();
                 int selected = source.getSelectedIndex();
-                handleClassSelectContext((ParameterContext) context, selected);
+                handleContext((ParameterContext) context, selected);
             }
         });
 
@@ -126,18 +126,8 @@ public class DatasetTab extends JPanel {
         this.add(classifierSelect, this.constraints);
     }
 
-    private void handleFileSelectContext(ParameterContext context) {
-        context.setValue(this.dataset);
-        context.updateState();
-    }
-
-    private void handleAttributeSelectContext(ParameterContext context, int[] selected) {
-        context.setValue(selected);
-        context.updateState();
-    }
-
-    private void handleClassSelectContext(ParameterContext context, int id) {
-        context.setValue(id);
+    private void handleContext(ParameterContext context, Object value) {
+        context.setValue(value);
         context.updateState();
     }
 
