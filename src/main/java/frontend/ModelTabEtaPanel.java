@@ -18,7 +18,7 @@ public class ModelTabEtaPanel extends JPanel {
 
     public ModelTabEtaPanel() {
         super();
-        context = WorkflowManager.INSTANCE.getContextByKey(Keys.ModelConfig);
+        this.context = WorkflowManager.INSTANCE.getContextByKey(Keys.ModelConfig);
 
         this.estimatedRuntimeContext = new ParameterContext(this.context, Keys.EstimatedTimeConfig);
         this.estimatedRuntimeContext.setValue(10);

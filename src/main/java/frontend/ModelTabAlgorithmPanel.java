@@ -21,13 +21,13 @@ public class ModelTabAlgorithmPanel extends JPanel {
 
     public ModelTabAlgorithmPanel() {
         super();
-        context = WorkflowManager.INSTANCE.getContextByKey(Keys.ModelConfig);
+        this.context = WorkflowManager.INSTANCE.getContextByKey(Keys.ModelConfig);
 
         this.toggleLinRegContext = new ParameterContext(this.context, Keys.ToggleLinReg);
         this.toggleNeuralNetContext = new ParameterContext(this.context, Keys.ToggleNeuralNet);
         this.toggleSuppVecContext = new ParameterContext(this.context, Keys.ToggleSuppVec);
         this.toggleDecTreeContext = new ParameterContext(this.context, Keys.ToggleDecTree);
-        // :(
+
         this.toggleLinRegContext.setValue(false);
         this.toggleNeuralNetContext.setValue(false);
         this.toggleDecTreeContext.setValue(false);
