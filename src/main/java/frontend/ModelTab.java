@@ -16,7 +16,6 @@ public class ModelTab extends JComponent {
 
     private AbstractCompositeContext parentContext;
     private ModelContext context;
-    private ParameterContext estimatedRuntimeContext;
     private ParameterContext methodSelectContext;
     private ParameterContext ridgeContext;
     private ParameterContext hiddenLayerContext;
@@ -41,7 +40,7 @@ public class ModelTab extends JComponent {
         this.setLayout(new GridLayout());
         JPanel panel = new JPanel(false);
         panel.setLayout(new GridLayout(6,0));
-        JPanel etaPanel = getETAPanel();
+        JPanel etaPanel = new ModelTabEtaPanel();
         JPanel algorithmPanel = new ModelTabAlgorithmPanel();
         JPanel linearRegressionPanel = getLinearRegressionPanel();
         JPanel neuralNetPanel = getNeuralNetPanel();
@@ -57,38 +56,6 @@ public class ModelTab extends JComponent {
 
         this.add(panel);
     }
-
-    //initializes the ETA panel. This should only be called in constructor.
-    //TODO: refactor this name to show it as an initializer.
-    private JPanel getETAPanel(){
-        this.estimatedRuntimeContext = new ParameterContext(this.context, Keys.EstimatedTimeConfig);
-        this.estimatedRuntimeContext.setValue(10);
-
-        JPanel e_panel = new JPanel();
-        e_panel.setLayout(new GridLayout());
-        String val = "";
-        JLabel tip = new JLabel("Estimated Runtime: " + val);
-        JSlider slider = new JSlider(1,60,10);
-        slider.addChangeListener(new ChangeListener() {
-            private AbstractCompositeContext context;
-
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                try {
-                    context = WorkflowManager.INSTANCE.getContextByKey(Keys.EstimatedTimeConfig);
-                    handleContext((ParameterContext) context, slider.getValue());
-                } catch (Exception exception) {
-                    MiniMLLogger.INSTANCE.exception(exception);
-                }
-            }
-        });
-
-        val = String.valueOf(slider.getValue());//TODO: extract to class
-        e_panel.add(tip);
-        e_panel.add(slider);
-        return e_panel;
-    }
-
 
     private JPanel getLinearRegressionPanel(){
         this.methodSelectContext = new ParameterContext(this.context, Keys.MethodSelect);
