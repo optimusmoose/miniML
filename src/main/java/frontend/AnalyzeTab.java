@@ -1,12 +1,12 @@
 package frontend;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.PatternLayout;
 import utils.Logging.JTextAreaAppender;
 import utils.Logging.MiniMLLogger;
 import workflow.Keys;
 import workflow.WorkflowManager;
-import workflow.context.*;
+import workflow.context.AbstractCompositeContext;
+import workflow.context.AnalyzeContext;
+import workflow.context.AnalyzeLaunchContext;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,7 +22,7 @@ class AnalyzeTab extends JPanel {
 
     private JTextAreaAppender outputAppender;
 
-    public TimeRemainingPanel timeRemaining;
+    public AnalyzeTabTimeRemainingPanel timeRemaining;
 
     public AnalyzeTab() {
         super();
@@ -125,8 +125,7 @@ class AnalyzeTab extends JPanel {
 
     private void timeRemaining() {
         JLabel title = new JLabel("Time Remaining: ");
-        //JLabel timeRemaining = new JLabel("Elapsed time: ");
-        this.timeRemaining = new TimeRemainingPanel();
+        this.timeRemaining = new AnalyzeTabTimeRemainingPanel();
 
         this.constraints.anchor = GridBagConstraints.SOUTHWEST;
         this.add(title, this.constraints);

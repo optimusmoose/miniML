@@ -10,7 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 
-public class TimeRemainingPanel extends JPanel{
+public class AnalyzeTabTimeRemainingPanel extends JPanel{
     private Timer timer;
     private long startTime = -1;
     private long duration = 5000;
@@ -27,7 +27,7 @@ public class TimeRemainingPanel extends JPanel{
         this.duration = Integer.parseInt(et.getValue().toString()) * 60 * 1000; //milliseconds of course
     }
 
-    public TimeRemainingPanel() {
+    public AnalyzeTabTimeRemainingPanel() {
         setLayout(new GridBagLayout());
         timer = new Timer(10, new ActionListener() {
             @Override

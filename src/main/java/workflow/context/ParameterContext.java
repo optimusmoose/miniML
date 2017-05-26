@@ -1,6 +1,5 @@
 package workflow.context;
 
-import utils.TypeFactory;
 import workflow.state.StateFactory;
 
 /**
@@ -51,14 +50,15 @@ public class ParameterContext extends AbstractCompositeContext {
         return this.value;
     }
 
+    /**
+     * @param value Object
+     */
     public void setValue(Object value) {
         this.value = value;
     }
 
-    /**
-     * @param value
-     */
-    public void setValue(String value, TypeFactory type) {
-        this.value = TypeFactory.INSTANCE.get(type, value);
+    public static void handleContext(ParameterContext context, Object value) {
+        context.setValue(value);
+        context.updateState();
     }
 }

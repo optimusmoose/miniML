@@ -1,7 +1,6 @@
 package frontend;
 
 import utils.Logging.MiniMLLogger;
-import utils.TypeFactory;
 import weka.core.Instances;
 import workflow.Keys;
 import workflow.WorkflowManager;
@@ -30,6 +29,7 @@ public class DatasetTab extends JPanel {
 
     private JTextPane previewDataset = new JTextPane();
     private JTextPane previewContent = new JTextPane();
+
     private DefaultListModel<String> attributes = new DefaultListModel<String>();
     JList<String> attributesList;
     JComboBox<String> classifierSelect;
@@ -39,15 +39,19 @@ public class DatasetTab extends JPanel {
 
         this.parentContext = WorkflowManager.INSTANCE.getContextByKey(Keys.App);
         this.context = new DatasetContext(parentContext, Keys.DatasetConfig);
-        this.wekaInstance = new InstanceContext(parentContext, Keys.RootWekaInstnace);
+
+        this.wekaInstance = new InstanceContext(parentContext, Keys.RootWekaInstnace);  //TODO: dataset should not live in the frontend
 
         this.constraints = new GridBagConstraints();
         this.setLayout(new GridBagLayout());
 
-        this.fileSelect();
+        this.initFileSelect();
     }
 
-    private void fileSelect(){
+    private void initFileSelect(){
+        this.attributesList = new JList<String>(this.attributes);
+        this.classifierSelect = new JComboBox<String>();
+
         FileContext fileSelectContext = new FileContext(this.context, Keys.DatasetFile);
 
         ParameterContext selectedAttributes = new ParameterContext(this.context, Keys.SelectedAttributes);
@@ -55,10 +59,17 @@ public class DatasetTab extends JPanel {
 
         JScrollPane datasetScrollPane = new JScrollPane(previewDataset);
         JScrollPane contentScrollPane = new JScrollPane(previewContent);
+        JScrollPane attributeScrollPane = new JScrollPane(attributesList);
+
+        datasetScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
+        contentScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        contentScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+
+        attributeScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+
         JLabel browsLabel = new JLabel("Select a Dataset: ");
         JButton browseButton = new JButton("Browse...");
-        this.attributesList = new JList<String>(this.attributes);
-        this.classifierSelect = new JComboBox<String>();
 
         browseButton.addActionListener(new ActionListener() {
             private AbstractCompositeContext context;
@@ -68,7 +79,7 @@ public class DatasetTab extends JPanel {
                 try {
                     selectFile();
                     context = WorkflowManager.INSTANCE.getContextByKey(Keys.DatasetFile);
-                    handleFileSelectContext((ParameterContext) context);
+                    handleContext((ParameterContext) context, dataset);
                 } catch (Exception exception) {
                     MiniMLLogger.INSTANCE.exception(exception);
                 }
@@ -83,7 +94,7 @@ public class DatasetTab extends JPanel {
                 context = WorkflowManager.INSTANCE.getContextByKey(Keys.SelectedAttributes);
                 JList<String> source = (JList<String>) e.getSource();
                 int[] selected = source.getSelectedIndices();
-                handleAttributeSelectContext((ParameterContext) context, selected);
+                handleContext((ParameterContext) context, selected);
             }
         });
 
@@ -95,7 +106,7 @@ public class DatasetTab extends JPanel {
                 context = WorkflowManager.INSTANCE.getContextByKey(Keys.SelectedClassifier);
                 JComboBox<String> source = (JComboBox<String>) e.getSource();
                 int selected = source.getSelectedIndex();
-                handleClassSelectContext((ParameterContext) context, selected);
+                handleContext((ParameterContext) context, selected);
             }
         });
 
@@ -118,7 +129,7 @@ public class DatasetTab extends JPanel {
 
         this.constraints.gridwidth = 0;
         this.constraints.anchor = GridBagConstraints.EAST;
-        this.add(attributesList, this.constraints);
+        this.add(attributeScrollPane, this.constraints);
 
         this.constraints.gridy++;
         this.constraints.fill = GridBagConstraints.NONE;
@@ -127,18 +138,8 @@ public class DatasetTab extends JPanel {
         this.add(classifierSelect, this.constraints);
     }
 
-    private void handleFileSelectContext(ParameterContext context) {
-        context.setValue(this.dataset, TypeFactory.STRING);
-        context.updateState();
-    }
-
-    private void handleAttributeSelectContext(ParameterContext context, int[] selected) {
-        context.setValue(selected);
-        context.updateState();
-    }
-
-    private void handleClassSelectContext(ParameterContext context, int id) {
-        context.setValue(id);
+    private void handleContext(ParameterContext context, Object value) {
+        context.setValue(value);
         context.updateState();
     }
 
@@ -168,13 +169,10 @@ public class DatasetTab extends JPanel {
         Instances data = (Instances) this.wekaInstance.getValue();
         for (int i = 0; i < data.numAttributes(); i++)
         {
-            Object attribute = data.attribute(i);
-            String name = attribute.toString();
+            String name = data.attribute(i).name();
             this.attributes.add(i, name);
             this.classifierSelect.addItem(name);
         }
-
-
     }
 
     private void previewData(File file) {
@@ -196,8 +194,5 @@ public class DatasetTab extends JPanel {
 
         previewContent.setText(this.content);
     }
-
-
-
 
 }
