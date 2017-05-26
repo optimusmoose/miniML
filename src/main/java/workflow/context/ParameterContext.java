@@ -50,7 +50,15 @@ public class ParameterContext extends AbstractCompositeContext {
         return this.value;
     }
 
+    /**
+     * @param value Object
+     */
     public void setValue(Object value) {
         this.value = value;
+    }
+
+    public static void handleContext(ParameterContext context, Object value) {
+        context.setValue(value);
+        context.updateState();
     }
 }

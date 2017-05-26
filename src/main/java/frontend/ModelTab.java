@@ -17,10 +17,6 @@ public class ModelTab extends JComponent {
     private AbstractCompositeContext parentContext;
     private ModelContext context;
     private ParameterContext estimatedRuntimeContext;
-    private ParameterContext toggleLinRegContext;
-    private ParameterContext toggleNeuralNetContext;
-    private ParameterContext toggleSuppVecContext;
-    private ParameterContext toggleDecTreeContext;
     private ParameterContext methodSelectContext;
     private ParameterContext ridgeContext;
     private ParameterContext hiddenLayerContext;
@@ -46,7 +42,7 @@ public class ModelTab extends JComponent {
         JPanel panel = new JPanel(false);
         panel.setLayout(new GridLayout(6,0));
         JPanel etaPanel = getETAPanel();
-        JPanel algorithmPanel = getAlgorithmPanel();
+        JPanel algorithmPanel = new ModelTabAlgorithmPanel();
         JPanel linearRegressionPanel = getLinearRegressionPanel();
         JPanel neuralNetPanel = getNeuralNetPanel();
         JPanel supportVectorMachinePanel = getSupportVectorMachinePanel();
@@ -91,87 +87,6 @@ public class ModelTab extends JComponent {
         e_panel.add(tip);
         e_panel.add(slider);
         return e_panel;
-    }
-
-    //initializes the Algorithm panel. This should only be called in constructor.
-    //TODO: refactor this name to show it as an initializer.
-    private JPanel getAlgorithmPanel(){
-        this.toggleLinRegContext = new ParameterContext(this.context, Keys.ToggleLinReg);
-        this.toggleNeuralNetContext = new ParameterContext(this.context, Keys.ToggleNeuralNet);
-        this.toggleSuppVecContext = new ParameterContext(this.context, Keys.ToggleSuppVec);
-        this.toggleDecTreeContext = new ParameterContext(this.context, Keys.ToggleDecTree);
-        // :(
-        this.toggleLinRegContext.setValue(false);
-        this.toggleNeuralNetContext.setValue(false);
-        this.toggleDecTreeContext.setValue(false);
-        this.toggleSuppVecContext.setValue(false);
-
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout());
-        JLabel tip = new JLabel("Algorithms: ");
-        JToggleButton lr = new JToggleButton("Linear Regression");
-        JToggleButton nn = new JToggleButton("Neural Network");
-        JToggleButton svm = new JToggleButton("Support Vector Machine");
-        JToggleButton dt = new JToggleButton("Decision Tree");
-        //TODO: refactor these listeners into more sensible sub-method
-        lr.addChangeListener(new ChangeListener() {
-            private AbstractCompositeContext context;
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                try {
-                    context = WorkflowManager.INSTANCE.getContextByKey(Keys.ToggleLinReg);
-                    handleContext((ParameterContext) context, lr.isSelected());
-                } catch(Exception exception) {
-                    MiniMLLogger.INSTANCE.exception(exception);
-                }
-            }
-        });
-
-        nn.addChangeListener(new ChangeListener() {
-            private AbstractCompositeContext context;
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                try {
-                    context = WorkflowManager.INSTANCE.getContextByKey(Keys.ToggleNeuralNet);
-                    handleContext((ParameterContext) context, nn.isSelected());
-                } catch(Exception exception) {
-                    MiniMLLogger.INSTANCE.exception(exception);
-                }
-            }
-        });
-
-        svm.addChangeListener(new ChangeListener() {
-            private AbstractCompositeContext context;
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                try {
-                    context = WorkflowManager.INSTANCE.getContextByKey(Keys.ToggleSuppVec);
-                    handleContext((ParameterContext) context, svm.isSelected());
-                } catch(Exception exception) {
-                    MiniMLLogger.INSTANCE.exception(exception);
-                }
-            }
-        });
-
-        dt.addChangeListener(new ChangeListener() {
-            private AbstractCompositeContext context;
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                try {
-                    context = WorkflowManager.INSTANCE.getContextByKey(Keys.ToggleDecTree);
-                    handleContext((ParameterContext) context, dt.isSelected());
-                } catch(Exception exception) {
-                    MiniMLLogger.INSTANCE.exception(exception);
-                }
-            }
-        });
-
-        panel.add(tip);
-        panel.add(lr);
-        panel.add(nn);
-        panel.add(svm);
-        panel.add(dt);
-        return panel;
     }
 
 
