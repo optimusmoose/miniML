@@ -28,7 +28,6 @@ public class ModelTabDtPanel extends JPanel {
 
         this.setLayout(new GridLayout());
         JLabel tip = new JLabel("Decision Tree: ");
-        JProgressBar pbar = new JProgressBar(0,0,100);
         JLabel par1 = new JLabel("Pruning Confidence: ");
         JLabel par2 = new JLabel("Pruning Folds: ");
         JLabel par3 = new JLabel("Instances: ");

@@ -10,6 +10,7 @@ public class MiniMLWorker extends SwingWorker<List<Object>, Void> {
     @Override
     protected List<Object> doInBackground() throws Exception {
         MiniMLLogger.INSTANCE.info("Inside the job thread");
+        //TODO: WIRE UP ACTUAL CONFIGS TO A JOB!
         NoUserParameterDispatcherBuilder job = new NoUserParameterDispatcherBuilder();
         job.launch();
         return null;
