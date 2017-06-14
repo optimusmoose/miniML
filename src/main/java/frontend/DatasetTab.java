@@ -79,7 +79,7 @@ public class DatasetTab extends JPanel {
                 try {
                     selectFile();
                     context = WorkflowManager.INSTANCE.getContextByKey(Keys.DatasetFile);
-                    handleContext((ParameterContext) context, dataset);
+                    ParameterContext.handleContext((ParameterContext) context, dataset);
                 } catch (Exception exception) {
                     MiniMLLogger.INSTANCE.exception(exception);
                 }
@@ -94,7 +94,7 @@ public class DatasetTab extends JPanel {
                 context = WorkflowManager.INSTANCE.getContextByKey(Keys.SelectedAttributes);
                 JList<String> source = (JList<String>) e.getSource();
                 int[] selected = source.getSelectedIndices();
-                handleContext((ParameterContext) context, selected);
+                ParameterContext.handleContext((ParameterContext) context, selected);
             }
         });
 
@@ -106,7 +106,7 @@ public class DatasetTab extends JPanel {
                 context = WorkflowManager.INSTANCE.getContextByKey(Keys.SelectedClassifier);
                 JComboBox<String> source = (JComboBox<String>) e.getSource();
                 int selected = source.getSelectedIndex();
-                handleContext((ParameterContext) context, selected);
+                ParameterContext.handleContext((ParameterContext) context, selected);
             }
         });
 
@@ -132,15 +132,10 @@ public class DatasetTab extends JPanel {
         this.add(attributeScrollPane, this.constraints);
 
         this.constraints.gridy++;
-        this.constraints.fill = GridBagConstraints.NONE;
+        this.constraints.fill = GridBagConstraints.HORIZONTAL;
         this.constraints.weighty = 0.05;
         this.constraints.anchor = GridBagConstraints.SOUTHEAST;
         this.add(classifierSelect, this.constraints);
-    }
-
-    private void handleContext(ParameterContext context, Object value) {
-        context.setValue(value);
-        context.updateState();
     }
 
     private void selectFile() throws IOException {
@@ -166,6 +161,7 @@ public class DatasetTab extends JPanel {
             MiniMLLogger.INSTANCE.exception(e);
         }
 
+        this.classifierSelect.removeAllItems();
         Instances data = (Instances) this.wekaInstance.getValue();
         for (int i = 0; i < data.numAttributes(); i++)
         {
