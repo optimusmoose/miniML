@@ -86,6 +86,7 @@ public class DatasetTab extends JPanel {
             }
         });
 
+        //TODO: attribute selection seems borked,  must indavidually click each attribute, then leave the class selected?
         attributesList.addListSelectionListener(new ListSelectionListener() {
             private AbstractCompositeContext context;
 
@@ -116,7 +117,6 @@ public class DatasetTab extends JPanel {
         this.constraints.weightx = 1.0;
         this.add(browsLabel, this.constraints);
         this.add(browseButton, this.constraints);
-
         this.constraints.fill = GridBagConstraints.BOTH;
         this.constraints.anchor = GridBagConstraints.EAST;
         this.add(datasetScrollPane, this.constraints);
