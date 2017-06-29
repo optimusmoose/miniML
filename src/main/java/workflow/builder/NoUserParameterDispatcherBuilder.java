@@ -1,13 +1,9 @@
 package workflow.builder;
 
 import backend.*;
-import utils.Logging.MiniMLLogger;
-import weka.core.Instances;
 import workflow.Keys;
 import workflow.WorkflowManager;
 import workflow.context.ParameterContext;
-
-import java.io.IOException;
 
 public class NoUserParameterDispatcherBuilder extends AbstractDispatcherBuilder {
     HighLevelParameterExtension highLevelExtension;

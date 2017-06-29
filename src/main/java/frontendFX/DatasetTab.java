@@ -3,18 +3,12 @@ package frontendFX;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
 import workflow.Keys;
 import workflow.WorkflowManager;
 import workflow.context.AbstractCompositeContext;
 import workflow.context.DatasetContext;
-
-import java.io.InputStream;
-import java.net.URL;
 
 public class DatasetTab extends Tab {
 
@@ -40,8 +34,8 @@ public class DatasetTab extends Tab {
 
         GridPane gridPane = new GridPane();
 
-        gridPane.setHgap(10); //horizontal gap in pixels => that's what you are asking for
-        gridPane.setVgap(10); //vertical gap in pixels
+        gridPane.setHgap(10);
+        gridPane.setVgap(10);
         gridPane.setPadding(new Insets(10, 10, 10, 10));
 
         HBox pathBox = new HBox();
