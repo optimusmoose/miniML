@@ -23,6 +23,9 @@ public class MiniMLFX extends Application{
     public static void main(String args[]) {
         MiniMLLogger.INSTANCE.info("Starting " + APPNAME + ".");
 
+        MiniMLContext context = new MiniMLContext(Keys.App);
+        WorkflowManager.INSTANCE.registerContext(context);
+
         try {
             launch(args);
         } catch (Exception e) {
@@ -65,9 +68,6 @@ public class MiniMLFX extends Application{
 
         stage.setScene(scene);
         stage.show();
-
-        MiniMLContext context = new MiniMLContext(Keys.App);
-        WorkflowManager.INSTANCE.registerContext(context);
 
         MiniMLLogger.INSTANCE.info(APPNAME + " is Ready.");
     }

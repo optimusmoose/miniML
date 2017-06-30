@@ -1,6 +1,5 @@
 package frontendFX;
 
-import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -35,124 +34,43 @@ public class ModelTab extends Tab {
         gridPane.setVgap(10);
         gridPane.setPadding(new Insets(10, 10, 10, 10));
 
-        runtimeRow();
-        algorithmRow();
-        linearRegressionRow();
-        neuralNetworkRow();
-        supportVectorMachineRow();
-        decisionTreeRow();
-
-
-        gridPane.setAlignment(Pos.CENTER);
-        this.setContent(gridPane);
-    }
-
-    private void runtimeRow() {
-        Label runtimeLabel = new Label("Maximum Runtime");
+        Label runtimeLabel = new Label("Runtime");
         GridPane.setConstraints(runtimeLabel, 0, 0);
         gridPane.getChildren().add(runtimeLabel);
 
-        Slider runtimeSlider = new Slider();
-        runtimeSlider.setMin(0.0);
-        runtimeSlider.setMax(1440.0);
-        runtimeSlider.setValue(10.0);
-        runtimeSlider.setShowTickLabels(true);
-        runtimeSlider.setShowTickMarks(true);
-        runtimeSlider.setMajorTickUnit(60);
-        runtimeSlider.setMinorTickCount(1);
-        runtimeSlider.setBlockIncrement(10);
-        GridPane.setConstraints(runtimeSlider, 1, 0, 3, 1);
-        GridPane.setFillWidth(runtimeSlider, true);
-        gridPane.getChildren().add(runtimeSlider);
+        ModelTabRuntimeBox runtimeBox = new ModelTabRuntimeBox();
+        GridPane.setConstraints(runtimeBox, 1, 0, 4, 1);
+        gridPane.getChildren().add(runtimeBox);
 
-        Label maximumRuntime = new Label("10 minutes");
-        GridPane.setConstraints(maximumRuntime, 4, 0);
-        GridPane.setHalignment(maximumRuntime, HPos.RIGHT);
-        gridPane.getChildren().add(maximumRuntime);
-    }
-
-    private void algorithmRow() {
         Label algorithmToggleLable = new Label("Algorithms");
         GridPane.setConstraints(algorithmToggleLable, 0, 1);
         gridPane.getChildren().add(algorithmToggleLable);
 
-        ToggleButton linearRegressionButton = new ToggleButton("Linear Regression");
-        GridPane.setConstraints(linearRegressionButton, 1, 1);
-        gridPane.getChildren().add(linearRegressionButton);
+        ModelTabAlgorithmBox algorithmBox = new ModelTabAlgorithmBox();
+        GridPane.setConstraints(algorithmBox, 1,1, 4, 1);
+        gridPane.getChildren().add(algorithmBox);
 
-        ToggleButton neuralNetworkButton = new ToggleButton("Neural Network");
-        GridPane.setConstraints(neuralNetworkButton, 2, 1);
-        gridPane.getChildren().add(neuralNetworkButton);
-
-        ToggleButton supportVectorMachineButton = new ToggleButton("Support Vector Machine");
-        GridPane.setConstraints(supportVectorMachineButton, 3, 1);
-        gridPane.getChildren().add(supportVectorMachineButton);
-
-        ToggleButton decisionTreeButton = new ToggleButton("Decision Tree");
-        GridPane.setConstraints(decisionTreeButton, 4, 1);
-        gridPane.getChildren().add(decisionTreeButton);
-    }
-
-    private void linearRegressionRow() {
         Label linearRegressionLabel = new Label("Linear Regression");
         GridPane.setConstraints(linearRegressionLabel, 0, 2, 1, 1);
         gridPane.getChildren().add(linearRegressionLabel);
 
-        HBox linearRegressBox = new HBox();
-        linearRegressBox.setPadding(new Insets(10, 10, 10, 10));
-
-        Label methodLabel = new Label("Method: ");
-        linearRegressBox.getChildren().add(methodLabel);
-
-        ComboBox<String> methodSelect = new ComboBox<>();
-        linearRegressBox.getChildren().add(methodSelect);
-
-
-        Label ridgeLabel = new Label("Ridge: ");
-        linearRegressBox.getChildren().add(ridgeLabel);
-
-        Slider ridgeSlider = new Slider();
-        GridPane.setConstraints(ridgeSlider, 4, 2);
-        linearRegressBox.getChildren().add(ridgeSlider);
-
+        ModelTabLrBox linearRegressBox = new ModelTabLrBox();
         GridPane.setConstraints(linearRegressBox, 1, 2, 4, 1);
         gridPane.getChildren().add(linearRegressBox);
-    }
 
-    private void neuralNetworkRow() {
         Label neuralNetworkLabel = new Label("Neural Network");
         GridPane.setConstraints(neuralNetworkLabel, 0, 3, 1, 1);
         gridPane.getChildren().add(neuralNetworkLabel);
 
-        HBox neuralNetworkBox = new HBox();
-        neuralNetworkBox.setPadding(new Insets(10, 10, 10, 10));
-
-        Label hiddenLayersLabel = new Label("Hidden Layers: ");
-        neuralNetworkBox.getChildren().add(hiddenLayersLabel);
-
-        Slider hiddenLayersSlider = new Slider();
-        neuralNetworkBox.getChildren().add(hiddenLayersSlider);
-
-        Label hiddenNodesLabel = new Label("Hidden Nodes: ");
-        neuralNetworkBox.getChildren().add(hiddenNodesLabel);
-
-        Slider hiddenNodesSlider = new Slider();
-        neuralNetworkBox.getChildren().add(hiddenNodesSlider);
-
-        Label learnRateLabel = new Label("Learning Rate: ");
-        neuralNetworkBox.getChildren().add(learnRateLabel);
-
-        Slider learningRateSlider = new Slider();
-        neuralNetworkBox.getChildren().add(learningRateSlider);
-
-        Label epochsLabel = new Label("Epochs: ");
-        neuralNetworkBox.getChildren().add(epochsLabel);
-
-        Slider epochsSlider = new Slider();
-        neuralNetworkBox.getChildren().add(epochsSlider);
-
+        ModelTabNnBox neuralNetworkBox = new ModelTabNnBox();
         GridPane.setConstraints(neuralNetworkBox, 1, 3, 4, 1);
         gridPane.getChildren().add(neuralNetworkBox);
+
+        supportVectorMachineRow();
+        decisionTreeRow();
+
+        gridPane.setAlignment(Pos.CENTER);
+        this.setContent(gridPane);
     }
 
     private void supportVectorMachineRow() {
