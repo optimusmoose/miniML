@@ -4,7 +4,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import workflow.Keys;
 import workflow.WorkflowManager;
 import workflow.context.AbstractCompositeContext;
@@ -66,76 +65,23 @@ public class ModelTab extends Tab {
         GridPane.setConstraints(neuralNetworkBox, 1, 3, 4, 1);
         gridPane.getChildren().add(neuralNetworkBox);
 
-        supportVectorMachineRow();
-        decisionTreeRow();
-
-        gridPane.setAlignment(Pos.CENTER);
-        this.setContent(gridPane);
-    }
-
-    private void supportVectorMachineRow() {
         Label supportVectorMachineLabel = new Label("Support Vector Machine");
         GridPane.setConstraints(supportVectorMachineLabel, 0, 4, 1, 1);
         gridPane.getChildren().add(supportVectorMachineLabel);
 
-        HBox supportVectorMachineBox = new HBox();
-        supportVectorMachineBox.setPadding(new Insets(10, 10, 10, 10));
-
-        Label gamaLabel = new Label("Gama: ");
-        supportVectorMachineBox.getChildren().add(gamaLabel);
-
-        Slider gamaSlider = new Slider();
-        supportVectorMachineBox.getChildren().add(gamaSlider);
-
-        Label epsilonLabel = new Label("Epsilon: ");
-        supportVectorMachineBox.getChildren().add(epsilonLabel);
-
-        Slider epsilonSlider = new Slider();
-        supportVectorMachineBox.getChildren().add(epsilonSlider);
-
-        Label degreeLabel = new Label("Degree: ");
-        supportVectorMachineBox.getChildren().add(degreeLabel);
-
-        Slider degreeSlider = new Slider();
-        supportVectorMachineBox.getChildren().add(degreeSlider);
-
-        Label nuLabel = new Label("Nu: ");
-        supportVectorMachineBox.getChildren().add(nuLabel);
-
-        Slider nuSlider = new Slider();
-        supportVectorMachineBox.getChildren().add(nuSlider);
-
+        ModelTabSvmBox supportVectorMachineBox = new ModelTabSvmBox();
         GridPane.setConstraints(supportVectorMachineBox, 1, 4, 4, 1);
         gridPane.getChildren().add(supportVectorMachineBox);
-    }
 
-    private void decisionTreeRow() {
         Label decisionTreeLabel = new Label("Descision Tree");
         GridPane.setConstraints(decisionTreeLabel, 0, 5, 1, 1);
         gridPane.getChildren().add(decisionTreeLabel);
 
-        HBox descisionTreeBox = new HBox();
-        descisionTreeBox.setPadding(new Insets(10, 10, 10, 10));
-
-        Label pruningConfidenceLabel = new Label("Pruning Confidence: ");
-        descisionTreeBox.getChildren().add(pruningConfidenceLabel);
-
-        Slider pruningConfidenceSlider = new Slider();
-        descisionTreeBox.getChildren().add(pruningConfidenceSlider);
-
-        Label pruningFoldsLabel = new Label("Pruning Folds: ");
-        descisionTreeBox.getChildren().add(pruningFoldsLabel);
-
-        Slider pruningFoldsSlider = new Slider();
-        descisionTreeBox.getChildren().add(pruningFoldsSlider);
-
-        Label instancesLabel = new Label("Instances: ");
-        descisionTreeBox.getChildren().add(instancesLabel);
-
-        Slider instancesSlider = new Slider();
-        descisionTreeBox.getChildren().add(instancesSlider);
-
+        ModelTabDtBox descisionTreeBox = new ModelTabDtBox();
         GridPane.setConstraints(descisionTreeBox, 1, 5, 4, 1);
         gridPane.getChildren().add(descisionTreeBox);
+
+        gridPane.setAlignment(Pos.CENTER);
+        this.setContent(gridPane);
     }
 }

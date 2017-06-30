@@ -56,9 +56,8 @@ public class ModelTabRuntimeBox extends HBox {
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                 try {
                     context = WorkflowManager.INSTANCE.getContextByKey(Keys.EstimatedTimeConfig);
-                    Double value = runtimeSlider.getValue();
-                    maximumRuntime.setText(Double.toString(Math.floor(value)) + " minutes");
-                    ParameterContext.handleContext((ParameterContext) context, value);
+                    maximumRuntime.setText(newValue + " minutes");
+                    ParameterContext.handleContext((ParameterContext) context, newValue);
                 } catch (Exception exception) {
                     MiniMLLogger.INSTANCE.exception(exception);
                 }

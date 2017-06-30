@@ -53,7 +53,7 @@ public class ModelTabAlgorithmBox extends HBox {
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
                 try {
                     context = WorkflowManager.INSTANCE.getContextByKey(Keys.ToggleLinReg);
-                    ParameterContext.handleContext((ParameterContext) context, linearRegressionButton.isSelected());
+                    ParameterContext.handleContext((ParameterContext) context, newValue);
                 } catch(Exception exception) {
                     MiniMLLogger.INSTANCE.exception(exception);
                 }
@@ -66,7 +66,7 @@ public class ModelTabAlgorithmBox extends HBox {
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
                 try {
                     context = WorkflowManager.INSTANCE.getContextByKey(Keys.ToggleNeuralNet);
-                    ParameterContext.handleContext((ParameterContext) context, neuralNetworkButton.isSelected());
+                    ParameterContext.handleContext((ParameterContext) context, newValue);
                 } catch(Exception exception) {
                     MiniMLLogger.INSTANCE.exception(exception);
                 }
@@ -79,7 +79,7 @@ public class ModelTabAlgorithmBox extends HBox {
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
                 try {
                     context = WorkflowManager.INSTANCE.getContextByKey(Keys.ToggleSuppVec);
-                    ParameterContext.handleContext((ParameterContext) context, supportVectorMachineButton.isSelected());
+                    ParameterContext.handleContext((ParameterContext) context, newValue);
                 } catch(Exception exception) {
                     MiniMLLogger.INSTANCE.exception(exception);
                 }
@@ -92,7 +92,7 @@ public class ModelTabAlgorithmBox extends HBox {
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
                 try {
                     context = WorkflowManager.INSTANCE.getContextByKey(Keys.ToggleDecTree);
-                    ParameterContext.handleContext((ParameterContext) context, decisionTreeButton.isSelected());
+                    ParameterContext.handleContext((ParameterContext) context, newValue);
                 } catch(Exception exception) {
                     MiniMLLogger.INSTANCE.exception(exception);
                 }

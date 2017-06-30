@@ -61,7 +61,7 @@ public class ModelTabNnBox extends HBox {
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                 try {
                     context = WorkflowManager.INSTANCE.getContextByKey(Keys.NumHiddenLayers);
-                    ParameterContext.handleContext((ParameterContext) context, hiddenLayersSlider.getValue());
+                    ParameterContext.handleContext((ParameterContext) context, newValue);
                 } catch (Exception exception) {
                     MiniMLLogger.INSTANCE.exception(exception);
                 }
@@ -75,7 +75,7 @@ public class ModelTabNnBox extends HBox {
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                 try {
                     context = WorkflowManager.INSTANCE.getContextByKey(Keys.NumHiddenNodes);
-                    ParameterContext.handleContext((ParameterContext) context, hiddenNodesSlider.getValue());
+                    ParameterContext.handleContext((ParameterContext) context, newValue);
                 } catch (Exception exception) {
                     MiniMLLogger.INSTANCE.exception(exception);
                 }
@@ -89,7 +89,7 @@ public class ModelTabNnBox extends HBox {
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                 try {
                     context = WorkflowManager.INSTANCE.getContextByKey(Keys.LearnRate);
-                    ParameterContext.handleContext((ParameterContext) context, learningRateSlider.getValue());
+                    ParameterContext.handleContext((ParameterContext) context, newValue);
                 } catch (Exception exception) {
                     MiniMLLogger.INSTANCE.exception(exception);
                 }
@@ -103,7 +103,7 @@ public class ModelTabNnBox extends HBox {
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                 try {
                     context = WorkflowManager.INSTANCE.getContextByKey(Keys.NumEpochs);
-                    ParameterContext.handleContext((ParameterContext) context, epochsSlider.getValue());
+                    ParameterContext.handleContext((ParameterContext) context, newValue);
                 } catch (Exception exception) {
                     MiniMLLogger.INSTANCE.exception(exception);
                 }
