@@ -1,3 +1,4 @@
+import frontendFX.AnalyzeTab;
 import frontendFX.DatasetTab;
 import frontendFX.ModelTab;
 import javafx.application.Application;
@@ -52,11 +53,14 @@ public class MiniMLFX extends Application{
         tabPane.setTabMinHeight(150);
         tabPane.setTabMaxHeight(150);
 
-        DatasetTab datasetTab = new DatasetTab();
+        DatasetTab datasetTab = new DatasetTab(stage);
         tabPane.getTabs().add(datasetTab);
 
-        ModelTab modelTab = new ModelTab();
+        ModelTab modelTab = new ModelTab(stage);
         tabPane.getTabs().add(modelTab);
+
+        AnalyzeTab analyzeTab = new AnalyzeTab(stage);
+        tabPane.getTabs().add(analyzeTab);
 
         // bind to take available space
         borderPane.prefHeightProperty().bind(scene.heightProperty());

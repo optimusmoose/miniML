@@ -4,6 +4,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 import workflow.Keys;
 import workflow.WorkflowManager;
 import workflow.context.AbstractCompositeContext;
@@ -15,11 +16,14 @@ public class ModelTab extends Tab {
 
     private final AbstractCompositeContext parentContext;
     private final ModelContext context;
+    private final Stage mainStage;
 
     GridPane gridPane;
 
-    public ModelTab() {
+    public ModelTab(Stage stage) {
         super();
+
+        this.mainStage = stage;
 
         this.parentContext = WorkflowManager.INSTANCE.getContextByKey(Keys.App);
         this.context = new ModelContext(parentContext, Keys.ModelConfig);
