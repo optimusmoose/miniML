@@ -5,9 +5,12 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import utils.Logging.MiniMLLogger;
+import utils.Logging.TextAreaAppender;
 import workflow.Keys;
 import workflow.WorkflowManager;
 import workflow.context.AbstractCompositeContext;
@@ -20,6 +23,8 @@ public class AnalyzeTab extends Tab{
     private final AbstractCompositeContext parentContext;
     private final AnalyzeContext context;
     private final Stage mainStage;
+
+    private TextAreaAppender outputAppender;
 
     GridPane gridPane;
 
@@ -40,6 +45,10 @@ public class AnalyzeTab extends Tab{
         gridPane.setVgap(10);
         gridPane.setPadding(new Insets(10, 10, 10, 10));
 
+        TextArea consoleText = new TextArea();
+        GridPane.setConstraints(consoleText, 0, 0, 5, 5);
+        gridPane.getChildren().add(consoleText);
+
         HBox runBox = new HBox();
 
         Label timeRemainingLabel = new Label("Time Remaining:");
@@ -48,10 +57,21 @@ public class AnalyzeTab extends Tab{
         Button runButton = new Button("Run");
         runBox.getChildren().add(runButton);
 
+        GridPane.setConstraints(runBox, 0, 5, 5, 1);
         gridPane.getChildren().add(runBox);
 
         gridPane.setAlignment(Pos.CENTER);
         this.setContent(gridPane);
+
+        this.addAppender(consoleText);
+    }
+
+    private void addAppender(TextArea textArea) {
+        try {
+            this.outputAppender = new TextAreaAppender(textArea);
+        } catch(Exception e) {
+            MiniMLLogger.INSTANCE.exception(e);
+        }
     }
 
 }

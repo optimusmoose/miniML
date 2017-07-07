@@ -51,7 +51,7 @@ public class DatasetTab extends Tab {
         this.parentContext = WorkflowManager.INSTANCE.getContextByKey(Keys.App);
         this.context = new DatasetContext(parentContext, Keys.DatasetConfig);
 
-        this.wekaInstance = new InstanceContext(parentContext, Keys.RootWekaInstnace);  //TODO: dataset should not live in the frontend
+        this.wekaInstance = new InstanceContext(parentContext, Keys.RootWekaInstnace);
 
 //        URL iconPath = this.getClass().getResource(ICON_PATH);
 //        InputStream iconStream = this.getClass().getResourceAsStream(ICON_PATH); #TODO: returning null
