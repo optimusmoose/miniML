@@ -1,5 +1,8 @@
 package frontendFX;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -17,7 +20,10 @@ import workflow.WorkflowManager;
 import workflow.context.AbstractCompositeContext;
 import workflow.context.DatasetContext;
 import workflow.context.InstanceContext;
+import workflow.context.ParameterContext;
 
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -34,6 +40,8 @@ public class DatasetTab extends Tab {
     private final DatasetContext context;
 
     private InstanceContext wekaInstance;
+    ParameterContext selectedAttributes;
+    ParameterContext classifier;
 
     private String dataset = "";
     private String content = "";
@@ -52,6 +60,8 @@ public class DatasetTab extends Tab {
         this.context = new DatasetContext(parentContext, Keys.DatasetConfig);
 
         this.wekaInstance = new InstanceContext(parentContext, Keys.RootWekaInstnace);
+        this.selectedAttributes = new ParameterContext(this.context, Keys.SelectedAttributes);
+        this.classifier = new ParameterContext(this.context, Keys.SelectedClassifier);
 
 //        URL iconPath = this.getClass().getResource(ICON_PATH);
 //        InputStream iconStream = this.getClass().getResourceAsStream(ICON_PATH); #TODO: returning null
@@ -109,6 +119,27 @@ public class DatasetTab extends Tab {
             @Override
             public void handle(ActionEvent event) {
                 selectFile();
+            }
+        });
+
+        //TODO: even listeners to set context for class and attributes!
+        classSelector.selectionModelProperty().getValue().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+            private AbstractCompositeContext context;
+
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                context = WorkflowManager.INSTANCE.getContextByKey(Keys.SelectedClassifier);
+                ParameterContext.handleContext((ParameterContext) context, newValue);
+            }
+        });
+
+        attributesList.getSelectionModel().getSelectedIndices().addListener(new ListChangeListener<Integer>() {
+            private AbstractCompositeContext context;
+
+            @Override
+            public void onChanged(Change<? extends Integer> c) {
+                context = WorkflowManager.INSTANCE.getContextByKey(Keys.SelectedAttributes);
+                ParameterContext.handleContext((ParameterContext) context, c.getList());
             }
         });
     }

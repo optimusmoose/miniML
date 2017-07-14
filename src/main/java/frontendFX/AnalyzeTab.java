@@ -1,5 +1,7 @@
 package frontendFX;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -15,6 +17,7 @@ import workflow.Keys;
 import workflow.WorkflowManager;
 import workflow.context.AbstractCompositeContext;
 import workflow.context.AnalyzeContext;
+import workflow.context.AnalyzeLaunchContext;
 
 public class AnalyzeTab extends Tab{
 
@@ -22,6 +25,7 @@ public class AnalyzeTab extends Tab{
 
     private final AbstractCompositeContext parentContext;
     private final AnalyzeContext context;
+    private final AnalyzeLaunchContext analysisLaunchContext;
     private final Stage mainStage;
 
     private TextAreaAppender outputAppender;
@@ -35,6 +39,7 @@ public class AnalyzeTab extends Tab{
 
         this.parentContext = WorkflowManager.INSTANCE.getContextByKey(Keys.App);
         this.context = new AnalyzeContext(parentContext, Keys.AnalyzeConfig);
+        this.analysisLaunchContext = new AnalyzeLaunchContext(this.context, Keys.StartAnalysisButton);
 
         Label tabLabel = new Label(TABNAME);
         this.setGraphic(tabLabel);
@@ -64,6 +69,16 @@ public class AnalyzeTab extends Tab{
         this.setContent(gridPane);
 
         this.addAppender(consoleText);
+
+        runButton.setOnAction(new EventHandler<ActionEvent>() {
+            private AnalyzeLaunchContext context;
+
+            @Override
+            public void handle(ActionEvent event) {
+                context = (AnalyzeLaunchContext) WorkflowManager.INSTANCE.getContextByKey(Keys.StartAnalysisButton);
+                context.execute();
+            }
+        });
     }
 
     private void addAppender(TextArea textArea) {
