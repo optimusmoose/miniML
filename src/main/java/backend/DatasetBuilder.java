@@ -22,8 +22,7 @@ public class DatasetBuilder {
     protected int classIndex;
 
     public DatasetBuilder(){
-        MiniMLLogger.INSTANCE.info("in ctor");
-        this.collect();
+        this.collect(); //TODO: silence??
         this.log_all();
     }
 
@@ -31,6 +30,7 @@ public class DatasetBuilder {
      * Collect all of the context values this builder needs from keys.
      */
     private void collect(){
+        System.out.println("hello");
         //Get the master Instance of our data
         ParameterContext masterContext = (ParameterContext) WorkflowManager.INSTANCE.getContextByKey(Keys.RootWekaInstnace);
         this.master = (Instances) masterContext.getValue();
@@ -41,6 +41,7 @@ public class DatasetBuilder {
 
         //Get the selected attribute indices
         ParameterContext selectedAttributeIndices = (ParameterContext) WorkflowManager.INSTANCE.getContextByKey(Keys.SelectedAttributes);
+        //TODO: this is where it explodes
         this.userAttributeSelectionIndices = (int[]) selectedAttributeIndices.getValue();
     }
 

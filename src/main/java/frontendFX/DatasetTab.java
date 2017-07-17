@@ -3,6 +3,7 @@ package frontendFX;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -17,10 +18,7 @@ import utils.Logging.MiniMLLogger;
 import weka.core.Instances;
 import workflow.Keys;
 import workflow.WorkflowManager;
-import workflow.context.AbstractCompositeContext;
-import workflow.context.DatasetContext;
-import workflow.context.InstanceContext;
-import workflow.context.ParameterContext;
+import workflow.context.*;
 
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -40,6 +38,7 @@ public class DatasetTab extends Tab {
     private final DatasetContext context;
 
     private InstanceContext wekaInstance;
+    FileContext fileSelectContext;
     ParameterContext selectedAttributes;
     ParameterContext classifier;
 
@@ -60,6 +59,7 @@ public class DatasetTab extends Tab {
         this.context = new DatasetContext(parentContext, Keys.DatasetConfig);
 
         this.wekaInstance = new InstanceContext(parentContext, Keys.RootWekaInstnace);
+        this.fileSelectContext = new FileContext(this.context, Keys.DatasetFile);
         this.selectedAttributes = new ParameterContext(this.context, Keys.SelectedAttributes);
         this.classifier = new ParameterContext(this.context, Keys.SelectedClassifier);
 
@@ -116,13 +116,16 @@ public class DatasetTab extends Tab {
         this.setContent(gridPane);
 
         findPathButton.setOnAction(new EventHandler<ActionEvent>() {
+            private AbstractCompositeContext context;
+
             @Override
             public void handle(ActionEvent event) {
                 selectFile();
+                context = WorkflowManager.INSTANCE.getContextByKey(Keys.DatasetFile);
+                ParameterContext.handleContext((ParameterContext) context, dataset);
             }
         });
 
-        //TODO: even listeners to set context for class and attributes!
         classSelector.selectionModelProperty().getValue().selectedIndexProperty().addListener(new ChangeListener<Number>() {
             private AbstractCompositeContext context;
 
@@ -135,11 +138,17 @@ public class DatasetTab extends Tab {
 
         attributesList.getSelectionModel().getSelectedIndices().addListener(new ListChangeListener<Integer>() {
             private AbstractCompositeContext context;
+            private int[] keys;
 
             @Override
             public void onChanged(Change<? extends Integer> c) {
+                ObservableList<? extends Integer> list = c.getList();
+                keys = new int[list.size()];
+                for (int i = 0; i < list.size(); i++) {
+                    keys[i] = list.get(i);
+                }
                 context = WorkflowManager.INSTANCE.getContextByKey(Keys.SelectedAttributes);
-                ParameterContext.handleContext((ParameterContext) context, c.getList());
+                ParameterContext.handleContext((ParameterContext) context, keys);
             }
         });
     }

@@ -40,7 +40,7 @@ public class DatasetTab extends JPanel {
         this.parentContext = WorkflowManager.INSTANCE.getContextByKey(Keys.App);
         this.context = new DatasetContext(parentContext, Keys.DatasetConfig);
 
-        this.wekaInstance = new InstanceContext(parentContext, Keys.RootWekaInstnace);  //TODO: dataset should not live in the frontend
+        this.wekaInstance = new InstanceContext(parentContext, Keys.RootWekaInstnace);
 
         this.constraints = new GridBagConstraints();
         this.setLayout(new GridBagLayout());

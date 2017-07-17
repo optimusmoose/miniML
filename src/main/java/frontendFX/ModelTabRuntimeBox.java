@@ -57,7 +57,7 @@ public class ModelTabRuntimeBox extends HBox {
                 try {
                     context = WorkflowManager.INSTANCE.getContextByKey(Keys.EstimatedTimeConfig);
                     maximumRuntime.setText(newValue + " minutes");
-                    ParameterContext.handleContext((ParameterContext) context, newValue);
+                    ParameterContext.handleContext((ParameterContext) context, newValue.intValue());
                 } catch (Exception exception) {
                     MiniMLLogger.INSTANCE.exception(exception);
                 }

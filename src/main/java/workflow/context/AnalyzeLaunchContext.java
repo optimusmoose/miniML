@@ -31,7 +31,7 @@ public class AnalyzeLaunchContext extends ImperativeContext {
             //NoUserParameterDispatcherBuilder job = new NoUserParameterDispatcherBuilder();
             //job.launch();
             MiniMLTask task = new MiniMLTask();
-            task.cancel();
+            task.run();
         } else {
             this.log("Parent not ready. Check settings.");
         }
